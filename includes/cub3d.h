@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgilles <rgilles@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/24 12:36:18 by rgilles           #+#    #+#             */
-/*   Updated: 2020/07/24 12:36:20 by rgilles          ###   ########.fr       */
+/*   Created: 2020/07/24 14:37:37 by rgilles           #+#    #+#             */
+/*   Updated: 2020/07/24 14:37:38 by rgilles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <cub3d.h>
 
-int	main(int argc, char **argv)
+#ifndef CUB3D_H
+# define CUB3D_H
+# include <libft.h>
+
+typedef	struct	s_params
 {
-	if (argc == 2)
-	{
-		t_params	params;
+	int		res_x;
+	int		res_y;
+	char	*no_path;
+	char	*so_path;
+	char	*ea_path;
+	char	*we_path;
+	char	*sp_path;
+	int		floor_col;
+	int		ceil_col;
+	int		err;
+}				t_params;
 
-		params = parse_file(argv[1]);
-	}
-	return (0);
-}
+#endif

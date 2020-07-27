@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgilles <rgilles@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/24 12:36:18 by rgilles           #+#    #+#             */
-/*   Updated: 2020/07/24 12:36:20 by rgilles          ###   ########.fr       */
+/*   Created: 2020/07/24 15:01:09 by rgilles           #+#    #+#             */
+/*   Updated: 2020/07/24 15:01:12 by rgilles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <cub3d.h>
 
-int	main(int argc, char **argv)
+t_params	parse_file(char *path)
 {
-	if (argc == 2)
-	{
-		t_params	params;
+	int			fd;
+	char		*line;
+	t_params	params;
+	int			len_x;
 
-		params = parse_file(argv[1]);
+	if(open())
+	while (get_next_line(fd, &line) >= 0)
+	{
+		if(line[0] == 'R')
+		{
+			len_x = 0;
+			params.res_x = ft_atoi(line[1]);
+			while ()
+			params.res_y = ft_atoi(line[2 + len_x]);
+		}
 	}
-	return (0);
 }
