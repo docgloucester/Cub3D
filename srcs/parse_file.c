@@ -17,17 +17,21 @@ t_params	parse_file(char *path)
 	int			fd;
 	char		*line;
 	t_params	params;
-	int			len_x;
+	int			i;
 
-	if(open())
-	while (get_next_line(fd, &line) >= 0)
-	{
-		if(line[0] == 'R')
+		fd = open(path, O_RDONLY);
+		while (get_next_line(fd, &line) > 0)
 		{
-			len_x = 0;
-			params.res_x = ft_atoi(line[1]);
-			while ()
-			params.res_y = ft_atoi(line[2 + len_x]);
+			if(line[0] == 'R')
+			{
+				i = 0;
+				params.res_x = ft_atoi(line + 1);
+				while (ft_isdigit(line[2 + i]))
+					i++;
+				while (ft_isspace(line[2 + i]))
+					i++;
+				params.res_y = ft_atoi(line + 2+ i);
+			}
 		}
-	}
+	return params;
 }
