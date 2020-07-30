@@ -26,7 +26,7 @@ LIBFT	= Libft/
 MLXD	= minilibx-darwin/
 MLXL	= minilibx-linux/
 
-SRCS	=	$(addprefix ${SRCDIR},${SRCSF})
+SRCS	=	$(addprefix ${SRCSD},${SRCSF})
 OBJS	=	${SRCS:.c=.o}
 
 
@@ -40,8 +40,8 @@ else
 	LINKFL	= ${LNFLL}
 endif
 
-.c.o:
-			${CC} ${CFLAGS} -I${LIBFT} -I${MLX} -c $< -o ${<:.c=.o}
+.c.o :
+			${CC} ${CFLAGS} -I${LIBFT}${INCL} -I${MLX} -I${INCL} -c $< -o ${<:.c=.o}
 
 
 ${NAME} :	${OBJS}
