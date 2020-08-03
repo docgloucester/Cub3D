@@ -26,5 +26,10 @@ int	main(int argc, char **argv)
 		win = mlx_new_window(mlx, params.res_x, params.res_y, "Hello world!");
 		mlx_loop(mlx);
 	}
+	else
+	{
+		(void)win;
+		ft_printf("Invalid argument\n");
+	}
 	return (0);
 }
