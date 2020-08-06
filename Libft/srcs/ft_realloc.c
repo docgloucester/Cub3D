@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgilles <rgilles@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/24 14:37:37 by rgilles           #+#    #+#             */
-/*   Updated: 2020/07/24 14:37:38 by rgilles          ###   ########.fr       */
+/*   Created: 2020/08/06 18:03:37 by rgilles           #+#    #+#             */
+/*   Updated: 2020/08/06 18:03:39 by rgilles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
-# include <libft.h>
-# include <mlx.h>
+#include "libft.h"
 
-typedef	struct	s_params
+void	*ft_realloc(void *ptr, int size, int newsize)
 {
-	int		res_x;
-	int		res_y;
-	char	*no_path;
-	char	*so_path;
-	char	*ea_path;
-	char	*we_path;
-	char	*sp_path;
-	int		floor_col;
-	int		ceilg_col;
-	char	**map;
-	char	*err;
-}				t_params;
+	char	*str;
+	char	*new;
+	int		i;
 
-t_params	parse_file(char *path);
-
-#endif
+	str = (char*)ptr;
+	if (!(new = (char*)malloc(newsize)))
+	{
+		if (ptr && size != 0)
+			free(ptr);
+		return (NULL);
+	}
+	i = -1;
+	while (++i < size)
+		new[i] = str[i];
+	if (ptr && size != 0)
+		free(ptr);
+	return (new);
+}

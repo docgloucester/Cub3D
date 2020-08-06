@@ -24,7 +24,8 @@ int	main(int argc, char **argv)
 		ft_printf("X = %d\n",params.res_x);
 		ft_printf("Y = %d\n",params.res_y);
 		ft_printf("Floor colour = %X\n",params.floor_col);
-		ft_printf("Ceiling colour = %X\n",params.ceil_col);
+		ft_printf("Ceiling colour = %X\n",params.ceilg_col);
+		ft_printf("North Path = %s\n",params.no_path);
 		win = mlx_new_window(mlx, params.res_x, params.res_y, "Hello world!");
 		mlx_loop(mlx);
 	}

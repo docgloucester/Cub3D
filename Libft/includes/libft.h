@@ -84,6 +84,7 @@ int				ft_atoi(const char *str);
 char			*ft_itoa(int n);
 
 void			*ft_calloc(size_t count, size_t size);
+void			*ft_realloc(void *ptr, int size, int newsize);
 char			*ft_strdup(const char *src);
 
 char			**ft_split(char const *s, char c);
