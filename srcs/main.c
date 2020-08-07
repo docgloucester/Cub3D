@@ -9,6 +9,7 @@
 /*   Updated: 2020/07/24 12:36:20 by rgilles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <cub3d.h>
 
 int	main(int argc, char **argv)
@@ -21,11 +22,11 @@ int	main(int argc, char **argv)
 	{
 		mlx = mlx_init();
 		params = parse_file(argv[1]);
-		ft_printf("X = %d\n",params.res_x);
-		ft_printf("Y = %d\n",params.res_y);
-		ft_printf("Floor colour = %X\n",params.floor_col);
-		ft_printf("Ceiling colour = %X\n",params.ceilg_col);
-		ft_printf("North Path = %s\n",params.no_path);
+		ft_printf("X = %d\n", params.res_x);
+		ft_printf("Y = %d\n", params.res_y);
+		ft_printf("Floor colour = %X\n", params.floor_col);
+		ft_printf("Ceiling colour = %X\n", params.ceilg_col);
+		ft_printf("North Path = %s\n", params.no_path);
 		win = mlx_new_window(mlx, params.res_x, params.res_y, "Hello world!");
 		mlx_loop(mlx);
 	}
