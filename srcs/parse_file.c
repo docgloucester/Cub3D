@@ -14,8 +14,11 @@
 
 void		free_split(char **split)
 {
-	while(*split)
-		free(*split++);
+	int	i;
+
+	i = 0;
+	while(split[i])
+		free(split[i++]);
 	free(split);
 }
 
@@ -45,18 +48,21 @@ int			get_fccol(t_params *params, char *line)
 	toret = 0;
 	if (lico && lico[0] && !lico[1])
 	{
-		trimmed_line = lico[0];
+		trimmed_line = ft_strdup(lico[0]);
 		free_split(lico);
 		lico = ft_split(trimmed_line, ',');
+		free(trimmed_line);
 		if (lico && lico[0] && lico[1] && lico[2] && !lico[3])
 		{
 			toret = 0xFF << 24 | ft_atoi(lico[0]) << 16;
 			toret = toret | ft_atoi(lico[1]) << 8;
 			toret = toret | ft_atoi(lico[2]) << 0;
 		}
+		else
+			params->err = "Number of colour variables must be 3!\n";
 	}
 	else
-		params->err = "Number of variables on colour selection line must be 1 !\n";
+		params->err = "Number of variables on colour selection line must be 1!\n";
 	if (lico)
 		free_split(lico);
 	return (toret);
@@ -130,23 +136,41 @@ t_params	parse_file(char *path)
 		while (get_next_line(fd, &line) > 0)
 		{
 			if(line[0] == 'R')
+			{
 				get_res(&params, line + 1);
+			}
 			else if(line[0] == 'F')
+			{
 				params.floor_col = get_fccol(&params,line + 1);
+			}
 			else if(line[0] == 'C')
+			{
 				params.ceilg_col = get_fccol(&params,line + 1);
+			}
 			else if(line[0] == 'N' && line[1] == 'O')
+			{
 				params.no_path = get_path(&params, line + 2);
+			}
 			else if(line[0] == 'S' && line[1] == 'O')
+			{
 				params.so_path = get_path(&params, line + 2);
+			}
 			else if(line[0] == 'W' && line[1] == 'E')
+			{
 				params.we_path = get_path(&params, line + 2);
+			}
 			else if(line[0] == 'E' && line[1] == 'A')
+			{
 				params.ea_path = get_path(&params, line + 2);
+			}
 			else if(line[0] == 'S')
+			{
 				params.sp_path = get_path(&params, line + 1);
+			}
 			else if(ft_split(line, ' ')[0] != NULL && ft_split(line, ' ')[0][0] == '1')
+			{
 				deal_map(&params, &line, fd);
+			}
 			else if (ft_strlen(line) == 0)
 				;
 			else
