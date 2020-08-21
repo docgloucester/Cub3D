@@ -31,5 +31,6 @@ typedef	struct	s_params
 }				t_params;
 
 t_params	parse_file(char *path);
+void		free_split(char **split);
 
 #endif

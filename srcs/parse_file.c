@@ -59,10 +59,10 @@ int			get_fccol(t_params *params, char *line)
 			toret = toret | ft_atoi(lico[2]) << 0;
 		}
 		else
-			params->err = "Number of colour variables must be 3!\n";
+			params->err = "Colour selection line must be 1 comma-separated array of 3 values!\n";
 	}
 	else
-		params->err = "Number of variables on colour selection line must be 1!\n";
+		params->err = "Colour selection line must be 1 comma-separated array of 3 values!\n";
 	if (lico)
 		free_split(lico);
 	return (toret);
@@ -77,7 +77,7 @@ char		*get_path(t_params *params, char *line)
 		return (line_content[0]);
 	else
 	{
-		params->err = "Number of variables on screen resolution line must be 2 !\n";
+		params->err = "Number of variables on path definition line must be 2 !\n";
 		return (NULL);
 	}
 	if (line_content)
@@ -86,19 +86,26 @@ char		*get_path(t_params *params, char *line)
 
 void		deal_map(t_params *params, char	**line, int fd)
 {
-	int	i;
+	int		i;
+	char	**splt;
 
 	i = 1;
 	params->map = (char**)malloc(i * sizeof(char*));
 	params->map[0] = ft_strdup(*line);
+	free(*line);
 	get_next_line(fd, line);
-	while (ft_split(*line, ' ')[0] != NULL && ft_split(*line, ' ')[0][0] == '1')
+	splt = ft_split(*line, ' ');
+	while (splt[0] != NULL && splt[0][0] == '1')
 	{
 		i++;
 		params->map = ft_realloc(params->map, i - 1 * sizeof(char*), i * sizeof(char*));
 		params->map[i-1] = ft_strdup(*line);
+		free_split(splt);
+		free(*line);
 		get_next_line(fd, line);
+		splt = ft_split(*line, ' ');
 	}
+	free_split(splt);
 	params->map = ft_realloc(params->map, i * sizeof(char*), i + 1 * sizeof(char*));
 	params->map[i] = NULL;
 }
@@ -125,6 +132,7 @@ t_params	parse_file(char *path)
 {
 	int			fd;
 	char		*line;
+	char		**splt;
 	t_params	params;
 
 	line = NULL;
@@ -135,6 +143,7 @@ t_params	parse_file(char *path)
 	else
 		while (get_next_line(fd, &line) > 0)
 		{
+			splt = ft_split(line, ' ');
 			if(line[0] == 'R')
 			{
 				get_res(&params, line + 1);
@@ -167,7 +176,7 @@ t_params	parse_file(char *path)
 			{
 				params.sp_path = get_path(&params, line + 1);
 			}
-			else if(ft_split(line, ' ')[0] != NULL && ft_split(line, ' ')[0][0] == '1')
+			else if(splt[0] != NULL && splt[0][0] == '1')
 			{
 				deal_map(&params, &line, fd);
 			}
@@ -176,8 +185,12 @@ t_params	parse_file(char *path)
 			else
 			{
 				params.err = ft_strdup("Unexpected parameter !\n");
+				free_split(splt);
+				free(line);
 				break ;
 			}
+			free(line);
+			free_split(splt);
 		}
 	return params;
 }
