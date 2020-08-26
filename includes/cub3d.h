@@ -15,6 +15,14 @@
 # include <libft.h>
 # include <mlx.h>
 
+typedef struct	s_data {
+    void	*img;
+    char	*addr;
+    int		bits_per_pixel;
+    int		line_length;
+    int		endian;
+}				t_data;
+
 typedef	struct	s_params
 {
 	int		res_x;
@@ -30,7 +38,14 @@ typedef	struct	s_params
 	char	*err;
 }				t_params;
 
+typedef	struct	s_player
+{
+	float	x_pos;
+	float	y_pos;	
+}				t_player;
+
 t_params	parse_file(char *path);
 void		free_split(char **split);
+void		my_pixelput(t_data *img, int x, int y, int col);
 
 #endif

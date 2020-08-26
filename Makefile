@@ -18,7 +18,7 @@ CFLAGS	= -Wall -Wextra -Werror
 LNFLM	= -framework OpenGL -framework AppKit
 LNFLL	= -lXext -lX11 -lm -lz
 
-SRCSF	= main.c parse_file.c
+SRCSF	= main.c parse_file.c mlx_extras.c
 SRCSD	= srcs/
 INCL	= includes/
 LIBFT	= Libft/

@@ -17,8 +17,8 @@ int	main(int argc, char **argv)
 	void		*mlx;
 	void		*win;
 	t_params	params;
-
-	int i;
+	t_data		img;
+	t_player	player;
 
 	if (argc == 2)
 	{
@@ -34,14 +34,14 @@ int	main(int argc, char **argv)
 		ft_printf("Floor colour = %X\n", params.floor_col);
 		ft_printf("Ceiling colour = %X\n", params.ceilg_col);
 		ft_printf("North Path = %s\n", params.no_path);
+		player.x_pos = 135;
+		player.y_pos = 256;
 		win = mlx_new_window(mlx, params.res_x, params.res_y, "Hello world!");
-		i = 0;
-		// while(params.map[i])
-		// {
-		// 	ft_printf("Line n. %d : %s\n", i, params.map[i]);
-		// 	free(params.map[i++]);
-		// }
-		// free(params.map);
+		ft_printf("hello\n");
+		img.img = mlx_new_image(mlx, params.res_x, params.res_y);
+		img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+		my_pixelput(&img, player.x_pos, player.y_pos, 0x00FF0000);
+		mlx_put_image_to_window(mlx, win, img.img, 0, 0);
 		mlx_loop(mlx);
 	}
 	else
