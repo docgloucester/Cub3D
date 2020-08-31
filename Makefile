@@ -12,9 +12,8 @@
 
 NAME	= Cub3D
 
-CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
-
+CC		= clang
+CFLAGS	= -Wall -Wextra -Werror -g3
 LNFLM	= -framework OpenGL -framework AppKit
 LNFLL	= -lXext -lX11 -lm -lz
 
