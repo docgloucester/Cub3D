@@ -29,21 +29,21 @@ int	main(int argc, char **argv)
 			ft_printf("Error\n%s", params.err);
 			exit(EXIT_FAILURE);
 		}
-		ft_printf("X = %d\n", params.res_x);
-		ft_printf("Y = %d\n", params.res_y);
-		ft_printf("Floor colour = %X\n", params.floor_col);
-		ft_printf("Ceiling colour = %X\n", params.ceilg_col);
-		ft_printf("North Path = %s\n", params.no_path);
-		player.x_pos = 135;
-		player.y_pos = 256;
+		ft_printf("X = %d x %d\nFloor colour = %X\nNorth Path = %s\n", params.res_x, params.res_y,
+			params.ceilg_col, params.no_path);
+		player.x_pos = 0;
+		player.y_pos = 0;
 		win = mlx_new_window(mlx, params.res_x, params.res_y, "Hello world!");
-		ft_printf("hello\n");
 		img.img = mlx_new_image(mlx, params.res_x, params.res_y);
 		img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+		while (player.y_pos < params.res_y)
+		{
+			player.x_pos = 0;
+			while (player.x_pos++ < params.res_x)
+				my_pixelput(&img, player.x_pos, player.y_pos, 0x00FF0000);
+			player.y_pos++;
+		}
 		mlx_put_image_to_window(mlx, win, img.img, 0, 0);
-/*		ft_memset(img.img, 0x00FF0000, 10);*/
-		ft_printf("byebye\n");
-		ft_printf("pouche\n");
 		mlx_loop(mlx);
 	}
 	else
