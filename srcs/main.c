@@ -32,12 +32,15 @@ void	fill_window(t_vars *mywin, int colour)
 
 int		key_function(int key, t_vars *mywin)
 {
-	(void)key;
-	mlx_destroy_window(mywin->mlx, mywin->win);
-	exit(EXIT_SUCCESS);
+	if (key == 53)
+	{
+		mlx_destroy_window(mywin->mlx, mywin->win);
+		exit(EXIT_SUCCESS);
+	}
+	return (0);
 }
 
-int		exp_function(t_vars *mywin)
+int		infocus_function(t_vars *mywin)
 {
 	fill_window(mywin, 0x00FF0000);
 	return (0);
@@ -61,7 +64,7 @@ int		main(int argc, char **argv)
 		mywin.win = mlx_new_window(mywin.mlx, mywin.params.res_x, mywin.params.res_y, "Hello world!");
 		fill_window(&mywin, 0x00FF0000);
 		mlx_key_hook(mywin.win, key_function, &mywin);
-		// mlx_expose_hook(mywin.win, exp_function, &mywin);
+		mlx_hook(mywin.win, 9, 1L<<21, infocus_function, &mywin);
 		mlx_loop(mywin.mlx);
 	}
 	else
