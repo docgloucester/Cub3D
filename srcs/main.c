@@ -12,13 +12,29 @@
 
 #include <cub3d.h>
 
-int	main(int argc, char **argv)
+void	fill_window(void **mlx, void **win, t_params *params, int colour)
+{
+	int 	x;
+	int 	y;
+	t_data	img;
+
+	img.img = mlx_new_image(*mlx, params->res_x, params->res_y);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	y = -1;
+	while (++y < params->res_y)
+	{
+		x = -1;
+		while (++x < params->res_x)
+			my_pixelput(&img, x, y, colour);
+	}
+	mlx_put_image_to_window(*mlx, *win, img.img, 0, 0);
+}
+
+int		main(int argc, char **argv)
 {
 	void		*mlx;
 	void		*win;
 	t_params	params;
-	t_data		img;
-	t_player	player;
 
 	if (argc == 2)
 	{
@@ -32,16 +48,7 @@ int	main(int argc, char **argv)
 		ft_printf("X = %d x %d\nFloor colour = %X\nNorth Path = %s\n", params.res_x, params.res_y,
 			params.ceilg_col, params.no_path);
 		win = mlx_new_window(mlx, params.res_x, params.res_y, "Hello world!");
-		img.img = mlx_new_image(mlx, params.res_x, params.res_y);
-		img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-		player.y_pos = -1;
-		while (++player.y_pos < params.res_y)
-		{
-			player.x_pos = -1;
-			while (++player.x_pos < params.res_x)
-				my_pixelput(&img, player.x_pos, player.y_pos, 0x00FF0000);
-		}
-		mlx_put_image_to_window(mlx, win, img.img, 0, 0);
+		fill_window(&mlx, &win, &params, 0x00FF0000);
 		mlx_loop(mlx);
 	}
 	else
