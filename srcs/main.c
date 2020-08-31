@@ -19,7 +19,6 @@ int	main(int argc, char **argv)
 	t_params	params;
 	t_data		img;
 	t_player	player;
-	int i;
 
 	if (argc == 2)
 	{
@@ -42,9 +41,7 @@ int	main(int argc, char **argv)
 		img.img = mlx_new_image(mlx, params.res_x, params.res_y);
 		img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 		mlx_put_image_to_window(mlx, win, img.img, 0, 0);
-		i = 0;
-		while (i <= player.y_pos)
-			my_pixelput(&img, player.x_pos, i++, 0x00FF0000);
+/*		ft_memset(img.img, 0x00FF0000, 10);*/
 		ft_printf("byebye\n");
 		ft_printf("pouche\n");
 		mlx_loop(mlx);

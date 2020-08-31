@@ -98,7 +98,7 @@ void		deal_map(t_params *params, char	**line, int fd)
 	while (splt[0] != NULL && splt[0][0] == '1')
 	{
 		i++;
-		params->map = ft_realloc(params->map, i - 1 * sizeof(char*), i * sizeof(char*));
+		params->map = ft_realloc(params->map, (i - 1) * sizeof(char*), i * sizeof(char*));
 		params->map[i-1] = ft_strdup(*line);
 		free_split(splt);
 		free(*line);
@@ -106,7 +106,7 @@ void		deal_map(t_params *params, char	**line, int fd)
 		splt = ft_split(*line, ' ');
 	}
 	free_split(splt);
-	params->map = ft_realloc(params->map, i * sizeof(char*), i + 1 * sizeof(char*));
+	params->map = ft_realloc(params->map, i * sizeof(char*), (i + 1) * sizeof(char*));
 	params->map[i] = NULL;
 }
 

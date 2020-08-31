@@ -10,12 +10,15 @@
 #                                                                              #
 # **************************************************************************** #
 
+# Package zlib1g-dev is required
+# to compile Cub3D on the xubuntu VM
+
 NAME	= Cub3D
 
 CC		= clang
-CFLAGS	= -Wall -Wextra -Werror -g3
-LNFLM	= -framework OpenGL -framework AppKit
-LNFLL	= -lXext -lX11 -lm -lz
+CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
+LNFLM	= -framework OpenGL -framework AppKit -fsanitize=address
+LNFLL	= -lXext -lX11 -lm -lz -fsanitize=address
 
 SRCSF	= main.c parse_file.c mlx_extras.c
 SRCSD	= srcs/
