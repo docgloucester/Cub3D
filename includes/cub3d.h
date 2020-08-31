@@ -38,6 +38,12 @@ typedef	struct	s_params
 	char	*err;
 }				t_params;
 
+typedef	struct	s_vars {
+	void		*mlx;
+	void		*win;
+	t_params	params;
+}				t_vars;
+
 typedef	struct	s_player
 {
 	float	x_pos;
