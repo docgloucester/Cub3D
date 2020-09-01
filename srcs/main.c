@@ -32,7 +32,8 @@ void	fill_window(t_vars *mywin, int colour)
 
 int		key_function(int key, t_vars *mywin)
 {
-	if (key == 53)
+	ft_printf("Key n.%d", key);
+	if (key == ESC_KEY)
 	{
 		mlx_destroy_window(mywin->mlx, mywin->win);
 		exit(EXIT_SUCCESS);
@@ -42,7 +43,7 @@ int		key_function(int key, t_vars *mywin)
 
 int		infocus_function(t_vars *mywin)
 {
-	fill_window(mywin, 0x00FF0000);
+	fill_window(mywin, 0x0000FF00);
 	return (0);
 }
 

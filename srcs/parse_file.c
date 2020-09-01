@@ -71,17 +71,22 @@ int			get_fccol(t_params *params, char *line)
 char		*get_path(t_params *params, char *line)
 {
 	char	**line_content;
+	char	*path;
 
 	line_content = ft_split(line , ' ');
 	if (line_content && line_content[0] && !line_content[1])
-		return (line_content[0]);
+	{
+		path = ft_strdup(line_content[0]);
+		free_split(line_content);
+		return (path);
+	}
 	else
 	{
+		if (line_content)
+			free_split(line_content);
 		params->err = "Number of variables on path definition line must be 2 !\n";
 		return (NULL);
 	}
-	if (line_content)
-		free_split(line_content);
 }
 
 void		deal_map(t_params *params, char	**line, int fd)
@@ -143,7 +148,6 @@ t_params	parse_file(char *path)
 	else
 		while (get_next_line(fd, &line) > 0)
 		{
-			splt = ft_split(line, ' ');
 			if(line[0] == 'R')
 			{
 				get_res(&params, line + 1);
@@ -176,21 +180,25 @@ t_params	parse_file(char *path)
 			{
 				params.sp_path = get_path(&params, line + 1);
 			}
-			else if(splt[0] != NULL && splt[0][0] == '1')
-			{
-				deal_map(&params, &line, fd);
-			}
 			else if (ft_strlen(line) == 0)
 				;
-			else
+			else 
 			{
-				params.err = ft_strdup("Unexpected parameter !\n");
+				splt = ft_split(line, ' ');
+				if(splt[0] != NULL && splt[0][0] == '1')
+				{
+					deal_map(&params, &line, fd);
+				}
+				else
+				{
+					params.err = ft_strdup("Unexpected parameter !\n");
+					free_split(splt);
+					free(line);
+					break ;
+				}
 				free_split(splt);
-				free(line);
-				break ;
 			}
 			free(line);
-			free_split(splt);
 		}
 	return params;
 }

@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <fcntl.h>
+# define BUFFER_SIZE 100
 
 typedef	struct	s_list
 {
@@ -120,8 +121,6 @@ t_list			*ft_lstnew(void *content);
 int				ft_lstsize(t_list *lst);
 
 double			ft_sqrt(double nb);
-
-# define BUFFER_SIZE 100
 
 int				get_next_line(int fd, char **line);
 

@@ -15,12 +15,18 @@
 # include <libft.h>
 # include <mlx.h>
 
+# ifdef __APPLE__
+#  define ESC_KEY 53
+# elif defined __linux__
+#  define ESC_KEY 65307
+# endif
+
 typedef struct	s_data {
-    void	*img;
-    char	*addr;
-    int		bits_per_pixel;
-    int		line_length;
-    int		endian;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
 }				t_data;
 
 typedef	struct	s_params
@@ -47,11 +53,11 @@ typedef	struct	s_vars {
 typedef	struct	s_player
 {
 	float	x_pos;
-	float	y_pos;	
+	float	y_pos;
 }				t_player;
 
-t_params	parse_file(char *path);
-void		free_split(char **split);
-void		my_pixelput(t_data *img, int x, int y, int col);
+t_params		parse_file(char *path);
+void			free_split(char **split);
+void			my_pixelput(t_data *img, int x, int y, int col);
 
 #endif
