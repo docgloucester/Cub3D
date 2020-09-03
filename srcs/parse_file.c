@@ -89,32 +89,6 @@ char		*get_path(t_params *params, char *line)
 	}
 }
 
-void		deal_map(t_params *params, char	**line, int fd)
-{
-	int		i;
-	char	**splt;
-
-	i = 1;
-	params->map = (char**)malloc(i * sizeof(char*));
-	params->map[0] = ft_strdup(*line);
-	free(*line);
-	get_next_line(fd, line);
-	splt = ft_split(*line, ' ');
-	while (splt[0] != NULL && splt[0][0] == '1')
-	{
-		i++;
-		params->map = ft_realloc(params->map, (i - 1) * sizeof(char*), i * sizeof(char*));
-		params->map[i-1] = ft_strdup(*line);
-		free_split(splt);
-		free(*line);
-		get_next_line(fd, line);
-		splt = ft_split(*line, ' ');
-	}
-	free_split(splt);
-	params->map = ft_realloc(params->map, i * sizeof(char*), (i + 1) * sizeof(char*));
-	params->map[i] = NULL;
-}
-
 t_params	init_params(void)
 {
 	t_params	params;
@@ -185,7 +159,7 @@ t_params	parse_file(char *path)
 			else 
 			{
 				splt = ft_split(line, ' ');
-				if(splt[0] != NULL && splt[0][0] == '1')
+				if(splt[0] != NULL && ft_isdigit(splt[0][0]))
 				{
 					deal_map(&params, &line, fd);
 				}

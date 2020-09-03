@@ -21,13 +21,13 @@
 #  define ESC_KEY 65307
 # endif
 
-typedef struct	s_data {
+typedef struct	s_img {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_data;
+}				t_img;
 
 typedef	struct	s_params
 {
@@ -41,14 +41,10 @@ typedef	struct	s_params
 	int		floor_col;
 	int		ceilg_col;
 	char	**map;
+	int		mapX;
+	int		mapY;
 	char	*err;
 }				t_params;
-
-typedef	struct	s_vars {
-	void		*mlx;
-	void		*win;
-	t_params	params;
-}				t_vars;
 
 typedef	struct	s_player
 {
@@ -56,8 +52,20 @@ typedef	struct	s_player
 	float	y_pos;
 }				t_player;
 
+typedef	struct	s_vars {
+	void		*mlx;
+	void		*win;
+	t_params	params;
+	t_player	player;
+	t_img		img;
+}				t_vars;
+
 t_params		parse_file(char *path);
 void			free_split(char **split);
-void			my_pixelput(t_data *img, int x, int y, int col);
+void			my_pixelput(t_img *img, int x, int y, int col);
+void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col);
+void			fill_window(t_vars *mywin, t_img *img, int col);
+void			deal_map(t_params *params, char	**line, int fd);
+void			build_image(t_vars *mywin, t_img *img);
 
 #endif

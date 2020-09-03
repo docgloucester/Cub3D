@@ -20,7 +20,7 @@ CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
 LNFLM	= -framework OpenGL -framework AppKit -fsanitize=address
 LNFLL	= -lXext -lX11 -lm -fsanitize=address
 
-SRCSF	= main.c parse_file.c mlx_extras.c
+SRCSF	= main.c parse_file.c mlx_extras.c deal_map.c build_image.c
 SRCSD	= srcs/
 INCL	= includes/
 LIBFT	= Libft/
