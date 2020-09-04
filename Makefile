@@ -10,9 +10,6 @@
 #                                                                              #
 # **************************************************************************** #
 
-# Package zlib1g-dev is required
-# to compile Cub3D on the xubuntu VM
-
 NAME	= Cub3D
 
 CC		= clang
