@@ -12,13 +12,28 @@
 
 #ifndef CUB3D_H
 # define CUB3D_H
+# define PI 3.141592654
 # include <libft.h>
 # include <mlx.h>
+# include <math.h>
+#include <stdio.h>
 
 # ifdef __APPLE__
 #  define ESC_KEY 53
+#  define UP_KEY 13
+#  define DOWN_KEY 1
+#  define LEFT_KEY 0
+#  define RIGHT_KEY 2
+#  define DPAD_LEFT 123
+#  define DPAD_RIGHT 124
 # elif defined __linux__
 #  define ESC_KEY 65307
+#  define UP_KEY 13
+#  define DOWN_KEY 1
+#  define LEFT_KEY 61
+#  define RIGHT_KEY 64
+#  define DPAD_LEFT 123
+#  define DPAD_RIGHT 124
 # endif
 
 typedef struct	s_img {
@@ -50,6 +65,9 @@ typedef	struct	s_player
 {
 	float	x_pos;
 	float	y_pos;
+	float	angle;
+	int		dx;
+	int		dy;
 }				t_player;
 
 typedef	struct	s_vars {
@@ -65,6 +83,7 @@ void			free_split(char **split);
 void			my_pixelput(t_img *img, int x, int y, int col);
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col);
 void			fill_window(t_vars *mywin, t_img *img, int col);
+void			change_angle(t_player *player, float angle);
 void			deal_map(t_params *params, char	**line, int fd);
 void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);

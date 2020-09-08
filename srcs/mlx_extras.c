@@ -12,6 +12,17 @@
 
 #include <cub3d.h>
 
+void	change_angle(t_player *player, float angle)
+{
+	while (angle <= 0)
+		angle += 2 * PI;
+	while (angle > 2 * PI)
+		angle -= 2 * PI;
+	player->angle = angle;
+	player->dx = 10 * cos(angle);
+	player->dy = 10 * sin(angle);
+}
+
 void	my_pixelput(t_img *img, int x, int y, int col)
 {
 	*(int*)(img->addr + y * img->line_length + x
@@ -30,6 +41,11 @@ void	fill_window(t_vars *mywin, t_img *img, int col)
 		while (++x < mywin->params.res_x)
 			my_pixelput(img, x, y, col);
 	}
+}
+
+void	draw_line(t_img *img, t_player *player)
+{
+	while ()
 }
 
 void	draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col)

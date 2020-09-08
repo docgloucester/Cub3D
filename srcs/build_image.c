@@ -30,6 +30,8 @@ void	put_map(t_vars *mywin, t_img *img)
 	int		y;
 	int		col;
 	int		squares_len;
+	char	*uwu;
+	char	*owo;
 
 	col = 0;
 	squares_len = get_square_side(mywin);
@@ -49,8 +51,9 @@ void	put_map(t_vars *mywin, t_img *img)
 					col = 0x00FFFFFF;
 				draw_square(img, x * squares_len, y * squares_len, squares_len, col);
 			}
-			if (mywin->params.map[y][x] && ft_strrchr("NSEW", mywin->params.map[y][x]))
+			if (mywin->params.map[y][x] && (uwu = ft_strchr(owo = "NSEW", mywin->params.map[y][x])))
 			{
+				change_angle(&mywin->player, PI * ((int )(uwu - owo)));
 				mywin->player.x_pos = squares_len * x;
 				mywin->player.y_pos = squares_len * y;
 			}

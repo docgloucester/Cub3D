@@ -25,13 +25,18 @@ void	print_map(t_vars *mywin)
 int		key_function(int key, t_vars *mywin)
 {
 	ft_printf("Key n.%d", key);
-	if (key == 0x77 || key == 0x61 || key == 0x73 || key == 0x64)
+	if (key == LEFT_KEY || key == RIGHT_KEY || key == UP_KEY || key == DOWN_KEY)
 	{
 		place_player(mywin, 0x00808080);
-		mywin->player.x_pos += (key == 0x64);
-		mywin->player.x_pos -= (key == 0x61);
+		mywin->player.x_pos += ((key == RIGHT_KEY) - (key == LEFT_KEY));
+		mywin->player.y_pos += ((key == DOWN_KEY) - (key == UP_KEY));
 		place_player(mywin, 0x00FF0000);
 		mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
+	}
+	else if (key == DPAD_LEFT || key == DPAD_RIGHT)
+	{
+		change_angle(&mywin->player, mywin->player.angle - 0.3 * ((key == DPAD_RIGHT) - (key == DPAD_LEFT)));
+printf("Angle: %f\ndx: %d\ndy: %d\nright: %d, left: %d\n\n", mywin->player.angle, mywin->player.dx, mywin->player.dy, (key == DPAD_RIGHT), (key == DPAD_LEFT));
 	}
 	else if (key == ESC_KEY)
 	{
