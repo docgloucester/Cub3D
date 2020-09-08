@@ -58,9 +58,14 @@ void	put_map(t_vars *mywin, t_img *img)
 	}
 }
 
+void	place_player(t_vars *mywin, int col)
+{
+	draw_square(&mywin->img, mywin->player.x_pos, mywin->player.y_pos, get_square_side(mywin) / 3, col);
+}
+
 void	build_image(t_vars *mywin, t_img *img)
 {
 	fill_window(mywin, img, 0x00808080);
 	put_map(mywin, img);
-	mlx_put_image_to_window(mywin->mlx, mywin->win, img->img, 0, 0);
+	place_player(mywin, 0x00FF0000);
 }

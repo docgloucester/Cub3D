@@ -67,5 +67,6 @@ void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			deal_map(t_params *params, char	**line, int fd);
 void			build_image(t_vars *mywin, t_img *img);
+void			place_player(t_vars *mywin, int col);
 
 #endif

@@ -25,7 +25,15 @@ void	print_map(t_vars *mywin)
 int		key_function(int key, t_vars *mywin)
 {
 	ft_printf("Key n.%d", key);
-	if (key == ESC_KEY)
+	if (key == 0x77 || key == 0x61 || key == 0x73 || key == 0x64)
+	{
+		place_player(mywin, 0x00808080);
+		mywin->player.x_pos += (key == 0x64);
+		mywin->player.x_pos -= (key == 0x61);
+		place_player(mywin, 0x00FF0000);
+		mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
+	}
+	else if (key == ESC_KEY)
 	{
 		mlx_destroy_window(mywin->mlx, mywin->win);
 		exit(EXIT_SUCCESS);
@@ -36,6 +44,7 @@ int		key_function(int key, t_vars *mywin)
 int		infocus_function(t_vars *mywin)
 {
 	build_image(mywin, &mywin->img);
+	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
 	return (0);
 }
 
@@ -57,8 +66,10 @@ int		main(int argc, char **argv)
 		mywin.img.img = mlx_new_image(mywin.mlx, mywin.params.res_x, mywin.params.res_y);
 		mywin.img.addr = mlx_get_data_addr(mywin.img.img, &mywin.img.bits_per_pixel, &mywin.img.line_length, &mywin.img.endian);
 		build_image(&mywin, &mywin.img);
+		mlx_put_image_to_window(mywin.mlx, mywin.win, mywin.img.img, 0, 0);
 		mlx_key_hook(mywin.win, key_function, &mywin);
 		mlx_hook(mywin.win, 9, 1L<<21, infocus_function, &mywin);
+		mlx_do_key_autorepeaton(mywin.mlx);
 		mlx_loop(mywin.mlx);
 	}
 	else
