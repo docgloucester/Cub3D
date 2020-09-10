@@ -36,7 +36,14 @@
 #  define DPAD_RIGHT 124
 # endif
 
-typedef struct	s_img {
+typedef struct	s_point
+{
+	float	x;
+	float	y;
+}				t_point;
+
+typedef struct	s_img
+{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -66,8 +73,8 @@ typedef	struct	s_player
 	float	x_pos;
 	float	y_pos;
 	float	angle;
-	int		dx;
-	int		dy;
+	float	dx;
+	float	dy;
 }				t_player;
 
 typedef	struct	s_vars {

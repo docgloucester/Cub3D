@@ -19,8 +19,8 @@ void	change_angle(t_player *player, float angle)
 	while (angle > 2 * PI)
 		angle -= 2 * PI;
 	player->angle = angle;
-	player->dx = 10 * cos(angle);
-	player->dy = 10 * sin(angle);
+	player->dx = 10 * cosf(angle);
+	player->dy = 10 * sinf(angle);
 }
 
 void	my_pixelput(t_img *img, int x, int y, int col)
@@ -43,9 +43,64 @@ void	fill_window(t_vars *mywin, t_img *img, int col)
 	}
 }
 
-void	draw_line(t_img *img, t_player *player)
+// void	draw_line(t_img *img, t_point start, t_point end)
+// {
+
+// 	if abs(end.y - start.y) < abs(end.x - start.x)
+// 	{
+// 		if (start.x <= end.x)
+// 			draw_lineN(img, start, end);
+// 		else
+// 			draw_lineN(img, start, end);
+// 	}
+// 	else
+// 	{
+// 		if (start.y <= end.y)
+// 			draw_lineH(img, start, end);
+// 		else
+// 			draw_lineH(img, start, end);
+// 	}
+// }
+
+void	draw_line(t_img *img, t_point start, t_point end)
 {
-	while ()
+	int dx;
+	int dy;
+	int sx;
+	int sy;
+	int err;
+
+	dx = (int)fabs(end.x - start.x);
+	sx = start.x < end.x ? 1 : -1;
+	dy = - (int)fabs(end.y - start.y);
+	sy = start.y < end.y ? 1 : -1;
+	err = dx + dy;
+	while (true)
+	{
+		plot(start.x, start.y);
+		if (start.x == end.x && start.y == end.y)
+			break;
+		if (2 * err >= dy)
+		{
+			start.x += sx;
+			if (2 * err <= dx)
+			{
+				start.y += sy;
+				err += dx;
+			}
+			err += dy;
+		}
+		else if (2 * err <= dx)
+		{
+			start.y += sy;
+			if (2 * err >= dy)
+			{
+				start.x += sx;
+				err += dy;
+			}
+			err += dx;
+		}
+	}
 }
 
 void	draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col)

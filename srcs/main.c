@@ -24,7 +24,7 @@ void	print_map(t_vars *mywin)
 
 int		key_function(int key, t_vars *mywin)
 {
-	ft_printf("Key n.%d", key);
+	ft_printf("Key n.%d\n", key);
 	if (key == LEFT_KEY || key == RIGHT_KEY || key == UP_KEY || key == DOWN_KEY)
 	{
 		place_player(mywin, 0x00808080);
@@ -35,8 +35,8 @@ int		key_function(int key, t_vars *mywin)
 	}
 	else if (key == DPAD_LEFT || key == DPAD_RIGHT)
 	{
-		change_angle(&mywin->player, mywin->player.angle - 0.3 * ((key == DPAD_RIGHT) - (key == DPAD_LEFT)));
-printf("Angle: %f\ndx: %d\ndy: %d\nright: %d, left: %d\n\n", mywin->player.angle, mywin->player.dx, mywin->player.dy, (key == DPAD_RIGHT), (key == DPAD_LEFT));
+		change_angle(&mywin->player, mywin->player.angle - 0.1 * ((key == DPAD_RIGHT) - (key == DPAD_LEFT)));
+printf("Angle: %f\ndx: %f\ndy: %f\nleft: %d, right: %d\n\n", mywin->player.angle, mywin->player.dx, mywin->player.dy, (key == DPAD_LEFT), (key == DPAD_RIGHT));
 	}
 	else if (key == ESC_KEY)
 	{
