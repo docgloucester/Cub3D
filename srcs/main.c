@@ -22,6 +22,18 @@ void	print_map(t_vars *mywin)
 		ft_printf("%s\n", mywin->params.map[i++]);
 }
 
+void	draw_player_dir(t_vars *mywin)
+{
+	t_point	start;
+	t_point	end;
+
+	start.x = mywin->player.x_pos;
+	start.y = mywin->player.y_pos;
+	end.x = mywin->player.x_pos + mywin->player.dx;
+	end.y = mywin->player.y_pos + mywin->player.dy;
+	draw_line(mywin, start, end);
+}
+
 int		key_function(int key, t_vars *mywin)
 {
 	ft_printf("Key n.%d\n", key);
@@ -37,6 +49,8 @@ int		key_function(int key, t_vars *mywin)
 	{
 		change_angle(&mywin->player, mywin->player.angle - 0.1 * ((key == DPAD_RIGHT) - (key == DPAD_LEFT)));
 printf("Angle: %f\ndx: %f\ndy: %f\nleft: %d, right: %d\n\n", mywin->player.angle, mywin->player.dx, mywin->player.dy, (key == DPAD_LEFT), (key == DPAD_RIGHT));
+		draw_player_dir(mywin);
+		mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
 	}
 	else if (key == ESC_KEY)
 	{

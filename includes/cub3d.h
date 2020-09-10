@@ -88,6 +88,7 @@ typedef	struct	s_vars {
 t_params		parse_file(char *path);
 void			free_split(char **split);
 void			my_pixelput(t_img *img, int x, int y, int col);
+void			draw_line(t_vars *mywin, t_point start, t_point end);
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			change_angle(t_player *player, float angle);
