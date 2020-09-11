@@ -51,7 +51,7 @@ void	put_map(t_vars *mywin, t_img *img)
 					col = 0x00FFFFFF;
 				draw_square(img, x * squares_len, y * squares_len, squares_len, col);
 			}
-			if (mywin->params.map[y][x] && (uwu = ft_strchr(owo = "NSEW", mywin->params.map[y][x])))
+			if (mywin->params.map[y][x] && (uwu = ft_strchr(owo = "WNES", mywin->params.map[y][x])))
 			{
 				change_angle(&mywin->player, PI * ((int )(uwu - owo)));
 				mywin->player.x_pos = squares_len * x;
@@ -63,7 +63,7 @@ void	put_map(t_vars *mywin, t_img *img)
 
 void	place_player(t_vars *mywin, int col)
 {
-	draw_square(&mywin->img, mywin->player.x_pos, mywin->player.y_pos, get_square_side(mywin) / 3, col);
+	draw_square(&mywin->img, mywin->player.x_pos - get_square_side(mywin) / 6, mywin->player.y_pos - get_square_side(mywin) / 6, get_square_side(mywin) / 3, col);
 }
 
 void	build_image(t_vars *mywin, t_img *img)

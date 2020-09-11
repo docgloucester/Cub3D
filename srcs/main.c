@@ -40,8 +40,8 @@ int		key_function(int key, t_vars *mywin)
 	if (key == LEFT_KEY || key == RIGHT_KEY || key == UP_KEY || key == DOWN_KEY)
 	{
 		place_player(mywin, 0x00808080);
-		mywin->player.x_pos += ((key == RIGHT_KEY) - (key == LEFT_KEY));
-		mywin->player.y_pos += ((key == DOWN_KEY) - (key == UP_KEY));
+		mywin->player.x_pos += 5 * ((key == RIGHT_KEY) - (key == LEFT_KEY));
+		mywin->player.y_pos += 5 * ((key == DOWN_KEY) - (key == UP_KEY));
 		place_player(mywin, 0x00FF0000);
 		mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
 	}

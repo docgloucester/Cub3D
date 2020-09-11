@@ -28,12 +28,12 @@
 #  define DPAD_RIGHT 124
 # elif defined __linux__
 #  define ESC_KEY 65307
-#  define UP_KEY 13
-#  define DOWN_KEY 1
-#  define LEFT_KEY 61
-#  define RIGHT_KEY 64
-#  define DPAD_LEFT 123
-#  define DPAD_RIGHT 124
+#  define UP_KEY 122
+#  define DOWN_KEY 115
+#  define LEFT_KEY 113
+#  define RIGHT_KEY 100
+#  define DPAD_LEFT 65361
+#  define DPAD_RIGHT 65363
 # endif
 
 typedef struct	s_point

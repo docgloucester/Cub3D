@@ -19,8 +19,8 @@ void	change_angle(t_player *player, float angle)
 	while (angle > 2 * PI)
 		angle -= 2 * PI;
 	player->angle = angle;
-	player->dx = 30 * cosf(angle);
-	player->dy = 30 * sinf(angle);
+	player->dx = 50 * cosf(angle);
+	player->dy = 50 * sinf(angle);
 }
 
 void	my_pixelput(t_img *img, int x, int y, int col)
