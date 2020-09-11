@@ -20,7 +20,7 @@ void	change_angle(t_player *player, float angle)
 		angle -= 2 * PI;
 	player->angle = angle;
 	player->dx = 50 * cosf(angle);
-	player->dy = 50 * sinf(angle);
+	player->dy = - 50 * sinf(angle);
 }
 
 void	my_pixelput(t_img *img, int x, int y, int col)
@@ -43,26 +43,7 @@ void	fill_window(t_vars *mywin, t_img *img, int col)
 	}
 }
 
-// void	draw_line(t_img *img, t_point start, t_point end)
-// {
-
-// 	if abs(end.y - start.y) < abs(end.x - start.x)
-// 	{
-// 		if (start.x <= end.x)
-// 			draw_lineN(img, start, end);
-// 		else
-// 			draw_lineN(img, start, end);
-// 	}
-// 	else
-// 	{
-// 		if (start.y <= end.y)
-// 			draw_lineH(img, start, end);
-// 		else
-// 			draw_lineH(img, start, end);
-// 	}
-// }
-
-void	draw_line(t_vars *mywin, t_point start, t_point end)
+void	draw_line(t_img *img, t_point start, t_point end, int col)
 {
 	int dx;
 	int dy;
@@ -77,15 +58,16 @@ void	draw_line(t_vars *mywin, t_point start, t_point end)
 	err = dx + dy;
 	while (1)
 	{
-// ft_printf("x: %d, y: %d\n", (int)start.x, (int)start.y);
-		my_pixelput(&mywin->img, (int)start.x, (int)start.y, 0x00FF0000);
-		if ((int)start.x == (int)end.x || (int)start.y == (int)end.y)
-			break ;
+		my_pixelput(img, (int)start.x, (int)start.y, col);
 		if (2 * err >= dy)
 		{
+			if ((int)start.x == (int)end.x)
+				break ;
 			start.x += sx;
 			if (2 * err <= dx)
 			{
+				if ((int)start.y == (int)end.y)
+					break ;
 				start.y += sy;
 				err += dx;
 			}
@@ -93,12 +75,9 @@ void	draw_line(t_vars *mywin, t_point start, t_point end)
 		}
 		else if (2 * err <= dx)
 		{
+			if ((int)start.y == (int)end.y)
+				break ;
 			start.y += sy;
-			if (2 * err >= dy)
-			{
-				start.x += sx;
-				err += dy;
-			}
 			err += dx;
 		}
 	}

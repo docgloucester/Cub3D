@@ -83,17 +83,19 @@ typedef	struct	s_vars {
 	t_params	params;
 	t_player	player;
 	t_img		img;
+	t_img		player_img;
 }				t_vars;
 
 t_params		parse_file(char *path);
 void			free_split(char **split);
 void			my_pixelput(t_img *img, int x, int y, int col);
-void			draw_line(t_vars *mywin, t_point start, t_point end);
+void			draw_line(t_img *img, t_point start, t_point end, int col);
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			change_angle(t_player *player, float angle);
 void			deal_map(t_params *params, char	**line, int fd);
 void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
+void			draw_player_dir(t_vars *mywin, int col);
 
 #endif
