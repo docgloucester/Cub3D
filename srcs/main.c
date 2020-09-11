@@ -12,6 +12,13 @@
 
 #include <cub3d.h>
 
+int		refresh(t_vars *mywin)
+{
+	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
+	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->player_img.img, 0, 0);
+	return (0);
+}
+
 void	print_map(t_vars *mywin)
 {
 	int	i;
@@ -39,9 +46,8 @@ int		key_function(int key, t_vars *mywin)
 	ft_printf("Key n.%d\n", key);
 	if (key == LEFT_KEY || key == RIGHT_KEY || key == UP_KEY || key == DOWN_KEY)
 	{
-		
-		mywin->player.x_pos += 0.5 * mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY));
-		mywin->player.y_pos += 0.5 * mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY));
+		mywin->player.x_pos += 0.5 * (mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dy * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
+		mywin->player.y_pos += 0.5 * (mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dx * ((key == RIGHT_KEY) - (key == LEFT_KEY)));
 	}
 	else if (key == DPAD_LEFT || key == DPAD_RIGHT)
 	{
@@ -56,20 +62,13 @@ int		key_function(int key, t_vars *mywin)
 	fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
 	place_player(mywin, 0x00FF0000);
 	draw_player_dir(mywin, 0x00FF0000);
+	refresh(mywin);
 	return (0);
 }
 
 int		infocus_function(t_vars *mywin)
 {
-	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
-	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->player_img.img, 0, 0);
-	return (0);
-}
-
-int		refresh(t_vars *mywin)
-{
-	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
-	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->player_img.img, 0, 0);
+	refresh(mywin);
 	return (0);
 }
 
@@ -80,6 +79,7 @@ int		main(int argc, char **argv)
 	if (argc == 2)
 	{
 		mywin.mlx = mlx_init();
+		mlx_do_key_autorepeaton(mywin.mlx);
 		mywin.params = parse_file(argv[1]);
 		if (mywin.params.err)
 		{
@@ -94,10 +94,10 @@ int		main(int argc, char **argv)
 		mywin.player_img.addr = mlx_get_data_addr(mywin.player_img.img, &mywin.player_img.bits_per_pixel, &mywin.player_img.line_length, &mywin.player_img.endian);
 		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
+		refresh(&mywin);
 		mlx_key_hook(mywin.win, key_function, &mywin);
 		mlx_hook(mywin.win, 9, 1L<<21, infocus_function, &mywin);
-		mlx_do_key_autorepeaton(mywin.mlx);
-		mlx_loop_hook(mywin.mlx, refresh, &mywin);
+		//mlx_loop_hook(mywin.mlx, refresh, &mywin);
 		mlx_loop(mywin.mlx);
 	}
 	else
