@@ -42,6 +42,15 @@ typedef struct	s_point
 	float	y;
 }				t_point;
 
+typedef struct	s_ray
+{
+	int	delta_x;
+	int	delta_y;
+	int	rx;
+	int	ry;
+
+}				t_ray;
+
 typedef struct	s_img
 {
 	void	*img;
@@ -94,6 +103,7 @@ void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			change_angle(t_player *player, float angle);
 void			deal_map(t_params *params, char	**line, int fd);
+void			get_square_side(t_vars *mywin);
 void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
 void			draw_player_dir(t_vars *mywin, int col);

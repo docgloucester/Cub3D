@@ -47,7 +47,7 @@ int		key_function(int key, t_vars *mywin)
 	if (key == LEFT_KEY || key == RIGHT_KEY || key == UP_KEY || key == DOWN_KEY)
 	{
 		mywin->player.x_pos += 0.5 * (mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dy * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
-		mywin->player.y_pos += 0.5 * (mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dx * ((key == RIGHT_KEY) - (key == LEFT_KEY)));
+		mywin->player.y_pos += 0.5 * (mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY)) - mywin->player.dx * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
 	}
 	else if (key == DPAD_LEFT || key == DPAD_RIGHT)
 	{
