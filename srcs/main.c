@@ -50,7 +50,6 @@ void	draw_player_dir(t_vars *mywin, int col)
 
 int		key_function(int key, t_vars *mywin)
 {
-	ft_printf("Key n.%d\n", key);
 	if (key == LEFT_KEY || key == RIGHT_KEY || key == UP_KEY || key == DOWN_KEY)
 	{
 		mywin->player.x_pos += 0.5 * (mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dy * ((key == LEFT_KEY) - (key == RIGHT_KEY)));

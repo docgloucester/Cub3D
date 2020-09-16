@@ -19,7 +19,6 @@ int		get_square_side(t_vars *mywin)
 	useHeight = 1;
 	if (mywin->params.mapY < mywin->params.mapX)
 		useHeight = 0;
-	ft_printf("square side : %d\n", ((1 - useHeight) * mywin->params.res_x + (0 + useHeight) * mywin->params.res_y) / ((1 - useHeight) * mywin->params.mapX + (0 + useHeight) * mywin->params.mapY));
 	return (((1 - useHeight) * mywin->params.res_x + (0 + useHeight) * mywin->params.res_y) / ((1 - useHeight) * mywin->params.mapX + (0 + useHeight) * mywin->params.mapY));
 
 }
