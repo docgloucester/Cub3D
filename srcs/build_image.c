@@ -49,7 +49,7 @@ void	put_map(t_vars *mywin, t_img *img)
 					col = 0x00505050;
 				else
 					col = 0x00FFFFFF;
-				draw_square(img, x * squares_len, y * squares_len, squares_len, col);
+				draw_square(img, x * squares_len, y * squares_len, squares_len - 1, col);
 			}
 			if (mywin->params.map[y][x] && (uwu = ft_strchr(owo = "ENWS", mywin->params.map[y][x])))
 			{
