@@ -14,8 +14,15 @@
 
 int		refresh(t_vars *mywin)
 {
-	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
-	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->player_img.img, 0, 0);
+	t_img	temp_img;
+
+	temp_img.img = mlx_new_image(mywin->mlx, mywin->params.res_x, mywin->params.res_y);
+	temp_img.addr = mlx_get_data_addr(temp_img.img, &temp_img.bits_per_pixel, &temp_img.line_length, &temp_img.endian);
+	mlx_merge_img(mywin, &temp_img, &mywin->img, &mywin->player_img);
+	mlx_put_image_to_window(mywin->mlx, mywin->win, temp_img.img, 0, 0);
+	mlx_destroy_image(mywin->mlx, temp_img.img);
+	// mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
+	// mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->player_img.img, 0, 0);
 	return (0);
 }
 

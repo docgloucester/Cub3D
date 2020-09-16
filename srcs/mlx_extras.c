@@ -12,7 +12,7 @@
 
 #include <cub3d.h>
 
-void	change_angle(t_player *player, float angle)
+void			change_angle(t_player *player, float angle)
 {
 	while (angle <= 0)
 		angle += 2 * PI;
@@ -23,13 +23,18 @@ void	change_angle(t_player *player, float angle)
 	player->dy = - 50 * sinf(angle);
 }
 
-void	my_pixelput(t_img *img, int x, int y, int col)
+void			my_pixelput(t_img *img, int x, int y, int col)
 {
 	*(int*)(img->addr + y * img->line_length + x
 		* (img->bits_per_pixel / 8)) = col;
 }
 
-void	fill_window(t_vars *mywin, t_img *img, int col)
+unsigned int	get_pixel(t_img *img, int x, int y)
+{
+	return(*(int*)(img->addr + y * img->line_length + x * (img->bits_per_pixel / 8)));
+}
+
+void			fill_window(t_vars *mywin, t_img *img, int col)
 {
 	int 	x;
 	int 	y;
@@ -43,7 +48,7 @@ void	fill_window(t_vars *mywin, t_img *img, int col)
 	}
 }
 
-void	draw_line(t_img *img, t_point start, t_point end, int col)
+void			draw_line(t_img *img, t_point start, t_point end, int col)
 {
 	int dx;
 	int dy;
@@ -83,7 +88,7 @@ void	draw_line(t_img *img, t_point start, t_point end, int col)
 	}
 }
 
-void	draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col)
+void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col)
 {
 	int	x;
 	int	y;
@@ -96,3 +101,23 @@ void	draw_square(t_img *img, int x_start, int y_start, int side_length_px, int c
 			my_pixelput(img, x_start + x, y_start + y, col);
 	}
 }
+
+void			mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
+{
+	int 	x;
+	int 	y;
+	int 	col;
+	
+	y = -1;
+	while (++y < mywin->params.res_y)
+	{
+		x = -1;
+		while (++x < mywin->params.res_x)
+		{
+//ft_printf("UWUUUUUU : %X\n", get_pixel(front, x, y) & (0xFF << 24));
+			col = get_pixel(front, x, y) == 0xFFFFFFFF ? get_pixel(back, x, y) : get_pixel(front, x, y);
+			my_pixelput(temp_img, x, y, col);
+		}
+	}
+}
+
