@@ -114,7 +114,6 @@ void			mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
 		x = -1;
 		while (++x < mywin->params.res_x)
 		{
-//ft_printf("UWUUUUUU : %X\n", get_pixel(front, x, y) & (0xFF << 24));
 			col = get_pixel(front, x, y) == 0xFFFFFFFF ? get_pixel(back, x, y) : get_pixel(front, x, y);
 			my_pixelput(temp_img, x, y, col);
 		}
