@@ -16,7 +16,6 @@
 # include <libft.h>
 # include <mlx.h>
 # include <math.h>
-#include <stdio.h>
 
 # ifdef __APPLE__
 #  define ESC_KEY 53
@@ -36,20 +35,12 @@
 #  define DPAD_RIGHT 65363
 # endif
 
+
 typedef struct	s_point
 {
 	float	x;
 	float	y;
 }				t_point;
-
-typedef struct	s_ray
-{
-	float	delta_x;
-	float	delta_y;
-	float	rx;
-	float	ry;
-
-}				t_ray;
 
 typedef struct	s_img
 {
