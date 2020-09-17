@@ -44,10 +44,10 @@ typedef struct	s_point
 
 typedef struct	s_ray
 {
-	int	delta_x;
-	int	delta_y;
-	int	rx;
-	int	ry;
+	float	delta_x;
+	float	delta_y;
+	float	rx;
+	float	ry;
 
 }				t_ray;
 
@@ -108,5 +108,6 @@ int				get_square_side(t_vars *mywin);
 void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
 void			draw_player_dir(t_vars *mywin, int col);
+void			drawRays(t_vars *mywin);
 
 #endif

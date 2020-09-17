@@ -21,8 +21,6 @@ int		refresh(t_vars *mywin)
 	mlx_merge_img(mywin, &temp_img, &mywin->img, &mywin->player_img);
 	mlx_put_image_to_window(mywin->mlx, mywin->win, temp_img.img, 0, 0);
 	mlx_destroy_image(mywin->mlx, temp_img.img);
-	// mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->img.img, 0, 0);
-	// mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->player_img.img, 0, 0);
 	return (0);
 }
 
@@ -68,6 +66,7 @@ int		key_function(int key, t_vars *mywin)
 	fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
 	place_player(mywin, 0x00FF0000);
 	draw_player_dir(mywin, 0x00FF0000);
+	drawRays(mywin);
 	refresh(mywin);
 	return (0);
 }
