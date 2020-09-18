@@ -33,7 +33,7 @@ t_point	getHorRay(t_vars *mywin, t_point start, float angle)
 		delta_ray.y = - squareside;
 		delta_ray.x = - delta_ray.y / tan(angle);
 	}
-	else
+	else if (angle > PI)
 	{
 		end.y = ((int)start.y / squareside) * squareside + squareside;
 		end.x = start.x - (end.y - start.y) / tan(angle);
@@ -104,15 +104,25 @@ t_point	getVerRay(t_vars *mywin, t_point start, float angle)
 
 void	drawRays(t_vars *mywin)
 {
-	float angle;
+	float	angle;
 	t_point start;
 	t_point h_end;
 	t_point v_end;
+	float	diff;
 
-	angle = mywin->player.angle;
-	start.x = mywin->player.x_pos;
-	start.y = mywin->player.y_pos;
-	h_end = getHorRay(mywin, start, angle);
-	v_end = getVerRay(mywin, start, angle);
-	draw_line(mywin, start, cmpNorm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
+	diff = -0.166 * PI;
+	while (diff <= 0.167 * PI)
+	{
+		angle = mywin->player.angle + diff;
+		while (angle <= 0)
+			angle += 2 * PI;
+		while (angle > 2 * PI)
+			angle -= 2 * PI;
+		start.x = mywin->player.x_pos;
+		start.y = mywin->player.y_pos;
+		h_end = getHorRay(mywin, start, angle);
+		v_end = getVerRay(mywin, start, angle);
+		draw_line(mywin, start, cmpNorm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
+		diff += 0.02;
+	}
 }

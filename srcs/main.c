@@ -65,8 +65,8 @@ int		key_function(int key, t_vars *mywin)
 	}
 	fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
 	place_player(mywin, 0x00FF0000);
-	//draw_player_dir(mywin, 0x00FF0000);
 	drawRays(mywin);
+	draw_player_dir(mywin, 0x00FF0000);
 	refresh(mywin);
 	return (0);
 }
