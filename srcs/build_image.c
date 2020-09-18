@@ -40,7 +40,7 @@ void	put_map(t_vars *mywin, t_img *img)
 		x = -1;
 		while (++x < mywin->params.mapX)
 		{
-			if (mywin->params.map[y][x] && ft_strchr("012", mywin->params.map[y][x]))
+			if (mywin->params.map[y][x] && ft_strchr("012ENSW", mywin->params.map[y][x]))
 			{
 				if (mywin->params.map[y][x] == '1')
 					col = 0x00020202;
@@ -52,7 +52,7 @@ void	put_map(t_vars *mywin, t_img *img)
 			}
 			if (mywin->params.map[y][x] && (uwu = ft_strchr(owo = "ENWS", mywin->params.map[y][x])))
 			{
-				change_angle(&mywin->player, PI / 2 * ((int)(uwu - owo)));
+				change_angle(&mywin->player, PI / 2 * (int)(uwu - owo));
 				mywin->player.x_pos = squares_len * x;
 				mywin->player.y_pos = squares_len * y;
 			}
@@ -70,6 +70,6 @@ void	build_image(t_vars *mywin, t_img *img)
 	fill_window(mywin, img, 0x00FFFFFF);
 	put_map(mywin, img);
 	place_player(mywin, 0x00FF0000);
-	draw_player_dir(mywin, 0x00FF0000);
+	//draw_player_dir(mywin, 0x00FF0000);
 	drawRays(mywin);
 }

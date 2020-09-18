@@ -48,7 +48,7 @@ void			fill_window(t_vars *mywin, t_img *img, int col)
 	}
 }
 
-void			draw_line(t_img *img, t_point start, t_point end, int col)
+void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 {
 	int dx;
 	int dy;
@@ -63,7 +63,8 @@ void			draw_line(t_img *img, t_point start, t_point end, int col)
 	err = dx + dy;
 	while (1)
 	{
-		my_pixelput(img, (int)start.x, (int)start.y, col);
+		if (start.x >= 0 && start.y >= 0 && start.x < mywin->params.res_x && start.y < mywin->params.res_y)
+			my_pixelput(&mywin->player_img, (int)start.x, (int)start.y, col);
 		if (2 * err >= dy)
 		{
 			if ((int)start.x == (int)end.x)
@@ -120,3 +121,14 @@ void			mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
 	}
 }
 
+int			cmpNorm(t_point start, t_point end0, t_point end1)
+{
+	int norm1;
+	int norm0;
+
+	norm1 = sqrt((start.x - end1.x) * (start.x - end1.x) + (start.y - end1.y) * (start.y - end1.y));
+	norm0 = sqrt((start.x - end0.x) * (start.x - end0.x) + (start.y - end0.y) * (start.y - end0.y));
+	if (norm1 < norm0)
+		return (1);
+	return (0);
+}

@@ -43,7 +43,7 @@ void	draw_player_dir(t_vars *mywin, int col)
 	start.y = mywin->player.y_pos;
 	end.x = mywin->player.x_pos + mywin->player.dx;
 	end.y = mywin->player.y_pos + mywin->player.dy;
-	draw_line(&mywin->player_img, start, end, col);
+	draw_line(mywin, start, end, col);
 }
 
 int		key_function(int key, t_vars *mywin)
@@ -65,7 +65,7 @@ int		key_function(int key, t_vars *mywin)
 	}
 	fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
 	place_player(mywin, 0x00FF0000);
-	draw_player_dir(mywin, 0x00FF0000);
+	//draw_player_dir(mywin, 0x00FF0000);
 	drawRays(mywin);
 	refresh(mywin);
 	return (0);
