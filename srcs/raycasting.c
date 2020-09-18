@@ -110,8 +110,8 @@ void	drawRays(t_vars *mywin)
 	t_point v_end;
 	float	diff;
 
-	diff = -0.166 * PI;
-	while (diff <= 0.167 * PI)
+	diff = -0.334 * PI;
+	while (diff <= 0.333 * PI)
 	{
 		angle = mywin->player.angle + diff;
 		while (angle <= 0)
