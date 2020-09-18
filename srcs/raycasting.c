@@ -46,7 +46,7 @@ t_point	getHorRay(t_vars *mywin, t_point start, float angle)
 			|| (int)((end.x) / squareside) >= mywin->params.mapX
 			|| (int)((end.y) / squareside) >= mywin->params.mapY)
 			break;
-		if (ft_strchr("12", mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)]))
+		if (ft_strchr("12", mywin->params.map[(int)(end.y / squareside)][(int)(end.x / squareside)]))
 			reached_wall = 1;
 		else
 		{

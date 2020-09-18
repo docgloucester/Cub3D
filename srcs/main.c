@@ -48,10 +48,20 @@ void	draw_player_dir(t_vars *mywin, int col)
 
 int		key_function(int key, t_vars *mywin)
 {
+	int		squareside;
+	float	dx;
+	float	dy;
+
+	squareside = get_square_side(mywin);
 	if (key == LEFT_KEY || key == RIGHT_KEY || key == UP_KEY || key == DOWN_KEY)
 	{
-		mywin->player.x_pos += 0.5 * (mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dy * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
-		mywin->player.y_pos += 0.5 * (mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY)) - mywin->player.dx * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
+		dx = 0.5 * (mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dy * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
+		dy = 0.5 * (mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY)) - mywin->player.dx * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
+		if (!ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + dy) / squareside)][(int)((mywin->player.x_pos + dx) / squareside)]))
+		{
+			mywin->player.x_pos += dx;
+			mywin->player.y_pos += dy;
+		}
 	}
 	else if (key == DPAD_LEFT || key == DPAD_RIGHT)
 	{
