@@ -16,7 +16,7 @@ int		refresh(t_vars *mywin)
 {
 	t_img	temp_img;
 
-	temp_img.img = mlx_new_image(mywin->mlx, mywin->params.res_x, mywin->params.res_y);
+	temp_img.img = mlx_new_image(mywin->mlx, mywin->params.res_x / 4 , mywin->params.res_y / 4);
 	temp_img.addr = mlx_get_data_addr(temp_img.img, &temp_img.bits_per_pixel, &temp_img.line_length, &temp_img.endian);
 	mlx_merge_img(mywin, &temp_img, &mywin->img, &mywin->player_img);
 	mlx_put_image_to_window(mywin->mlx, mywin->win, temp_img.img, 0, 0);
@@ -41,8 +41,8 @@ void	draw_player_dir(t_vars *mywin, int col)
 
 	start.x = mywin->player.x_pos;
 	start.y = mywin->player.y_pos;
-	end.x = mywin->player.x_pos + mywin->player.dx;
-	end.y = mywin->player.y_pos + mywin->player.dy;
+	end.x = mywin->player.x_pos + get_square_side(mywin) * mywin->player.dx;
+	end.y = mywin->player.y_pos + get_square_side(mywin) * mywin->player.dy;
 	draw_line(mywin, start, end, col);
 }
 
@@ -55,8 +55,8 @@ int		key_function(int key, t_vars *mywin)
 	squareside = get_square_side(mywin);
 	if (key == LEFT_KEY || key == RIGHT_KEY || key == UP_KEY || key == DOWN_KEY)
 	{
-		dx = 0.5 * (mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dy * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
-		dy = 0.5 * (mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY)) - mywin->player.dx * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
+		dx = get_square_side(mywin) / 2 * (mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dy * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
+		dy = get_square_side(mywin) / 2 * (mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY)) - mywin->player.dx * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
 		if (!ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + dy) / squareside)][(int)((mywin->player.x_pos + dx) / squareside)]))
 		{
 			mywin->player.x_pos += dx;

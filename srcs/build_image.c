@@ -34,6 +34,7 @@ void	put_map(t_vars *mywin, t_img *img)
 
 	col = 0;
 	squares_len = get_square_side(mywin);
+	ft_printf("%d\n", squares_len);
 	y = -1;
 	while (++y < mywin->params.mapY)
 	{
@@ -48,7 +49,7 @@ void	put_map(t_vars *mywin, t_img *img)
 					col = 0x00505050;
 				else
 					col = 0x00808080;
-				draw_square(img, x * squares_len, y * squares_len, squares_len - 1, col);
+				draw_square(img, x * squares_len, y * squares_len, squares_len, col);
 			}
 			if (mywin->params.map[y][x] && (uwu = ft_strchr(owo = "ENWS", mywin->params.map[y][x])))
 			{

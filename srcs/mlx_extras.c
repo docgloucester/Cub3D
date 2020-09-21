@@ -19,8 +19,8 @@ void			change_angle(t_player *player, float angle)
 	while (angle > 2 * PI)
 		angle -= 2 * PI;
 	player->angle = angle;
-	player->dx = 50 * cosf(angle);
-	player->dy = - 50 * sinf(angle);
+	player->dx = cosf(angle);
+	player->dy = - sinf(angle);
 }
 
 void			my_pixelput(t_img *img, int x, int y, int col)
@@ -110,12 +110,12 @@ void			mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
 	int 	col;
 	
 	y = -1;
-	while (++y < mywin->params.res_y)
+	while (++y < mywin->params.res_y / 4)
 	{
 		x = -1;
-		while (++x < mywin->params.res_x)
+		while (++x < mywin->params.res_x / 4)
 		{
-			col = get_pixel(front, x, y) == 0xFFFFFFFF ? get_pixel(back, x, y) : get_pixel(front, x, y);
+			col = get_pixel(front, 4 * x, 4 * y) == 0xFFFFFFFF ? get_pixel(back, 4 * x, 4 * y) : get_pixel(front, 4 * x, 4 * y);
 			my_pixelput(temp_img, x, y, col);
 		}
 	}
