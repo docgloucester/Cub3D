@@ -58,7 +58,7 @@ int		key_function(int key, t_vars *mywin)
 	{
 		dx = get_square_side(mywin) / 2 * (mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dy * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
 		dy = get_square_side(mywin) / 2 * (mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY)) - mywin->player.dx * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
-		if (!ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + dy) / squareside)][(int)((mywin->player.x_pos + dx) / squareside)]))
+		if (!ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 2 * dy) / squareside)][(int)((mywin->player.x_pos + 2 * dx) / squareside)]))
 		{
 			mywin->player.x_pos += dx;
 			mywin->player.y_pos += dy;

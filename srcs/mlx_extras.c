@@ -89,19 +89,19 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
-void			draw_block(t_vars *mywin, int x_start, int x_len, int y_len)
+void			draw_block(t_vars *mywin, int x_start, t_point dims, int col)
 {
 	int	x;
 	int	y;
 	int	y_start;
 
-	y_start = (mywin->params.res_y - y_len) / 2;
+	y_start = (mywin->params.res_y - dims.y) / 2;
 	y = -1;
-	while (++y < y_len)
+	while (++y < dims.y)
 	{
 		x = -1;
-		while (++x < x_len)
-			my_pixelput(&mywin->fps_img, x_start + x, y_start + y, 0x000000FF);
+		while (++x < dims.x)
+			my_pixelput(&mywin->fps_img, x_start + x, y_start + y, col);
 	}
 
 }

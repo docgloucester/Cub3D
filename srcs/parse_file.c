@@ -54,7 +54,7 @@ int			get_fccol(t_params *params, char *line)
 		free(trimmed_line);
 		if (lico && lico[0] && lico[1] && lico[2] && !lico[3])
 		{
-			toret = 0xFF << 24 | ft_atoi(lico[0]) << 16;
+			toret = 0x00 << 24 | ft_atoi(lico[0]) << 16;
 			toret = toret | ft_atoi(lico[1]) << 8;
 			toret = toret | ft_atoi(lico[2]) << 0;
 		}
