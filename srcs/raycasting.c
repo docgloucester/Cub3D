@@ -12,6 +12,20 @@
 
 #include <cub3d.h>
 
+void	put_blocks(t_vars *mywin, int i, int norm)
+{
+	int	block_height;
+	int	block_width;
+
+	if (norm <= 0)
+		norm = 1;
+	block_height = get_square_side(mywin) * mywin->params.res_y / norm;
+	block_width = mywin->params.res_x / 105;
+	if (block_height > mywin->params.res_y)
+		block_height = mywin->params.res_y;
+	draw_block(mywin, (104 - i) * block_width, block_width, block_height);
+}
+
 t_point	getHorRay(t_vars *mywin, t_point start, float angle)
 {
 	t_point end;
@@ -109,8 +123,11 @@ void	drawRays(t_vars *mywin)
 	t_point h_end;
 	t_point v_end;
 	float	diff;
+	int		i;
 
+	fill_window(mywin, &mywin->fps_img, 0x00000000);
 	diff = -0.334 * PI;
+	i = -1;
 	while (diff <= 0.333 * PI)
 	{
 		angle = mywin->player.angle + diff;
@@ -123,6 +140,7 @@ void	drawRays(t_vars *mywin)
 		h_end = getHorRay(mywin, start, angle);
 		v_end = getVerRay(mywin, start, angle);
 		draw_line(mywin, start, cmpNorm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
+		put_blocks(mywin, ++i, cosf(diff) * getNorm(start, cmpNorm(start, h_end, v_end) ? v_end: h_end));
 		diff += 0.02;
 	}
 }

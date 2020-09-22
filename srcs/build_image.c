@@ -34,21 +34,18 @@ void	put_map(t_vars *mywin, t_img *img)
 
 	col = 0;
 	squares_len = get_square_side(mywin);
-	ft_printf("%d\n", squares_len);
 	y = -1;
 	while (++y < mywin->params.mapY)
 	{
 		x = -1;
 		while (++x < mywin->params.mapX)
 		{
-			if (mywin->params.map[y][x] && ft_strchr("012ENSW", mywin->params.map[y][x]))
+			if (mywin->params.map[y][x] && ft_strchr("12", mywin->params.map[y][x]))
 			{
 				if (mywin->params.map[y][x] == '1')
 					col = 0x00020202;
 				else if (mywin->params.map[y][x] == '2')
 					col = 0x00505050;
-				else
-					col = 0x00808080;
 				draw_square(img, x * squares_len, y * squares_len, squares_len, col);
 			}
 			if (mywin->params.map[y][x] && (uwu = ft_strchr(owo = "ENWS", mywin->params.map[y][x])))
@@ -68,7 +65,7 @@ void	place_player(t_vars *mywin, int col)
 
 void	build_image(t_vars *mywin, t_img *img)
 {
-	fill_window(mywin, img, 0x00FFFFFF);
+	fill_window(mywin, img, 0x00808080);
 	put_map(mywin, img);
 	place_player(mywin, 0x00FF0000);
 	drawRays(mywin);

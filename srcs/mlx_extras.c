@@ -89,6 +89,23 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
+void			draw_block(t_vars *mywin, int x_start, int x_len, int y_len)
+{
+	int	x;
+	int	y;
+	int	y_start;
+
+	y_start = (mywin->params.res_y - y_len) / 2;
+	y = -1;
+	while (++y < y_len)
+	{
+		x = -1;
+		while (++x < x_len)
+			my_pixelput(&mywin->fps_img, x_start + x, y_start + y, 0x000000FF);
+	}
+
+}
+
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col)
 {
 	int	x;
@@ -119,6 +136,11 @@ void			mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
 			my_pixelput(temp_img, x, y, col);
 		}
 	}
+}
+
+int			getNorm(t_point start, t_point end)
+{
+	return (sqrt((start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)));
 }
 
 int			cmpNorm(t_point start, t_point end0, t_point end1)

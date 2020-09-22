@@ -16,6 +16,7 @@ int		refresh(t_vars *mywin)
 {
 	t_img	temp_img;
 
+	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->fps_img.img, 0, 0);
 	temp_img.img = mlx_new_image(mywin->mlx, mywin->params.res_x / 4 , mywin->params.res_y / 4);
 	temp_img.addr = mlx_get_data_addr(temp_img.img, &temp_img.bits_per_pixel, &temp_img.line_length, &temp_img.endian);
 	mlx_merge_img(mywin, &temp_img, &mywin->img, &mywin->player_img);
@@ -107,6 +108,8 @@ int		main(int argc, char **argv)
 		mywin.img.addr = mlx_get_data_addr(mywin.img.img, &mywin.img.bits_per_pixel, &mywin.img.line_length, &mywin.img.endian);
 		mywin.player_img.img = mlx_new_image(mywin.mlx, mywin.params.res_x, mywin.params.res_y);
 		mywin.player_img.addr = mlx_get_data_addr(mywin.player_img.img, &mywin.player_img.bits_per_pixel, &mywin.player_img.line_length, &mywin.player_img.endian);
+		mywin.fps_img.img = mlx_new_image(mywin.mlx, mywin.params.res_x, mywin.params.res_y);
+		mywin.fps_img.addr = mlx_get_data_addr(mywin.fps_img.img, &mywin.fps_img.bits_per_pixel, &mywin.fps_img.line_length, &mywin.fps_img.endian);
 		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
 		refresh(&mywin);
