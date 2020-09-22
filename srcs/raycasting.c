@@ -20,10 +20,10 @@ void	put_blocks(t_vars *mywin, int i, int norm)
 	if (norm <= 0)
 		norm = 1;
 	block_height = get_square_side(mywin) * mywin->params.res_y / norm;
-	block_width = mywin->params.res_x / 105;
+	block_width = mywin->params.res_x / 210;
 	if (block_height > mywin->params.res_y)
 		block_height = mywin->params.res_y;
-	draw_block(mywin, (104 - i) * block_width, block_width, block_height);
+	draw_block(mywin, (209 - i) * block_width, block_width, block_height);
 }
 
 t_point	getHorRay(t_vars *mywin, t_point start, float angle)
@@ -141,6 +141,7 @@ void	drawRays(t_vars *mywin)
 		v_end = getVerRay(mywin, start, angle);
 		draw_line(mywin, start, cmpNorm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
 		put_blocks(mywin, ++i, cosf(diff) * getNorm(start, cmpNorm(start, h_end, v_end) ? v_end: h_end));
-		diff += 0.02;
+ft_printf("%d\n", i);
+		diff += 0.01;
 	}
 }
