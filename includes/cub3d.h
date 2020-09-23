@@ -49,6 +49,8 @@ typedef struct	s_img
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		width;
+	int		height;
 }				t_img;
 
 typedef	struct	s_params
@@ -85,6 +87,11 @@ typedef	struct	s_vars {
 	t_img		img;
 	t_img		player_img;
 	t_img		fps_img;
+	t_img		n_text;
+	t_img		s_text;
+	t_img		e_text;
+	t_img		w_text;
+	t_img		sprite;
 }				t_vars;
 
 t_params		parse_file(char *path);
