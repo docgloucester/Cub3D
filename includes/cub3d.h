@@ -16,6 +16,7 @@
 # include <libft.h>
 # include <mlx.h>
 # include <math.h>
+#include <stdio.h>
 
 # ifdef __APPLE__
 #  define ESC_KEY 53
@@ -105,7 +106,7 @@ void			mlx_merge_img(t_vars *mywin, t_img *temp, t_img *back, t_img *front);
 void			change_angle(t_player *player, float angle);
 void			deal_map(t_params *params, char	**line, int fd);
 int				get_square_side(t_vars *mywin);
-int				getNorm(t_point start, t_point end);
+float			getNorm(t_point start, t_point end);
 int				cmpNorm(t_point start, t_point end0, t_point end1);
 void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);

@@ -1,4 +1,4 @@
-R       1920             1080
+R       1366            768
 NO               ./maps/brick.xpm 
 SO           ./maps/grass.xpm
 WE          ./maps/metal.xpm

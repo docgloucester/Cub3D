@@ -138,18 +138,18 @@ void			mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
 	}
 }
 
-int			getNorm(t_point start, t_point end)
+float			getNorm(t_point start, t_point end)
 {
-	return (sqrt((start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)));
+	return (sqrtf((start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)));
 }
 
 int			cmpNorm(t_point start, t_point end0, t_point end1)
 {
-	int norm1;
-	int norm0;
+	float norm1;
+	float norm0;
 
-	norm1 = sqrt((start.x - end1.x) * (start.x - end1.x) + (start.y - end1.y) * (start.y - end1.y));
-	norm0 = sqrt((start.x - end0.x) * (start.x - end0.x) + (start.y - end0.y) * (start.y - end0.y));
+	norm1 = sqrtf((start.x - end1.x) * (start.x - end1.x) + (start.y - end1.y) * (start.y - end1.y));
+	norm0 = sqrtf((start.x - end0.x) * (start.x - end0.x) + (start.y - end0.y) * (start.y - end0.y));
 	if (norm1 < norm0)
 		return (1);
 	return (0);

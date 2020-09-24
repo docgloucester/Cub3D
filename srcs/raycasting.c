@@ -12,15 +12,15 @@
 
 #include <cub3d.h>
 
-void	put_blocks(t_vars *mywin, int i, int norm, int cmpNorm, float angle)
+void	put_blocks(t_vars *mywin, int i, float norm, int cmpNorm, float angle)
 {
 	int		col;
 	t_point	block_dims;
 
 	if (norm <= 0)
 		norm = 1;
-	block_dims.y = get_square_side(mywin) * mywin->params.res_y / norm;
-	block_dims.x = mywin->params.res_x / 210 + 1;
+	block_dims.y = (int)((float)get_square_side(mywin) * mywin->params.res_y / norm);
+	block_dims.x = (int)(mywin->params.res_x / 840.0 + 1.0);
 	if (block_dims.y > mywin->params.res_y)
 		block_dims.y = mywin->params.res_y;
 	if (!cmpNorm)
@@ -35,7 +35,7 @@ void	put_blocks(t_vars *mywin, int i, int norm, int cmpNorm, float angle)
 			col = 0x000050D0;
 		else
 			col = 0x0000FF00;
-	draw_block(mywin, (int)((209.0 - (float)i) * mywin->params.res_x / 210.0), block_dims, col);
+	draw_block(mywin, (int)((839.0 - (float)i) * mywin->params.res_x / 840.0), block_dims, col);
 }
 
 t_point	getHorRay(t_vars *mywin, t_point start, float angle)
@@ -153,6 +153,6 @@ void	drawRays(t_vars *mywin)
 		v_end = getVerRay(mywin, start, angle);
 		draw_line(mywin, start, cmpNorm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
 		put_blocks(mywin, ++i, cosf(diff) * getNorm(start, cmpNorm(start, h_end, v_end) ? v_end: h_end), cmpNorm(start, h_end, v_end), angle);
-		diff += 0.005;
+		diff += 0.00125;
 	}
 }
