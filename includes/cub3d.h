@@ -54,6 +54,12 @@ typedef struct	s_img
 	int		height;
 }				t_img;
 
+typedef struct	s_texture
+{
+	t_img	img;
+	int		i;	
+}				t_texture;
+
 typedef	struct	s_params
 {
 	int		res_x;
@@ -88,11 +94,11 @@ typedef	struct	s_vars {
 	t_img		img;
 	t_img		player_img;
 	t_img		fps_img;
-	t_img		n_text;
-	t_img		s_text;
-	t_img		e_text;
-	t_img		w_text;
-	t_img		sprite;
+	t_texture	n_text;
+	t_texture	s_text;
+	t_texture	e_text;
+	t_texture	w_text;
+	t_texture	sprite;
 }				t_vars;
 
 t_params		parse_file(char *path);
@@ -100,7 +106,7 @@ void			free_split(char **split);
 void			my_pixelput(t_img *img, int x, int y, int col);
 void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col);
-void			draw_block(t_vars *mywin, int x_start, t_point dims, int col);
+void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			mlx_merge_img(t_vars *mywin, t_img *temp, t_img *back, t_img *front);
 void			change_angle(t_player *player, float angle);

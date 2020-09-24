@@ -89,11 +89,12 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
-void			draw_block(t_vars *mywin, int x_start, t_point dims, int col)
+void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text)
 {
 	int	x;
 	int	y;
 	int	y_start;
+	int	col;
 
 	y_start = (mywin->params.res_y - dims.y) / 2;
 	y = -1;
@@ -101,9 +102,17 @@ void			draw_block(t_vars *mywin, int x_start, t_point dims, int col)
 	{
 		x = -1;
 		while (++x < dims.x)
-			my_pixelput(&mywin->fps_img, x_start + x, y_start + y, col);
+		{
+			if (y_start + y >= 0 && y_start + y < mywin->params.res_y)
+			{
+				col = get_pixel(&text->img, text->img.width - 1 - text->i, (int)((float)y / dims.y * (float)text->img.height));
+				my_pixelput(&mywin->fps_img, x_start + x, y_start + y, col);
+			}
+		}
 	}
-
+	text->i++;
+	if (text->i >= text->img.width)
+		text->i = 0;
 }
 
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col)
