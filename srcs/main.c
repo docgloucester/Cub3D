@@ -64,7 +64,7 @@ int		do_stuff(t_vars *mywin)
 			mywin->player.y_pos += dy;
 		}
 	}
-	else if (mywin->move.rot)
+	if (mywin->move.rot)
 	{
 		fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
 		change_angle(&mywin->player, mywin->player.angle - 0.15 * mywin->move.rot);
@@ -94,15 +94,15 @@ int		key_press(int keycode, t_vars *mywin)
 {
 	if (keycode == UP_KEY)
 		mywin->move.y = 1;
-	else if (keycode == DOWN_KEY)
+	if (keycode == DOWN_KEY)
 		mywin->move.y = - 1;
 	if (keycode == LEFT_KEY)
 		mywin->move.x = 1;
-	else if (keycode == RIGHT_KEY)
+	if (keycode == RIGHT_KEY)
 		mywin->move.x = - 1;
 	if (keycode == DPAD_LEFT)
 		mywin->move.rot = - 1;
-	else if (keycode == DPAD_RIGHT)
+	if (keycode == DPAD_RIGHT)
 		mywin->move.rot = 1;
 	return (0);
 }
@@ -111,11 +111,11 @@ int		key_release(int keycode, t_vars *mywin)
 {
 	if (keycode == UP_KEY || keycode == DOWN_KEY)
 		mywin->move.y = 0;
-	else if (keycode == LEFT_KEY || keycode == RIGHT_KEY)
+	if (keycode == LEFT_KEY || keycode == RIGHT_KEY)
 		mywin->move.x = 0;
-	else if (keycode == DPAD_LEFT || keycode == DPAD_RIGHT)
+	if (keycode == DPAD_LEFT || keycode == DPAD_RIGHT)
 		mywin->move.rot = 0;
-	else if (keycode == ESC_KEY)
+	if (keycode == ESC_KEY)
 		return (exit_hook(mywin));
 	return (0);
 }
@@ -128,6 +128,9 @@ int		main(int argc, char **argv)
 	{
 		mywin.mlx = mlx_init();
 		mywin.params = parse_file(argv[1]);
+		mywin.move.x = 0;
+		mywin.move.y = 0;
+		mywin.move.rot = 0;
 		if (mywin.params.err)
 		{
 			ft_printf("Error\n%s", mywin.params.err);
@@ -154,8 +157,8 @@ int		main(int argc, char **argv)
 		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
 		refresh(&mywin);
-		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 0, &key_press, &mywin);
-		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 0, &key_release, &mywin);
+		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 1L, &key_press, &mywin);
+		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 1L<<1, &key_release, &mywin);
 		mlx_hook(mywin.win, X_EVENT_EXIT, 0, &exit_hook, &mywin);
 		mlx_hook(mywin.win, 9, 1L<<21, infocus_function, &mywin);
 		mlx_loop_hook(mywin.mlx, do_stuff, &mywin);
