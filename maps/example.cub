@@ -1,18 +1,18 @@
 R       1280           720
 NO               ./maps/brick.xpm 
 SO           ./maps/grass.xpm
-WE          ./maps/metal.xpm
+WE          ./maps/wood.xpm
 
-EA    ./maps/wood.xpm
+EA    ./maps/metal.xpm
 
 S     ./maps/stone.xpm
 
 
 
 
-F 220,100,0
+F 238,130,238
 
-C 80,80,80
+C 0,191,255
 
 
         1111111111111111111111111

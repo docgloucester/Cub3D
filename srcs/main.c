@@ -47,32 +47,27 @@ void	draw_player_dir(t_vars *mywin, int col)
 	draw_line(mywin, start, end, col);
 }
 
-int		key_function(int key, t_vars *mywin)
+int		do_stuff(t_vars *mywin)
 {
 	int		squareside;
 	float	dx;
 	float	dy;
 
 	squareside = get_square_side(mywin);
-	if (key == LEFT_KEY || key == RIGHT_KEY || key == UP_KEY || key == DOWN_KEY)
+	if (mywin->move.x || mywin->move.y)
 	{
-		dx = get_square_side(mywin) / 2 * (mywin->player.dx * ((key == UP_KEY) - (key == DOWN_KEY)) + mywin->player.dy * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
-		dy = get_square_side(mywin) / 2 * (mywin->player.dy * ((key == UP_KEY) - (key == DOWN_KEY)) - mywin->player.dx * ((key == LEFT_KEY) - (key == RIGHT_KEY)));
+		dx = get_square_side(mywin) / 3 * (mywin->player.dx * mywin->move.y + mywin->player.dy * mywin->move.x);
+		dy = get_square_side(mywin) / 3 * (mywin->player.dy * mywin->move.y - mywin->player.dx * mywin->move.x);
 		if (!ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 2 * dy) / squareside)][(int)((mywin->player.x_pos + 2 * dx) / squareside)]))
 		{
 			mywin->player.x_pos += dx;
 			mywin->player.y_pos += dy;
 		}
 	}
-	else if (key == DPAD_LEFT || key == DPAD_RIGHT)
+	else if (mywin->move.rot)
 	{
 		fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
-		change_angle(&mywin->player, mywin->player.angle - 0.1 * ((key == DPAD_RIGHT) - (key == DPAD_LEFT)));
-	}
-	else if (key == ESC_KEY)
-	{
-		mlx_destroy_window(mywin->mlx, mywin->win);
-		exit(EXIT_SUCCESS);
+		change_angle(&mywin->player, mywin->player.angle - 0.15 * mywin->move.rot);
 	}
 	fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
 	place_player(mywin, 0x00FF0000);
@@ -88,6 +83,43 @@ int		infocus_function(t_vars *mywin)
 	return (0);
 }
 
+int		exit_hook(t_vars *mywin)
+{
+	mlx_destroy_window(mywin->mlx, mywin->win);
+	exit(EXIT_SUCCESS);
+	return (0);
+}
+
+int		key_press(int keycode, t_vars *mywin)
+{
+	if (keycode == UP_KEY)
+		mywin->move.y = 1;
+	else if (keycode == DOWN_KEY)
+		mywin->move.y = - 1;
+	if (keycode == LEFT_KEY)
+		mywin->move.x = 1;
+	else if (keycode == RIGHT_KEY)
+		mywin->move.x = - 1;
+	if (keycode == DPAD_LEFT)
+		mywin->move.rot = - 1;
+	else if (keycode == DPAD_RIGHT)
+		mywin->move.rot = 1;
+	return (0);
+}
+
+int		key_release(int keycode, t_vars *mywin)
+{
+	if (keycode == UP_KEY || keycode == DOWN_KEY)
+		mywin->move.y = 0;
+	else if (keycode == LEFT_KEY || keycode == RIGHT_KEY)
+		mywin->move.x = 0;
+	else if (keycode == DPAD_LEFT || keycode == DPAD_RIGHT)
+		mywin->move.rot = 0;
+	else if (keycode == ESC_KEY)
+		return (exit_hook(mywin));
+	return (0);
+}
+
 int		main(int argc, char **argv)
 {
 	t_vars		mywin;
@@ -95,7 +127,6 @@ int		main(int argc, char **argv)
 	if (argc == 2)
 	{
 		mywin.mlx = mlx_init();
-		mlx_do_key_autorepeaton(mywin.mlx);
 		mywin.params = parse_file(argv[1]);
 		if (mywin.params.err)
 		{
@@ -123,9 +154,11 @@ int		main(int argc, char **argv)
 		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
 		refresh(&mywin);
-		mlx_key_hook(mywin.win, key_function, &mywin);
+		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 0, &key_press, &mywin);
+		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 0, &key_release, &mywin);
+		mlx_hook(mywin.win, X_EVENT_EXIT, 0, &exit_hook, &mywin);
 		mlx_hook(mywin.win, 9, 1L<<21, infocus_function, &mywin);
-		//mlx_loop_hook(mywin.mlx, refresh, &mywin);
+		mlx_loop_hook(mywin.mlx, do_stuff, &mywin);
 		mlx_loop(mywin.mlx);
 	}
 	else

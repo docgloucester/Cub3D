@@ -103,7 +103,7 @@ void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text)
 		x = -1;
 		while (++x < dims.x)
 		{
-			if (y_start + y >= 0 && y_start + y < mywin->params.res_y)
+			if (y_start + y >= 0 && y_start + y < mywin->params.res_y && x_start + x >= 0 && x_start + x < mywin->params.res_x)
 			{
 				col = get_pixel(&text->img, text->img.width - 1 - text->i, (int)((float)y / dims.y * (float)text->img.height));
 				my_pixelput(&mywin->fps_img, x_start + x, y_start + y, col);
@@ -126,6 +126,20 @@ void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int
 		x = -1;
 		while (++x < side_length_px)
 			my_pixelput(img, x_start + x, y_start + y, col);
+	}
+}
+
+void		draw_rect(t_img *img, t_point start, int width, int height, int col)
+{
+	int	x;
+	int	y;
+
+	y = -1;
+	while (++y < height)
+	{
+		x = -1;
+		while (++x < width)
+			my_pixelput(img, start.x + x, start.y + y, col);
 	}
 }
 

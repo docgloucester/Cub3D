@@ -12,7 +12,13 @@
 
 #ifndef CUB3D_H
 # define CUB3D_H
-# define PI 3.141592654
+# define PI						3.141592654
+# define X_EVENT_KEY_PRESS		2
+# define X_EVENT_KEY_RELEASE	3
+# define X_EVENT_MOUSE_PRESS	4
+# define X_EVENT_MOUSE_RELEASE	5
+# define X_EVENT_MOUSE_MOVE		6
+# define X_EVENT_EXIT			17
 # include <libft.h>
 # include <mlx.h>
 # include <math.h>
@@ -86,11 +92,19 @@ typedef	struct	s_player
 	float	dy;
 }				t_player;
 
+typedef struct s_keys
+{
+	int	x;
+	int	y;
+	int	rot;
+}				t_keys;
+
 typedef	struct	s_vars {
 	void		*mlx;
 	void		*win;
 	t_params	params;
 	t_player	player;
+	t_keys		move;
 	t_img		img;
 	t_img		player_img;
 	t_img		fps_img;
@@ -106,6 +120,7 @@ void			free_split(char **split);
 void			my_pixelput(t_img *img, int x, int y, int col);
 void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col);
+void			draw_rect(t_img *img, t_point start, int width, int height, int col);
 void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			mlx_merge_img(t_vars *mywin, t_img *temp, t_img *back, t_img *front);

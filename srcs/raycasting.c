@@ -21,7 +21,7 @@ void	put_blocks(t_vars *mywin, int i, float norm, int cmpNorm, float angle)
 	if (norm <= 0)
 		norm = 1;
 	block_dims.y = (int)((float)get_square_side(mywin) * mywin->params.res_y / norm);
-	block_dims.x = (int)(mywin->params.res_x / 840.0 + 1.0);
+	block_dims.x = (int)(mywin->params.res_x / 837.0 + 1.0);
 	if (!cmpNorm)
 	{
 		if (angle <= PI)
@@ -34,7 +34,7 @@ void	put_blocks(t_vars *mywin, int i, float norm, int cmpNorm, float angle)
 			text = &mywin->w_text;
 		else
 			text = &mywin->e_text;
-	draw_block(mywin, (int)((839.0 - (float)i) * mywin->params.res_x / 840.0), block_dims, text);
+	draw_block(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), block_dims, text);
 }
 
 t_point	getHorRay(t_vars *mywin, t_point start, float angle)
@@ -133,11 +133,14 @@ void	drawRays(t_vars *mywin)
 	t_point start;
 	t_point h_end;
 	t_point v_end;
+	t_point half;
 	float	diff;
 	int		i;
 
 	fill_window(mywin, &mywin->fps_img, mywin->params.ceilg_col);
-
+	half.x = 0;
+	half.y = (int)(mywin->params.res_y / 2.0);
+	draw_rect(&mywin->fps_img, half, mywin->params.res_x, mywin->params.res_y / 2, mywin->params.floor_col);
 	mywin->n_text.i = 0;
 	mywin->s_text.i = 0;
 	mywin->w_text.i = 0;
