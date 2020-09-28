@@ -47,6 +47,7 @@ typedef struct	s_point
 {
 	float	x;
 	float	y;
+	int		is_sprite;
 }				t_point;
 
 typedef struct	s_img
@@ -122,6 +123,7 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col);
 void			draw_rect(t_img *img, t_point start, int width, int height, int col);
 void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text);
+void			draw_sprite(t_vars *mywin, int x_start, t_point dims, t_texture *text);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			mlx_merge_img(t_vars *mywin, t_img *temp, t_img *back, t_img *front);
 void			change_angle(t_player *player, float angle);

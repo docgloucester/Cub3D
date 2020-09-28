@@ -115,6 +115,33 @@ void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text)
 		text->i = 0;
 }
 
+void			draw_sprite(t_vars *mywin, int x_start, t_point dims, t_texture *text)
+{
+	int	x;
+	int	y;
+	int	y_start;
+	int	col;
+
+	y_start = (mywin->params.res_y - dims.y) / 2;
+	y = -1;
+	while (++y < dims.y)
+	{
+		x = -1;
+		while (++x < dims.x)
+		{
+			if (y_start + y >= 0 && y_start + y < mywin->params.res_y && x_start + x >= 0 && x_start + x < mywin->params.res_x)
+			{
+				col = get_pixel(&text->img, text->img.width - 1 - text->i, (int)((float)y / dims.y * (float)text->img.height));
+				if ((col & (0xFF << 24)) != (int)0xFF000000)
+					my_pixelput(&mywin->fps_img, x_start + x, y_start + y, col);
+			}
+		}
+	}
+	text->i++;
+	if (text->i >= text->img.width)
+		text->i = 0;
+}
+
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col)
 {
 	int	x;
@@ -168,12 +195,12 @@ float			getNorm(t_point start, t_point end)
 
 int			cmpNorm(t_point start, t_point end0, t_point end1)
 {
-	float norm1;
-	float norm0;
+	float	norm1;
+	float	norm0;
 
-	norm1 = sqrtf((start.x - end1.x) * (start.x - end1.x) + (start.y - end1.y) * (start.y - end1.y));
-	norm0 = sqrtf((start.x - end0.x) * (start.x - end0.x) + (start.y - end0.y) * (start.y - end0.y));
+	norm1 = getNorm(start, end1);
+	norm0 = getNorm(start, end0);
 	if (norm1 < norm0)
-		return (1);
-	return (0);
+		return (1 + end1.is_sprite);
+	return (- 1  - end0.is_sprite);
 }

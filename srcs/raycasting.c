@@ -14,7 +14,6 @@
 
 void	put_blocks(t_vars *mywin, int i, float norm, int cmpNorm, float angle)
 {
-	//int		col;
 	t_texture	*text;
 	t_point	block_dims;
 
@@ -22,18 +21,18 @@ void	put_blocks(t_vars *mywin, int i, float norm, int cmpNorm, float angle)
 		norm = 1;
 	block_dims.y = (int)((float)get_square_side(mywin) * mywin->params.res_y / norm);
 	block_dims.x = (int)(mywin->params.res_x / 837.0 + 1.0);
-	if (!cmpNorm)
-	{
+	if (cmpNorm == -1)
 		if (angle <= PI)
 			text = &mywin->n_text;
 		else
 			text = &mywin->s_text;
-	}
-	else
+	else if (cmpNorm == 1)
 		if (angle >= 0.5 * PI && angle <= 1.5 * PI)
 			text = &mywin->w_text;
 		else
 			text = &mywin->e_text;
+	else
+			text = &mywin->sprite;
 	draw_block(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), block_dims, text);
 }
 
@@ -45,6 +44,7 @@ t_point	getHorRay(t_vars *mywin, t_point start, float angle)
 	int		squareside = get_square_side(mywin);
 
 	reached_wall = 0;
+	end.is_sprite = 0;
 	if (angle == 0 || angle == PI)
 	{
 		end.y = start.y;
@@ -72,7 +72,11 @@ t_point	getHorRay(t_vars *mywin, t_point start, float angle)
 			|| (int)((end.y) / squareside) >= mywin->params.mapY)
 			break;
 		if (ft_strchr("12", mywin->params.map[(int)(end.y / squareside)][(int)(end.x / squareside)]))
+		{
 			reached_wall = 1;
+			if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '2')
+				end.is_sprite = 1;
+		}
 		else
 		{
 			end.x += delta_ray.x;
@@ -90,6 +94,7 @@ t_point	getVerRay(t_vars *mywin, t_point start, float angle)
 	int		squareside = get_square_side(mywin);
 
 	reached_wall = 0;
+	end.is_sprite = 0;
 	if (angle == 0.5 * PI || angle == 1.5 * PI)
 	{
 		end.y = start.y;
@@ -117,7 +122,11 @@ t_point	getVerRay(t_vars *mywin, t_point start, float angle)
 			|| (int)((end.y) / squareside) >= mywin->params.mapY)
 			break;
 		if (ft_strchr("12", mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)]))
+		{
 			reached_wall = 1;
+			if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '2')
+				end.is_sprite = 1;
+		}
 		else
 		{
 			end.x += delta_ray.x;
@@ -145,6 +154,7 @@ void	drawRays(t_vars *mywin)
 	mywin->s_text.i = 0;
 	mywin->w_text.i = 0;
 	mywin->e_text.i = 0;
+	mywin->sprite.i = 0;
 	diff = -0.167 * PI;
 	i = -1;
 	while (diff <= 0.166 * PI)
@@ -158,8 +168,8 @@ void	drawRays(t_vars *mywin)
 		start.y = mywin->player.y_pos;
 		h_end = getHorRay(mywin, start, angle);
 		v_end = getVerRay(mywin, start, angle);
-		draw_line(mywin, start, cmpNorm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
-		put_blocks(mywin, ++i, cosf(diff) * getNorm(start, cmpNorm(start, h_end, v_end) ? v_end: h_end), cmpNorm(start, h_end, v_end), angle);
+		draw_line(mywin, start, cmpNorm(start, h_end, v_end) > 0? v_end: h_end, 0x0000FF00);
+		put_blocks(mywin, ++i, cosf(diff) * getNorm(start, cmpNorm(start, h_end, v_end) > 0 ? v_end: h_end), cmpNorm(start, h_end, v_end), angle);
 		diff += 0.00125;
 	}
 }
