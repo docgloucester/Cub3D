@@ -202,5 +202,5 @@ int			cmpNorm(t_point start, t_point end0, t_point end1)
 	norm0 = getNorm(start, end0);
 	if (norm1 < norm0)
 		return (1);
-	return (- 1);
+	return (0);
 }
