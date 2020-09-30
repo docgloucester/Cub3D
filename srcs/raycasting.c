@@ -34,6 +34,17 @@ void	put_blocks(t_vars *mywin, int i, float norm, int cmpNorm, float angle)
 	draw_block(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), block_dims, text);
 }
 
+void	put_sprite(t_vars *mywin, int i, float norm)
+{
+	t_point	sprite_chunk_dims;
+
+	if (norm <= 0)
+		norm = 1;
+	sprite_chunk_dims.y = (int)((float)get_square_side(mywin) * mywin->params.res_y / norm);
+	sprite_chunk_dims.x = (int)(mywin->params.res_x / 837.0 + 1.0);
+	draw_block(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), sprite_chunk_dims, &mywin->sprite);
+}
+
 t_point	expand_dong(t_vars *mywin, t_point end, t_point delta_ray, t_point *sprite)
 {
 	int reached_wall;
@@ -157,11 +168,11 @@ void	drawRays(t_vars *mywin)
 		v_end = expand_dong(mywin, getVerRay(mywin, start, angle, &half), half, &sprite_v);
 		draw_line(mywin, start, cmpNorm(start, h_end, v_end)? v_end: h_end, 0x0000FF00);
 		put_blocks(mywin, ++i, cosf(diff) * getNorm(start, cmpNorm(start, h_end, v_end)? v_end: h_end), cmpNorm(start, h_end, v_end), angle);
-		if ((sprite_v.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_v))
-			|| (sprite_h.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_h)))
-		{
-			ft_putstr("sprite detected\n");
-		}
+		// if ((sprite_v.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_v))
+		// 	|| (sprite_h.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_h)))
+		// {
+		// 	put_sprite(mywin, i - 1, cosf(diff) * getNorm(start, cmpNorm(start, sprite_h, sprite_v)? sprite_v: sprite_h));
+		// }
 		diff += 0.00125;
 	}
 }
