@@ -201,6 +201,6 @@ int			cmpNorm(t_point start, t_point end0, t_point end1)
 	norm1 = getNorm(start, end1);
 	norm0 = getNorm(start, end0);
 	if (norm1 < norm0)
-		return (1 + end1.is_sprite);
-	return (- 1  - end0.is_sprite);
+		return (1);
+	return (- 1);
 }

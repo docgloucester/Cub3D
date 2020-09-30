@@ -47,7 +47,6 @@ typedef struct	s_point
 {
 	float	x;
 	float	y;
-	int		is_sprite;
 }				t_point;
 
 typedef struct	s_img

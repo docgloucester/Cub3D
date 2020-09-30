@@ -26,57 +26,29 @@ void	put_blocks(t_vars *mywin, int i, float norm, int cmpNorm, float angle)
 			text = &mywin->n_text;
 		else
 			text = &mywin->s_text;
-	else if (cmpNorm == 1)
+	else
 		if (angle >= 0.5 * PI && angle <= 1.5 * PI)
 			text = &mywin->w_text;
 		else
 			text = &mywin->e_text;
-	else
-			text = &mywin->sprite;
 	draw_block(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), block_dims, text);
 }
 
-t_point	getHorRay(t_vars *mywin, t_point start, float angle)
+t_point	expand_dong(t_vars *mywin, t_point end, t_point delta_ray)
 {
-	t_point end;
-	t_point	delta_ray;
-	int		reached_wall;
-	int		squareside = get_square_side(mywin);
+	int reached_wall;
+	int	squareside;
 
 	reached_wall = 0;
-	end.is_sprite = 0;
-	if (angle == 0 || angle == PI)
-	{
-		end.y = start.y;
-		end.x = start.x;
-		reached_wall = 1;
-	}
-	else if (angle < PI)
-	{
-		end.y = ((int)start.y / squareside) * squareside - 0.0001;
-		end.x = start.x - (end.y - start.y) / tan(angle);
-		delta_ray.y = - squareside;
-		delta_ray.x = - delta_ray.y / tan(angle);
-	}
-	else if (angle > PI)
-	{
-		end.y = ((int)start.y / squareside) * squareside + squareside;
-		end.x = start.x - (end.y - start.y) / tan(angle);
-		delta_ray.y = squareside;
-		delta_ray.x = - delta_ray.y / tan(angle);
-	}
+	squareside = get_square_side(mywin);
 	while (!reached_wall)
 	{
 		if ((int)((end.y) / squareside) < 0 || (int)((end.x) / squareside) < 0
 			|| (int)((end.x) / squareside) >= mywin->params.mapX
 			|| (int)((end.y) / squareside) >= mywin->params.mapY)
 			break;
-		if (ft_strchr("12", mywin->params.map[(int)(end.y / squareside)][(int)(end.x / squareside)]))
-		{
+		if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '1')
 			reached_wall = 1;
-			if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '2')
-				end.is_sprite = 1;
-		}
 		else
 		{
 			end.x += delta_ray.x;
@@ -86,52 +58,56 @@ t_point	getHorRay(t_vars *mywin, t_point start, float angle)
 	return (end);
 }
 
-t_point	getVerRay(t_vars *mywin, t_point start, float angle)
+t_point	getHorRay(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
 {
 	t_point end;
-	t_point	delta_ray;
-	int		reached_wall;
 	int		squareside = get_square_side(mywin);
 
-	reached_wall = 0;
-	end.is_sprite = 0;
+	if (angle == 0 || angle == PI)
+	{
+		end.y = start.y;
+		end.x = start.x;
+	}
+	else if (angle < PI)
+	{
+		end.y = ((int)start.y / squareside) * squareside - 0.0001;
+		end.x = start.x - (end.y - start.y) / tan(angle);
+		delta_ray->y = - squareside;
+		delta_ray->x = - delta_ray->y / tan(angle);
+	}
+	else
+	{
+		end.y = ((int)start.y / squareside) * squareside + squareside;
+		end.x = start.x - (end.y - start.y) / tan(angle);
+		delta_ray->y = squareside;
+		delta_ray->x = - delta_ray->y / tan(angle);
+	}
+	return (end);
+}
+
+t_point	getVerRay(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
+{
+	t_point end;
+	int		squareside = get_square_side(mywin);
+
 	if (angle == 0.5 * PI || angle == 1.5 * PI)
 	{
 		end.y = start.y;
 		end.x = start.x;
-		reached_wall = 1;
 	}
 	else if (angle > 0.5 * PI && angle < 1.5 * PI)
 	{
 		end.x = ((int)start.x / squareside) * squareside - 0.0001;
 		end.y = start.y - (end.x - start.x) * tan(angle);
-		delta_ray.x = - squareside;
-		delta_ray.y = - delta_ray.x * tan(angle);
+		delta_ray->x = - squareside;
+		delta_ray->y = - delta_ray->x * tan(angle);
 	}
 	else
 	{
 		end.x = ((int)start.x / squareside) * squareside + squareside;
 		end.y = start.y - (end.x - start.x) * tan(angle);
-		delta_ray.x = squareside;
-		delta_ray.y = - delta_ray.x * tan(angle);
-	}
-	while (!reached_wall)
-	{
-		if ((int)((end.y) / squareside) < 0 || (int)((end.x) / squareside) < 0
-			|| (int)((end.x) / squareside) >= mywin->params.mapX
-			|| (int)((end.y) / squareside) >= mywin->params.mapY)
-			break;
-		if (ft_strchr("12", mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)]))
-		{
-			reached_wall = 1;
-			if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '2')
-				end.is_sprite = 1;
-		}
-		else
-		{
-			end.x += delta_ray.x;
-			end.y += delta_ray.y;
-		}
+		delta_ray->x = squareside;
+		delta_ray->y = - delta_ray->x * tan(angle);
 	}
 	return (end);
 }
@@ -166,8 +142,8 @@ void	drawRays(t_vars *mywin)
 			angle -= 2 * PI;
 		start.x = mywin->player.x_pos;
 		start.y = mywin->player.y_pos;
-		h_end = getHorRay(mywin, start, angle);
-		v_end = getVerRay(mywin, start, angle);
+		h_end = expand_dong(mywin, getHorRay(mywin, start, angle, &half), half);
+		v_end = expand_dong(mywin, getVerRay(mywin, start, angle, &half), half);
 		draw_line(mywin, start, cmpNorm(start, h_end, v_end) > 0? v_end: h_end, 0x0000FF00);
 		put_blocks(mywin, ++i, cosf(diff) * getNorm(start, cmpNorm(start, h_end, v_end) > 0 ? v_end: h_end), cmpNorm(start, h_end, v_end), angle);
 		diff += 0.00125;
