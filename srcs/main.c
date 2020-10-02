@@ -157,6 +157,7 @@ int		main(int argc, char **argv)
 		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
 		refresh(&mywin);
+		printf("0x%.8X\n", get_pixel(&mywin.sprite.img, 1, 1));
 		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 1L, &key_press, &mywin);
 		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 1L<<1, &key_release, &mywin);
 		mlx_hook(mywin.win, X_EVENT_EXIT, 0, &exit_hook, &mywin);

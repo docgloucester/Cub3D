@@ -118,6 +118,7 @@ typedef	struct	s_vars {
 t_params		parse_file(char *path);
 void			free_split(char **split);
 void			my_pixelput(t_img *img, int x, int y, int col);
+unsigned int	get_pixel(t_img *img, int x, int y);
 void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col);
 void			draw_rect(t_img *img, t_point start, int width, int height, int col);

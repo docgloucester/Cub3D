@@ -45,7 +45,7 @@ void	put_sprite(t_vars *mywin, int i, float norm)
 	draw_block(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), sprite_chunk_dims, &mywin->sprite);
 }
 
-t_point	expand_dong(t_vars *mywin, t_point end, t_point delta_ray, t_point *sprite)
+t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, t_point *sprite)
 {
 	int reached_wall;
 	int	squareside;
@@ -149,10 +149,6 @@ void	drawRays(t_vars *mywin)
 	mywin->w_text.i = 0;
 	mywin->e_text.i = 0;
 	mywin->sprite.i = 0;
-	sprite_h.x = -1;
-	sprite_h.y = -1;
-	sprite_v.x = -1;
-	sprite_v.y = -1;
 	diff = -0.167 * PI;
 	i = -1;
 	while (diff <= 0.166 * PI)
@@ -164,15 +160,19 @@ void	drawRays(t_vars *mywin)
 			angle -= 2 * PI;
 		start.x = mywin->player.x_pos;
 		start.y = mywin->player.y_pos;
-		h_end = expand_dong(mywin, getHorRay(mywin, start, angle, &half), half, &sprite_h);
-		v_end = expand_dong(mywin, getVerRay(mywin, start, angle, &half), half, &sprite_v);
+		sprite_h.x = -1;
+		sprite_h.y = -1;
+		sprite_v.x = -1;
+		sprite_v.y = -1;
+		h_end = expand_ray(mywin, getHorRay(mywin, start, angle, &half), half, &sprite_h);
+		v_end = expand_ray(mywin, getVerRay(mywin, start, angle, &half), half, &sprite_v);
 		draw_line(mywin, start, cmpNorm(start, h_end, v_end)? v_end: h_end, 0x0000FF00);
 		put_blocks(mywin, ++i, cosf(diff) * getNorm(start, cmpNorm(start, h_end, v_end)? v_end: h_end), cmpNorm(start, h_end, v_end), angle);
-		// if ((sprite_v.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_v))
-		// 	|| (sprite_h.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_h)))
-		// {
-		// 	put_sprite(mywin, i - 1, cosf(diff) * getNorm(start, cmpNorm(start, sprite_h, sprite_v)? sprite_v: sprite_h));
-		// }
+		if ((sprite_v.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_v))
+			|| (sprite_h.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_h)))
+		{
+			put_sprite(mywin, i - 1, cosf(diff) * getNorm(start, cmpNorm(start, sprite_h, sprite_v)? sprite_v: sprite_h));
+		}
 		diff += 0.00125;
 	}
 }
