@@ -52,13 +52,21 @@ int		do_stuff(t_vars *mywin)
 	int		squareside;
 	float	dx;
 	float	dy;
+	int		i;
 
 	squareside = get_square_side(mywin);
+	i = 0;
 	if (mywin->move.x || mywin->move.y)
 	{
 		dx = get_square_side(mywin) / 4 * (mywin->player.dx * mywin->move.y + mywin->player.dy * mywin->move.x);
 		dy = get_square_side(mywin) / 4 * (mywin->player.dy * mywin->move.y - mywin->player.dx * mywin->move.x);
-		if (!ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 2 * dy) / squareside)][(int)((mywin->player.x_pos + 2 * dx) / squareside)]))
+		while (!ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 1.0 + 0.02 * (float)i * dy) / (float)squareside)][(int)((mywin->player.x_pos + 1.0 + 0.02 * (float)i * dx) / (float)squareside)]) && i < 100)
+		{
+			ft_printf("X: %d, Y: %d\n", (int)((mywin->player.x_pos + 0.02 * (float)i * dx) / (float)squareside), (int)((mywin->player.y_pos + 0.02 * (float)i * dy) / (float)squareside));
+			i += 1;
+		}
+		printf("%d\n", i);
+		if (i == 100)
 		{
 			mywin->player.x_pos += dx;
 			mywin->player.y_pos += dy;
