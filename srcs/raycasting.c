@@ -12,22 +12,28 @@
 
 #include <cub3d.h>
 
-void	put_blocks(t_vars *mywin, int i, float norm, int cmpNorm, float angle)
+void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_end, float diff)
 {
 	t_texture	*text;
 	t_point	block_dims;
+	t_point	end;
+	int		compNorm;
+	float 	norm;
 
+	end = cmpNorm(start, h_end, v_end)? v_end: h_end;
+	compNorm = cmpNorm(start, h_end, v_end);
+	norm = cosf(diff) * getNorm(start, end);
 	if (norm <= 0)
 		norm = 1;
 	block_dims.y = (int)((float)get_square_side(mywin) * mywin->params.res_y / norm);
 	block_dims.x = (int)(mywin->params.res_x / 837.0 + 1.0);
-	if (cmpNorm == 0)
-		if (angle <= PI)
+	if (compNorm == 0)
+		if (mywin->player.angle + diff <= PI)
 			text = &mywin->n_text;
 		else
 			text = &mywin->s_text;
 	else
-		if (angle >= 0.5 * PI && angle <= 1.5 * PI)
+		if (mywin->player.angle + diff >= 0.5 * PI && mywin->player.angle + diff <= 1.5 * PI)
 			text = &mywin->w_text;
 		else
 			text = &mywin->e_text;
@@ -167,7 +173,7 @@ void	drawRays(t_vars *mywin)
 		h_end = expand_ray(mywin, getHorRay(mywin, start, angle, &half), half, &sprite_h);
 		v_end = expand_ray(mywin, getVerRay(mywin, start, angle, &half), half, &sprite_v);
 		draw_line(mywin, start, cmpNorm(start, h_end, v_end)? v_end: h_end, 0x0000FF00);
-		put_blocks(mywin, ++i, cosf(diff) * getNorm(start, cmpNorm(start, h_end, v_end)? v_end: h_end), cmpNorm(start, h_end, v_end), angle);
+		put_blocks(mywin, ++i, start, v_end, h_end, diff);
 		if ((sprite_v.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_v))
 			|| (sprite_h.x != -1 && cmpNorm(start,cmpNorm(start, h_end, v_end)? v_end: h_end, sprite_h)))
 		{

@@ -65,11 +65,7 @@ int		do_stuff(t_vars *mywin)
 			|| ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.2 * (float)i * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.1 + 0.2 * (float)i * dx) / (float)squareside)])
 			|| ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.2 * (float)i * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.2 * (float)i * dx) / (float)squareside)]))
 			&& i < 10)
-		{
-			ft_printf("X: %d, Y: %d\n", (int)((mywin->player.x_pos + 0.1 + 0.2 * (float)i * dx) / (float)squareside), (int)((mywin->player.y_pos + 0.1 + 0.02 * (float)i * dy) / (float)squareside));
 			i += 1;
-		}
-		printf("%d\n", i);
 		if (i == 10)
 		{
 			mywin->player.x_pos += dx;
