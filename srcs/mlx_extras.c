@@ -89,13 +89,15 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
-void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text)
+void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text, float tile_width)
 {
-	int	x;
-	int	y;
-	int	y_start;
-	int	col;
+	int		x;
+	int		y;
+	int		y_start;
+	int		col;
+	float	text_width;
 
+	text_width = tile_width * (float)text->img.width / (float)get_square_side(mywin);
 	y_start = (mywin->params.res_y - dims.y) / 2;
 	y = -1;
 	while (++y < dims.y)
@@ -105,18 +107,18 @@ void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text)
 		{
 			if (y_start + y >= 0 && y_start + y < mywin->params.res_y && x_start + x >= 0 && x_start + x < mywin->params.res_x)
 			{
-				col = get_pixel(&text->img, text->img.width - 1 - text->i, (int)((float)y / dims.y * (float)text->img.height));
+				col = get_pixel(&text->img, text->img.width - 1 - (int)text->i - (int)text_width, (int)((float)y / dims.y * (float)text->img.height));
 				if (col << 8 != 0)
 					my_pixelput(&mywin->fps_img, x_start + x, y_start + y, col);
 			}
 		}
 	}
-	text->i++;
+	text->i += text_width;
 	if (text->i >= text->img.width)
-		text->i = 0;
+		text->i = 0.0;
 }
 
-void			draw_block2(t_vars *mywin, int x_start, t_point dims, t_texture *text)
+void			draw_block_old(t_vars *mywin, int x_start, t_point dims, t_texture *text, float tile_width)
 {
 	int	x;
 	int	y;
@@ -124,6 +126,7 @@ void			draw_block2(t_vars *mywin, int x_start, t_point dims, t_texture *text)
 	int	col;
 
 	y_start = (mywin->params.res_y - dims.y) / 2;
+	(void)tile_width;
 	y = -1;
 	while (++y < dims.y)
 	{
