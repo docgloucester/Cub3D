@@ -201,5 +201,4 @@ void	drawRays(t_vars *mywin)
 		}
 		diff += 0.00125;
 	}
-	mywin->sprite.i = 0;
 }
