@@ -89,7 +89,7 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
-void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text, float tile_width)
+void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text, float tile_width, int offset)
 {
 	int		x;
 	int		y;
@@ -107,15 +107,12 @@ void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text, flo
 		{
 			if (y_start + y >= 0 && y_start + y < mywin->params.res_y && x_start + x >= 0 && x_start + x < mywin->params.res_x)
 			{
-				col = get_pixel(&text->img, text->img.width - 1 - (int)text->i - (int)text_width, (int)((float)y / dims.y * (float)text->img.height));
+				col = get_pixel(&text->img, text->img.width - 1 - offset * text->img.width / get_square_side(mywin) - (int)text_width, (int)((float)y / dims.y * (float)text->img.height));
 				if (col << 8 != 0)
 					my_pixelput(&mywin->fps_img, x_start + x, y_start + y, col);
 			}
 		}
 	}
-	text->i += text_width;
-	if (text->i >= text->img.width)
-		text->i = 0.0;
 }
 
 void			draw_block_old(t_vars *mywin, int x_start, t_point dims, t_texture *text, float tile_width)
