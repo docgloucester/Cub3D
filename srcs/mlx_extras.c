@@ -115,6 +115,32 @@ void			draw_block(t_vars *mywin, int x_start, t_point dims, t_texture *text, flo
 	}
 }
 
+void			draw_sprite(t_vars *mywin, int x_start, t_point dims, float tile_width, int offset)
+{
+	int		x;
+	int		y;
+	int		y_start;
+	int		col;
+	float	text_width;
+
+	text_width = tile_width * (float)mywin->sprite.img.width / ((float)get_square_side(mywin) * sqrtf(2.0));
+	y_start = (mywin->params.res_y - dims.y) / 2;
+	y = -1;
+	while (++y < dims.y)
+	{
+		x = -1;
+		while (++x < dims.x)
+		{
+			if (y_start + y >= 0 && y_start + y < mywin->params.res_y && x_start + x >= 0 && x_start + x < mywin->params.res_x)
+			{
+				col = get_pixel(&mywin->sprite.img, mywin->sprite.img.width - 1 - offset * mywin->sprite.img.width / (int)((float)get_square_side(mywin) * sqrtf(2.0)) - (int)text_width, (int)((float)y / dims.y * (float)mywin->sprite.img.height));
+				if (col << 8 != 0)
+					my_pixelput(&mywin->fps_img, x_start + x, y_start + y, col);
+			}
+		}
+	}
+}
+
 void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int col)
 {
 	int	x;

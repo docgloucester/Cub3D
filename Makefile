@@ -13,7 +13,7 @@
 NAME	= Cub3D
 
 CC		= clang
-CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address -O3
 LNFLM	= -framework OpenGL -framework AppKit -fsanitize=address
 LNFLL	= -lXext -lX11 -lm -fsanitize=address
 

@@ -64,10 +64,10 @@ void	put_sprite(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 		norm = currnorm;
 	if (norm <= 0.0)
 		norm = 1.0;
-	offset = (int)end.y % get_square_side(mywin);
+	offset = (int)sqrtf(powf((int)end.x  % get_square_side(mywin), 2) + powf((int)end.y  % get_square_side(mywin), 2));
 	sprite_chunk_dims.y = (int)((float)get_square_side(mywin) * mywin->params.res_y / (cosf(diff) * norm));
 	sprite_chunk_dims.x = (int)(mywin->params.res_x / 837.0 + 1.0);
-	draw_block(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), sprite_chunk_dims, &mywin->sprite, sinf(0.00125) * norm, offset);
+	draw_sprite(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), sprite_chunk_dims, sinf(0.00125) * norm, offset);
 	prev_i = i;
 }
 
