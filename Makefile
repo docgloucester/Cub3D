@@ -13,11 +13,13 @@
 NAME	= Cub3D
 
 CC		= clang
-CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address -O3
+CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address -O1
 LNFLM	= -framework OpenGL -framework AppKit -fsanitize=address
 LNFLL	= -lXext -lX11 -lm -fsanitize=address
 
-SRCSF	= main.c parse_file.c mlx_extras.c deal_map.c build_image.c raycasting.c
+SRCSF	= main.c parse_file.c mlx_extras.c deal_map.c build_image.c \
+		raycasting.c create_bmp.c
+
 SRCSD	= srcs/
 INCL	= includes/
 LIBFT	= Libft/

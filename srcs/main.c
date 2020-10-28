@@ -132,7 +132,7 @@ int		main(int argc, char **argv)
 {
 	t_vars		mywin;
 
-	if (argc == 2)
+	if (argc == 2 || argc == 3)
 	{
 		mywin.mlx = mlx_init();
 		mywin.params = parse_file(argv[1]);
@@ -165,6 +165,11 @@ int		main(int argc, char **argv)
 		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
 		refresh(&mywin);
+		if (argc[2] == "--save")
+		{
+			create_bmp(&mywin);
+			return (exit_hook(&mywin));
+		}
 		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 1L, &key_press, &mywin);
 		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 1L<<1, &key_release, &mywin);
 		mlx_hook(mywin.win, X_EVENT_EXIT, 0, &exit_hook, &mywin);

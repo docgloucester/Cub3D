@@ -189,7 +189,7 @@ void			mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
 
 float			getNorm(t_point start, t_point end)
 {
-	return (sqrtf((start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)));
+	return (sqrtf(powf((start.x - end.x), 2) + powf((start.y - end.y), 2)));
 }
 
 int			cmpNorm(t_point start, t_point end0, t_point end1)
