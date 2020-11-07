@@ -165,9 +165,9 @@ int		main(int argc, char **argv)
 		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
 		refresh(&mywin);
-		if (argc[2] == "--save")
+		if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
 		{
-			create_bmp(&mywin);
+			create_bmp(mywin.fps_img.addr, mywin.params.res_y, mywin.params.res_x);
 			return (exit_hook(&mywin));
 		}
 		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 1L, &key_press, &mywin);

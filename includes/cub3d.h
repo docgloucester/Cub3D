@@ -135,6 +135,6 @@ void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
 void			draw_player_dir(t_vars *mywin, int col);
 void			drawRays(t_vars *mywin);
-void			create_bmp(t_vars *mywin);
+void 			create_bmp (char* image, int height, int width);
 
 #endif
