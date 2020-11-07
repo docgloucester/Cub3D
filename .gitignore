@@ -1,4 +1,5 @@
 Cub3D
 *.o
 *.a
+*.bmp
 mlx-test
