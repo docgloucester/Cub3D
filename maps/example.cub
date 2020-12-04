@@ -1,11 +1,11 @@
 R      480 480
-NO               ./maps/brick.xpm 
-SO           ./maps/grass.xpm
-WE          ./maps/wood.xpm
+NO               ./img/brick.xpm 
+SO           ./img/grass.xpm
+WE          ./img/wood.xpm
 
-EA    ./maps/metal.xpm
+EA    ./img/metal.xpm
 
-S     ./maps/linus.xpm
+S     ./img/linus.xpm
 
 
 
