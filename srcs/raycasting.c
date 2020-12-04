@@ -27,7 +27,7 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 	if (norm <= 0)
 		norm = 1;
 	block_dims.y = (int)((float)get_square_side(mywin) * mywin->params.res_y / norm);
-	block_dims.x = (int)(mywin->params.res_x / 837.0 + 1.0);
+	block_dims.x = 1;
 	if (compNorm == 0)
 	{
 		if (mywin->player.angle + diff <= PI)
@@ -44,7 +44,7 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 			text = &mywin->e_text;
 		offset = (int)end.y % get_square_side(mywin);
 	}
-	draw_block(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), block_dims, text, sinf(0.00125) * norm, offset);
+	draw_block(mywin, mywin->params.res_x - 1 - i, block_dims, text, sinf(0.00125) * norm, offset);
 }
 
 void	put_sprite(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_end, float diff)
@@ -66,8 +66,8 @@ void	put_sprite(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 		norm = 1.0;
 	offset = (int)sqrtf(powf((int)end.x  % get_square_side(mywin), 2) + powf((int)end.y  % get_square_side(mywin), 2));
 	sprite_chunk_dims.y = (int)((float)get_square_side(mywin) * mywin->params.res_y / (cosf(diff) * norm));
-	sprite_chunk_dims.x = (int)(mywin->params.res_x / 837.0 + 1.0);
-	draw_sprite(mywin, (int)((836.0 - (float)i) * mywin->params.res_x / 837.0), sprite_chunk_dims, sinf(0.00125) * norm, offset);
+	sprite_chunk_dims.x = 1;
+	draw_sprite(mywin, mywin->params.res_x - 1 - i, sprite_chunk_dims, sinf(0.00125) * norm, offset);
 	prev_i = i;
 }
 
@@ -199,6 +199,6 @@ void	drawRays(t_vars *mywin)
 		{
 			put_sprite(mywin, i - 1, start, sprite_v, sprite_h, diff);
 		}
-		diff += 0.00125;
+		diff += 0.333 * PI / (float)mywin->params.res_x;
 	}
 }
