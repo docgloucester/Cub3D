@@ -17,9 +17,9 @@ int		get_square_side(t_vars *mywin)
 	int	useHeight;
 
 	useHeight = 1;
-	if (mywin->params.mapY < mywin->params.mapX)
+	if (mywin->params.map_y < mywin->params.map_x)
 		useHeight = 0;
-	return (((1 - useHeight) * mywin->params.res_x + (0 + useHeight) * mywin->params.res_y) / ((1 - useHeight) * mywin->params.mapX + (0 + useHeight) * mywin->params.mapY));
+	return (((1 - useHeight) * mywin->params.res_x + (0 + useHeight) * mywin->params.res_y) / ((1 - useHeight) * mywin->params.map_x + (0 + useHeight) * mywin->params.map_y));
 
 }
 
@@ -35,10 +35,10 @@ void	put_map(t_vars *mywin, t_img *img)
 	col = 0;
 	squares_len = get_square_side(mywin);
 	y = -1;
-	while (++y < mywin->params.mapY)
+	while (++y < mywin->params.map_y)
 	{
 		x = -1;
-		while (++x < mywin->params.mapX)
+		while (++x < mywin->params.map_x)
 		{
 			if (mywin->params.map[y][x] && ft_strchr("12", mywin->params.map[y][x]))
 			{
@@ -68,6 +68,6 @@ void	build_image(t_vars *mywin, t_img *img)
 	fill_window(mywin, img, 0x00808080);
 	put_map(mywin, img);
 	place_player(mywin, 0x00FF0000);
-	drawRays(mywin);
+	draw_rays(mywin);
 	draw_player_dir(mywin, 0x00FF0000);
 }

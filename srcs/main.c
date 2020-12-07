@@ -17,7 +17,7 @@ int		refresh(t_vars *mywin)
 	t_img	temp_img;
 
 	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->fps_img.img, 0, 0);
-	temp_img.img = mlx_new_image(mywin->mlx, mywin->params.res_x / 4 , mywin->params.res_y / 4);
+	temp_img.img = mlx_new_image(mywin->mlx, mywin->params.res_x / 4, mywin->params.res_y / 4);
 	temp_img.addr = mlx_get_data_addr(temp_img.img, &temp_img.bits_per_pixel, &temp_img.line_length, &temp_img.endian);
 	mlx_merge_img(mywin, &temp_img, &mywin->img, &mywin->player_img);
 	mlx_put_image_to_window(mywin->mlx, mywin->win, temp_img.img, 0, 0);
@@ -30,7 +30,7 @@ void	print_map(t_vars *mywin)
 	int	i;
 
 	i = 0;
-	ft_printf ("%d x %d\n", mywin->params.mapX, mywin->params.mapY);
+	ft_printf ("%d x %d\n", mywin->params.map_x, mywin->params.map_y);
 	while (mywin->params.map[i])
 		ft_printf("%s\n", mywin->params.map[i++]);
 }
@@ -47,6 +47,23 @@ void	draw_player_dir(t_vars *mywin, int col)
 	draw_line(mywin, start, end, col);
 }
 
+int		check_collisions(t_vars *mywin, float dx, float dy, int squareside)
+{
+	int i;
+
+	i = 0;
+	while (i < 10 &&
+			!(
+			   ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos       + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos       + (float)i * 0.2 * dx) / (float)squareside)])
+			// || ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.1 + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.1 + (float)i * 0.2 * dx) / (float)squareside)])
+			// || ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.1 + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos       + (float)i * 0.2 * dx) / (float)squareside)])
+			// || ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos       + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.1 + (float)i * 0.2 * dx) / (float)squareside)])
+			 )
+			)
+		i += 1;
+	return (i);
+}
+
 int		do_stuff(t_vars *mywin)
 {
 	int		squareside;
@@ -55,17 +72,13 @@ int		do_stuff(t_vars *mywin)
 	int		i;
 
 	squareside = get_square_side(mywin);
-	i = 0;
 	if (mywin->move.x || mywin->move.y)
 	{
-		dx = get_square_side(mywin) / 4 * (mywin->player.dx * mywin->move.y + mywin->player.dy * mywin->move.x);
-		dy = get_square_side(mywin) / 4 * (mywin->player.dy * mywin->move.y - mywin->player.dx * mywin->move.x);
-		while (!(ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.1 + 0.2 * (float)i * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.1 + 0.2 * (float)i * dx) / (float)squareside)])
-			|| ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.1 + 0.2 * (float)i * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.2 * (float)i * dx) / (float)squareside)])
-			|| ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.2 * (float)i * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.1 + 0.2 * (float)i * dx) / (float)squareside)])
-			|| ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.2 * (float)i * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.2 * (float)i * dx) / (float)squareside)]))
-			&& i < 10)
-			i += 1;
+		dx = get_square_side(mywin) / 4 * (mywin->player.dx * mywin->move.y
+			+ mywin->player.dy * mywin->move.x);
+		dy = get_square_side(mywin) / 4 * (mywin->player.dy * mywin->move.y
+			- mywin->player.dx * mywin->move.x);
+		i = check_collisions(mywin, dx, dy, squareside);
 		if (i == 10)
 		{
 			mywin->player.x_pos += dx;
@@ -79,7 +92,7 @@ int		do_stuff(t_vars *mywin)
 	}
 	fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
 	place_player(mywin, 0x00FF0000);
-	drawRays(mywin);
+	draw_rays(mywin);
 	draw_player_dir(mywin, 0x00FF0000);
 	refresh(mywin);
 	return (0);
@@ -171,9 +184,9 @@ int		main(int argc, char **argv)
 			return (exit_hook(&mywin));
 		}
 		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 1L, &key_press, &mywin);
-		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 1L<<1, &key_release, &mywin);
+		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 1L << 1, &key_release, &mywin);
 		mlx_hook(mywin.win, X_EVENT_EXIT, 0, &exit_hook, &mywin);
-		mlx_hook(mywin.win, 9, 1L<<21, infocus_function, &mywin);
+		mlx_hook(mywin.win, 9, 1L << 21, infocus_function, &mywin);
 		mlx_loop_hook(mywin.mlx, do_stuff, &mywin);
 		mlx_loop(mywin.mlx);
 	}

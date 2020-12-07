@@ -41,7 +41,7 @@ int		lowest;
 // 	{
 // 		free(params->map[i - highest]);
 // 		i++;
-	params->mapY = lowest - highest + 1;
+	params->map_y = lowest - highest + 1;
 }
 
 // }
@@ -83,7 +83,7 @@ void		trim_map_x(t_params *params)
 		params->map[i++] = ft_substr(defausse, leftest_wall_pos, rightest_wall_pos - leftest_wall_pos + 1);
 		free(defausse);
 	}
-	params->mapX = rightest_wall_pos - leftest_wall_pos + 1;
+	params->map_x = rightest_wall_pos - leftest_wall_pos + 1;
 }
 
 void		deal_map(t_params *params, char	**line, int fd)
