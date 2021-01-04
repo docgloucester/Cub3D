@@ -100,7 +100,7 @@ t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, t_point *sprit
 	return (end);
 }
 
-t_point	getHorRay(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
+t_point	gethorray(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
 {
 	t_point end;
 	int		squareside = get_square_side(mywin);
@@ -127,7 +127,7 @@ t_point	getHorRay(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
 	return (end);
 }
 
-t_point	getVerRay(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
+t_point	getverray(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
 {
 	t_point end;
 	int		squareside = get_square_side(mywin);
@@ -190,12 +190,12 @@ void	draw_rays(t_vars *mywin)
 		sprite_h.y = -1;
 		sprite_v.x = -1;
 		sprite_v.y = -1;
-		h_end = expand_ray(mywin, getHorRay(mywin, start, angle, &half), half, &sprite_h);
-		v_end = expand_ray(mywin, getVerRay(mywin, start, angle, &half), half, &sprite_v);
-		draw_line(mywin, start, cmp_norm(start, h_end, v_end)? v_end: h_end, 0x0000FF00);
+		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, &sprite_h);
+		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, &sprite_v);
+		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
 		put_blocks(mywin, ++i, start, v_end, h_end, diff);
-		if ((sprite_v.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end)? v_end: h_end, sprite_v))
-			|| (sprite_h.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end)? v_end: h_end, sprite_h)))
+		if ((sprite_v.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_v))
+			|| (sprite_h.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_h)))
 		{
 			put_sprite(mywin, i - 1, start, sprite_v, sprite_h, diff);
 		}

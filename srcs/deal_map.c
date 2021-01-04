@@ -16,8 +16,8 @@ void		trim_map_y(t_params *params)
 {
 int		highest;
 int		lowest;
-// int		i;
 
+// int		i;
 	highest = 0;
 	while (params->map[highest] && !ft_strchr(params->map[highest], '1'))
 		highest++;
@@ -43,7 +43,6 @@ int		lowest;
 // 		i++;
 	params->map_y = lowest - highest + 1;
 }
-
 // }
 
 void		trim_map_x(t_params *params)
@@ -86,7 +85,7 @@ void		trim_map_x(t_params *params)
 	params->map_x = rightest_wall_pos - leftest_wall_pos + 1;
 }
 
-void		deal_map(t_params *params, char	**line, int fd)
+void		deal_map(t_params *params, char **line, int fd)
 {
 	int		i;
 	char	**splt;
@@ -101,7 +100,7 @@ void		deal_map(t_params *params, char	**line, int fd)
 	{
 		i++;
 		params->map = ft_realloc(params->map, (i - 1) * sizeof(char*), i * sizeof(char*));
-		params->map[i-1] = ft_strdup(*line);
+		params->map[i - 1] = ft_strdup(*line);
 		free_split(splt);
 		free(*line);
 		get_next_line(fd, line);
