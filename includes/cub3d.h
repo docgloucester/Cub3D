@@ -22,6 +22,7 @@
 # include <libft.h>
 # include <mlx.h>
 # include <math.h>
+# include <stdio.h>
 
 # ifdef __APPLE__
 #  define ESC_KEY 53
@@ -120,10 +121,9 @@ unsigned int	get_pixel(t_img *img, int x, int y);
 void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
 void			draw_square(t_img *img, int x, int y, int px, int col);
 void			draw_rect(t_img *img, t_point start, int width, int h, int col);
-void			draw_block(t_vars *mywin, int x_start, t_point dims,
-				t_texture *text, float tile_width, int offset);
-void			draw_sprite(t_vars *mywin, int x, t_point dims, float tile_width
-				, int offset);
+void			draw_block(t_vars *mywin, int x_start, int height,
+				t_texture *text, int offset);
+void			draw_sprite(t_vars *mywin, int x, int height, int offset);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			mlx_merge_img(t_vars *mw, t_img *tmp, t_img *bck, t_img *front);
 void			change_angle(t_player *player, float angle);
