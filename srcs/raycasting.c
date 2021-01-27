@@ -67,13 +67,37 @@ void	set_sprite(t_vars *mywin, int i, t_point start, t_point end, float diff)
 void	draw_sprites(t_vars *mywin)
 {
 	int	i;
+	int y;
+	int	y_start;
+	int	sprite_offset;
+	int	height;
+	int	width;
+	int col;
 
 	i = 0;
 	while (i < mywin->params.res_x)
 	{
 		if (mywin->sprites_array[2 * i] != 0)
 		{
-			
+			height = get_square_side(mywin) * mywin->params.res_y / mywin->sprites_array[2 * i];
+			y_start = (mywin->params.res_y - height) / 2;
+			width = mywin->sprite.img.width * height / mywin->sprite.img.height;
+			sprite_offset = mywin->sprites_array[2 * i + 1] / sqrtf(2 * powf(get_square_side(mywin), 2)) * mywin->sprite.img.width;
+			while (sprite_offset < mywin->sprite.img.width)
+			{
+				y = -1;
+				while (++y < height)
+				{
+					if (y + y_start>= 0 && y + y_start < mywin->params.res_y)
+					{
+						col = get_pixel(&mywin->sprite.img, mywin->sprite.img.width - 1 - sprite_offset, (int)((float)y / (float)height * (float)mywin->sprite.img.height));
+						if (col << 8 != 0)
+							my_pixelput(&mywin->fps_img, i, y + y_start, col);
+					}
+				}
+				sprite_offset += mywin->sprites_array[2 * i] * sinf(0.333 * PI / (float)mywin->params.res_x);
+				i++;
+			}
 		}
 		i++;
 	}
