@@ -12,6 +12,12 @@
 
 #include <cub3d.h>
 
+float			float_modulo(float a, float b)
+{
+	while (a >= b)
+		a -= b;
+	return a;
+}
 void			change_angle(t_player *player, float angle)
 {
 	while (angle <= 0)
@@ -89,42 +95,38 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
-void			draw_block(t_vars *mywin, int x_start, int height, t_texture *text, int offset)
+void			draw_block(t_vars *mywin, int x_start, int height, t_texture *text, float offset)
 {
 	int		y;
 	int		y_start;
 	int		col;
-	float	text_width;
 
-	text_width = (float)text->img.width / (float)get_square_side(mywin);
 	y_start = (mywin->params.res_y - height) / 2;
 	y = -1;
 	while (++y < height)
 	{
-		if (y_start + y >= 0 && y_start + y < mywin->params.res_y && x_start >= 0 && x_start < mywin->params.res_x)
+		if (y_start + y >= 0 && y_start + y < mywin->params.res_y)
 		{
-			col = get_pixel(&text->img, text->img.width - 1 - offset * text->img.width / get_square_side(mywin) - (int)text_width, (int)((float)y / (float)height * (float)text->img.height));
+			col = get_pixel(&text->img, text->img.width - 1 - (int)(offset * (float)text->img.width / (float)get_square_side(mywin)), (int)((float)y / (float)height * (float)text->img.height));
 			if (col << 8 != 0)
 				my_pixelput(&mywin->fps_img, x_start, y_start + y, col);
 		}
 	}
 }
 
-void			draw_sprite(t_vars *mywin, int x_start, int height, int offset)
+void			draw_sprite(t_vars *mywin, int x_start, int height, float offset)
 {
 	int		y;
 	int		y_start;
 	int		col;
-	float	text_width;
 
-	text_width = (float)mywin->sprite.img.width / (float)get_square_side(mywin);
 	y_start = (mywin->params.res_y - height) / 2;
 	y = -1;
 	while (++y < height)
 	{
 		if (y_start + y >= 0 && y_start + y < mywin->params.res_y && x_start >= 0 && x_start < mywin->params.res_x)
 		{
-			col = get_pixel(&mywin->sprite.img, mywin->sprite.img.width - 1 - offset * mywin->sprite.img.width / get_square_side(mywin) - (int)text_width, (int)((float)y / (float)height * (float)mywin->sprite.img.height));
+			col = get_pixel(&mywin->sprite.img, mywin->sprite.img.width - 1 - (int)(offset * (float)mywin->sprite.img.width / sqrtf(2.0f * powf((float)get_square_side(mywin), 2))), (int)((float)y / (float)height * (float)mywin->sprite.img.height));
 			if (col << 8 != 0)
 				my_pixelput(&mywin->fps_img, x_start, y_start + y, col);
 		}
@@ -179,7 +181,7 @@ void			mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
 
 float			get_norm(t_point start, t_point end)
 {
-	return (sqrtf(powf((start.x - end.x), 2) + powf((start.y - end.y), 2)));
+	return (sqrtf(powf(start.x - end.x, 2) + powf((start.y - end.y), 2)));
 }
 
 int			cmp_norm(t_point start, t_point end0, t_point end1)

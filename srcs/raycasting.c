@@ -19,14 +19,14 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 	t_point		end;
 	int			comp_norm;
 	float		norm;
-	int			offset;
+	float		offset;
 
 	end = cmp_norm(start, h_end, v_end)? v_end: h_end;
 	comp_norm = cmp_norm(start, h_end, v_end);
 	norm = cosf(diff) * get_norm(start, end);
 	if (norm <= 0)
 		norm = 1;
-	stripe_height = (int)((float)get_square_side(mywin) * mywin->params.res_y / norm);
+	stripe_height = get_square_side(mywin) * mywin->params.res_y / norm;
 	if (comp_norm == 0)
 	{
 		if ((mywin->player.angle + diff >= - PI && mywin->player.angle + diff < 0)
@@ -34,7 +34,7 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 			text = &mywin->s_text;
 		else
 			(text = &mywin->n_text);
-		offset = (int)end.x % get_square_side(mywin);
+		offset = float_modulo(end.x, (float)get_square_side(mywin));
 	}
 	else
 	{
@@ -42,11 +42,10 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 			text = &mywin->w_text;
 		else
 			text = &mywin->e_text;
-		offset = (int)end.y % get_square_side(mywin);
+		offset = float_modulo(end.y, (float)get_square_side(mywin));
 	}
 	draw_block(mywin, mywin->params.res_x - 1 - i, stripe_height, text, offset);
 }
-
 void	put_sprite(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_end, float diff)
 {
 	int				stripe_height;
@@ -54,17 +53,18 @@ void	put_sprite(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 	float			currnorm;
 	static float	norm;
 	static int		prev_i;
-	int				offset;
+	float			offset;
 
 	end = cmp_norm(start, h_end, v_end)? v_end: h_end;
 	currnorm = cosf(diff) * get_norm(start, end);
-	if (prev_i > i)
+	if (prev_i != i - 1)
 		norm = 0.0;
 	if (norm == 0.0)
 		norm = currnorm;
 	if (norm <= 0.0)
 		norm = 1.0;
-	offset = (int)end.y % get_square_side(mywin);
+	offset = sqrtf(powf(float_modulo(end.y, (float)get_square_side(mywin)), 2) + powf(float_modulo(end.x, (float)get_square_side(mywin)), 2));
+	printf("%f\n", offset);
 	stripe_height = (int)((float)get_square_side(mywin) * mywin->params.res_y / (cosf(diff) * norm));
 	draw_sprite(mywin, mywin->params.res_x - 1 - i, stripe_height, offset);
 	prev_i = i;
@@ -192,12 +192,14 @@ void	draw_rays(t_vars *mywin)
 		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, &sprite_h);
 		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, &sprite_v);
 		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
-		put_blocks(mywin, ++i, start, v_end, h_end, diff);
+		mywin->norm_array[++i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
+		put_blocks(mywin, i, start, v_end, h_end, diff);
 		if ((sprite_v.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_v))
 			|| (sprite_h.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_h)))
 		{
-			put_sprite(mywin, i - 1, start, sprite_v, sprite_h, diff);
+			put_sprite(mywin, i, start, sprite_v, sprite_h, diff);
 		}
 		diff += 0.333 * PI / (float)mywin->params.res_x;
 	}
+
 }

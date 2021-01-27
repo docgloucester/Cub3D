@@ -101,6 +101,7 @@ typedef struct	s_keys
 typedef	struct	s_vars {
 	void		*mlx;
 	void		*win;
+	float		*norm_array;
 	t_params	params;
 	t_player	player;
 	t_keys		move;
@@ -116,14 +117,15 @@ typedef	struct	s_vars {
 
 t_params		parse_file(char *path);
 void			free_split(char **split);
+float			float_modulo(float a, float b);
 void			my_pixelput(t_img *img, int x, int y, int col);
 unsigned int	get_pixel(t_img *img, int x, int y);
 void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
 void			draw_square(t_img *img, int x, int y, int px, int col);
 void			draw_rect(t_img *img, t_point start, int width, int h, int col);
 void			draw_block(t_vars *mywin, int x_start, int height,
-				t_texture *text, int offset);
-void			draw_sprite(t_vars *mywin, int x, int height, int offset);
+				t_texture *text, float offset);
+void			draw_sprite(t_vars *mywin, int x, int height, float offset);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			mlx_merge_img(t_vars *mw, t_img *tmp, t_img *bck, t_img *front);
 void			change_angle(t_player *player, float angle);

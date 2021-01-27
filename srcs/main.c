@@ -107,6 +107,7 @@ int		infocus_function(t_vars *mywin)
 int		exit_hook(t_vars *mywin)
 {
 	mlx_destroy_window(mywin->mlx, mywin->win);
+	free(mywin->norm_array);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -149,6 +150,7 @@ int		main(int argc, char **argv)
 	{
 		mywin.mlx = mlx_init();
 		mywin.params = parse_file(argv[1]);
+		mywin.norm_array = (float*)malloc(sizeof(float) * mywin.params.res_x);
 		mywin.move.x = 0;
 		mywin.move.y = 0;
 		mywin.move.rot = 0;
@@ -183,6 +185,7 @@ int		main(int argc, char **argv)
 			create_bmp(mywin.fps_img.addr, mywin.params.res_y, mywin.params.res_x);
 			return (exit_hook(&mywin));
 		}
+		ft_printf("%d\n", get_square_side(&mywin));
 		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 1L, &key_press, &mywin);
 		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 1L << 1, &key_release, &mywin);
 		mlx_hook(mywin.win, X_EVENT_EXIT, 0, &exit_hook, &mywin);
