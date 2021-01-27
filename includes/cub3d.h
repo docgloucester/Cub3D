@@ -101,7 +101,8 @@ typedef struct	s_keys
 typedef	struct	s_vars {
 	void		*mlx;
 	void		*win;
-	float		*norm_array;
+	float		*sprites_array;
+	float		*norms_array;
 	t_params	params;
 	t_player	player;
 	t_keys		move;

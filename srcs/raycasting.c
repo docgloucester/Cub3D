@@ -46,28 +46,37 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 	}
 	draw_block(mywin, mywin->params.res_x - 1 - i, stripe_height, text, offset);
 }
-void	put_sprite(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_end, float diff)
+
+void	set_sprite(t_vars *mywin, int i, t_point start, t_point end, float diff)
 {
-	int				stripe_height;
-	t_point			end;
-	float			currnorm;
-	static float	norm;
+
 	static int		prev_i;
+	float			norm;
 	float			offset;
 
-	end = cmp_norm(start, h_end, v_end)? v_end: h_end;
-	currnorm = cosf(diff) * get_norm(start, end);
 	if (prev_i != i - 1)
-		norm = 0.0;
-	if (norm == 0.0)
-		norm = currnorm;
-	if (norm <= 0.0)
-		norm = 1.0;
-	offset = sqrtf(powf(float_modulo(end.y, (float)get_square_side(mywin)), 2) + powf(float_modulo(end.x, (float)get_square_side(mywin)), 2));
-	printf("%f\n", offset);
-	stripe_height = (int)((float)get_square_side(mywin) * mywin->params.res_y / (cosf(diff) * norm));
-	draw_sprite(mywin, mywin->params.res_x - 1 - i, stripe_height, offset);
+	{
+		norm = cosf(diff) * get_norm(start, end);
+		offset = sqrtf(powf(float_modulo(end.y, (float)get_square_side(mywin)), 2) + powf(float_modulo(end.x, (float)get_square_side(mywin)), 2));
+		mywin->sprites_array[2 * i] = norm;
+		mywin->sprites_array[2 * i + 1] = offset;
+	}
 	prev_i = i;
+}
+
+void	draw_sprites(t_vars *mywin)
+{
+	int	i;
+
+	i = 0;
+	while (i < mywin->params.res_x)
+	{
+		if (mywin->sprites_array[2 * i] != 0)
+		{
+			
+		}
+		i++;
+	}
 }
 
 t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, t_point *sprite)
@@ -192,14 +201,14 @@ void	draw_rays(t_vars *mywin)
 		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, &sprite_h);
 		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, &sprite_v);
 		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
-		mywin->norm_array[++i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
+		mywin->norms_array[++i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
 		put_blocks(mywin, i, start, v_end, h_end, diff);
 		if ((sprite_v.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_v))
 			|| (sprite_h.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_h)))
 		{
-			put_sprite(mywin, i, start, sprite_v, sprite_h, diff);
+			set_sprite(mywin, i, start, cmp_norm(start, sprite_h, sprite_v)? sprite_v: sprite_h, diff);
 		}
 		diff += 0.333 * PI / (float)mywin->params.res_x;
 	}
-
+	draw_sprites(mywin);
 }

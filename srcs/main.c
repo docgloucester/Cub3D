@@ -107,7 +107,7 @@ int		infocus_function(t_vars *mywin)
 int		exit_hook(t_vars *mywin)
 {
 	mlx_destroy_window(mywin->mlx, mywin->win);
-	free(mywin->norm_array);
+	free(mywin->sprites_array);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -150,7 +150,8 @@ int		main(int argc, char **argv)
 	{
 		mywin.mlx = mlx_init();
 		mywin.params = parse_file(argv[1]);
-		mywin.norm_array = (float*)malloc(sizeof(float) * mywin.params.res_x);
+		mywin.sprites_array = (float*)ft_calloc(2 * mywin.params.res_x, sizeof(float));
+		mywin.norms_array = (float*)ft_calloc(mywin.params.res_x, sizeof(float));
 		mywin.move.x = 0;
 		mywin.move.y = 0;
 		mywin.move.rot = 0;
