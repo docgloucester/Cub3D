@@ -66,23 +66,24 @@ void	set_sprite(t_vars *mywin, int i, t_point start, t_point end, float diff)
 
 void	draw_sprites(t_vars *mywin)
 {
-	int	i;
-	int y;
-	int	y_start;
-	int	sprite_offset;
-	int	height;
-	int	width;
-	int col;
+	int		i;
+	int 	y;
+	int		y_start;
+	float	sprite_offset;
+	float	norm;
+	int		height;
+	int 	col;
 
 	i = 0;
 	while (i < mywin->params.res_x)
 	{
 		if (mywin->sprites_array[2 * i] != 0)
 		{
+			norm = mywin->sprites_array[2 * i];
 			height = get_square_side(mywin) * mywin->params.res_y / mywin->sprites_array[2 * i];
 			y_start = (mywin->params.res_y - height) / 2;
-			width = mywin->sprite.img.width * height / mywin->sprite.img.height;
-			sprite_offset = mywin->sprites_array[2 * i + 1] / sqrtf(2 * powf(get_square_side(mywin), 2)) * mywin->sprite.img.width;
+			//sprite_offset = mywin->sprites_array[2 * i + 1] / sqrtf(2 * powf(get_square_side(mywin), 2)) * mywin->sprite.img.width * height / mywin->sprite.img.height;
+			sprite_offset = 0; // on verra après pour que les sprites démarrent comme il faut, pour l'instant ce qui compte c'est les dimensions de ce qui est affiché sur la vue fps
 			while (sprite_offset < mywin->sprite.img.width)
 			{
 				y = -1;
@@ -92,15 +93,18 @@ void	draw_sprites(t_vars *mywin)
 					{
 						col = get_pixel(&mywin->sprite.img, mywin->sprite.img.width - 1 - sprite_offset, (int)((float)y / (float)height * (float)mywin->sprite.img.height));
 						if (col << 8 != 0)
-							my_pixelput(&mywin->fps_img, i, y + y_start, col);
+							my_pixelput(&mywin->fps_img, mywin->params.res_x - i, y + y_start, col);
 					}
 				}
-				sprite_offset += mywin->sprites_array[2 * i] * sinf(0.333 * PI / (float)mywin->params.res_x);
+				printf("put sprite line %f on %d at line %d of screen\n", sprite_offset, mywin->sprite.img.width, i);
+				sprite_offset += norm * sinf(0.333 * PI) * (float)height / (float)mywin->sprite.img.height ;
 				i++;
 			}
 		}
 		i++;
 	}
+	free(mywin->sprites_array);
+	mywin->sprites_array = (float*)ft_calloc(2 * mywin->params.res_x, sizeof(float));
 }
 
 t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, t_point *sprite)
