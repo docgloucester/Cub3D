@@ -108,6 +108,7 @@ int		exit_hook(t_vars *mywin)
 {
 	mlx_destroy_window(mywin->mlx, mywin->win);
 	free(mywin->sprites_array);
+	free(mywin->norms_array);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
