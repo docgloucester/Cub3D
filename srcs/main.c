@@ -86,10 +86,7 @@ int		do_stuff(t_vars *mywin)
 		}
 	}
 	if (mywin->move.rot)
-	{
-		fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
 		change_angle(&mywin->player, mywin->player.angle - 0.15 * mywin->move.rot);
-	}
 	fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
 	place_player(mywin, 0x00FF0000);
 	draw_rays(mywin);
