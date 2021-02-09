@@ -18,7 +18,7 @@ LNFLM	= -framework OpenGL -framework AppKit -fsanitize=address
 LNFLL	= -lXext -lX11 -lm -fsanitize=address
 
 SRCSF	= main.c parse_file.c mlx_extras.c deal_map.c build_image.c \
-		raycasting.c create_bmp.c
+		raycasting.c create_bmp.c sprite_management.c
 
 SRCSD	= srcs/
 INCL	= includes/
@@ -41,7 +41,7 @@ else
 	LINKFL	= ${LNFLL}
 endif
 
-.c.o :
+.c.o :		${INCL}cub3d.h ${LIBFT}${INCL}libft.h
 			${CC} ${CFLAGS} -I${LIBFT}${INCL} -I${MLX} -I${INCL} -c $< -o ${<:.c=.o}
 
 

@@ -46,11 +46,11 @@ void	put_map(t_vars *mywin, t_img *img)
 				&& ft_strchr("12", mywin->params.map[y][x]))
 			{
 				if (mywin->params.map[y][x] == '1')
-					col = 0x00020202;
+					draw_square(img, x * squares_len, y * squares_len, squares_len,
+					0x00020202);
 				else if (mywin->params.map[y][x] == '2')
-					col = 0x00505050;
-				draw_square(img, x * squares_len, y * squares_len, squares_len,
-					col);
+					draw_square(img, x * squares_len + squares_len / 2, y * squares_len + squares_len / 2, squares_len / 4,
+					0x00505050);
 			}
 			owo = "ENWS";
 			if (mywin->params.map[y][x]

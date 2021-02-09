@@ -112,23 +112,28 @@ void	draw_sprites(t_vars *mywin)
 	mywin->sprites_array = (float*)ft_calloc(2 * mywin->params.res_x, sizeof(float));
 }
 
-t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, t_point *sprite)
+t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff, t_sprite *sprites)
 {
-	int reached_wall;
-	int	squareside;
+	int 	reached_wall;
+	int		squareside;
+	t_point	player_pos;
+	t_point sprite_center;
 
 	reached_wall = 0;
 	squareside = get_square_side(mywin);
+	player_pos.x = end.x - delta_ray.x;
+	player_pos.y = end.y - delta_ray.y;
 	while (!reached_wall)
 	{
-		if ((int)((end.y) / squareside) < 0 || (int)((end.x) / squareside) < 0
+		if ((int)(end.y / squareside) < 0 || (int)(end.x / squareside) < 0
 			|| (int)((end.x) / squareside) >= mywin->params.map_x
 			|| (int)((end.y) / squareside) >= mywin->params.map_y)
 			break;
 		if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '2')
 		{
-			sprite->x = end.x;
-			sprite->y = end.y;
+			sprite_center.x = (int)(end.x / squareside) * squareside + squareside / 2;
+			sprite_center.y = (int)(end.y / squareside) * squareside + squareside / 2;
+			addsprite(sprites, get_norm(player_pos, sprite_center), diff);
 		}
 		if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '1')
 			reached_wall = 1;
@@ -197,15 +202,16 @@ t_point	getverray(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
 
 void	draw_rays(t_vars *mywin)
 {
-	float	angle;
-	t_point start;
-	t_point h_end;
-	t_point v_end;
-	t_point half;
-	float	diff;
-	int		i;
-	t_point sprite_h;
-	t_point sprite_v;
+	float		angle;
+	t_point		start;
+	t_point		h_end;
+	t_point		v_end;
+	t_point		half;
+	float		diff;
+	int			i;
+	// t_point 	sprite_h;
+	// t_point 	sprite_v;
+	t_sprite	*sprites;
 
 	fill_window(mywin, &mywin->fps_img, mywin->params.ceilg_col);
 	half.x = 0;
@@ -218,6 +224,7 @@ void	draw_rays(t_vars *mywin)
 	mywin->sprite.i = 0;
 	diff = -0.167 * PI;
 	i = -1;
+	sprites = NULL;
 	while (diff <= 0.166 * PI)
 	{
 		angle = mywin->player.angle + diff;
@@ -227,20 +234,20 @@ void	draw_rays(t_vars *mywin)
 			angle -= 2 * PI;
 		start.x = mywin->player.x_pos;
 		start.y = mywin->player.y_pos;
-		sprite_h.x = -1;
-		sprite_h.y = -1;
-		sprite_v.x = -1;
-		sprite_v.y = -1;
-		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, &sprite_h);
-		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, &sprite_v);
+		// sprite_h.x = -1;
+		// sprite_h.y = -1;
+		// sprite_v.x = -1;
+		// sprite_v.y = -1;
+		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, diff, sprites);
+		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, diff, sprites);
 		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
 		mywin->norms_array[++i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
 		put_blocks(mywin, i, start, v_end, h_end, diff);
-		if ((sprite_v.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_v))
-			|| (sprite_h.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_h)))
-		{
-			set_sprite(mywin, i, start, cmp_norm(start, sprite_h, sprite_v)? sprite_v: sprite_h, diff);
-		}
+		// if ((sprite_v.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_v))
+		// 	|| (sprite_h.x != -1 && cmp_norm(start,cmp_norm(start, h_end, v_end) ? v_end: h_end, sprite_h)))
+		// {
+		// 	set_sprite(mywin, i, start, cmp_norm(start, sprite_h, sprite_v)? sprite_v: sprite_h, diff);
+		// }
 		diff += 0.333 * PI / (float)mywin->params.res_x;
 	}
 	draw_sprites(mywin);
