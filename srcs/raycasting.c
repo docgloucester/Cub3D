@@ -251,4 +251,5 @@ void	draw_rays(t_vars *mywin)
 		diff += 0.333 * PI / (float)mywin->params.res_x;
 	}
 	draw_sprites(mywin);
+	freesprite(sprites);
 }

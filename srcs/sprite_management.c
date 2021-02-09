@@ -21,3 +21,16 @@ void	addsprite(t_sprite *sprites, float norm, float angle_diff)
 	sprites->angle = angle_diff;
 	sprites->next = NULL;
 }
+
+void	freesprite(t_sprite *sprites)
+{
+	t_sprite *next;
+
+	while (sprites && sprites->next != NULL)
+	{
+		next = sprites->next;
+		free(sprites);
+		sprites = next;
+	}
+	free(sprites);
+}
