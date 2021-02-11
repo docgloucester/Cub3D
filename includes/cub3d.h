@@ -62,13 +62,13 @@ typedef struct	s_img
 typedef struct	s_texture
 {
 	t_img	img;
-	float	i;
 }				t_texture;
 
 typedef struct	s_sprite
 {
 	float			norm;
 	float			angle;
+	int				is_hor;
 	struct s_sprite	*next;
 }				t_sprite;
 
@@ -145,7 +145,7 @@ void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
 void			draw_player_dir(t_vars *mywin, int col);
 void			draw_rays(t_vars *mywin);
-void			addsprite(t_sprite *sprites, float norm, float angle_diff);;
+void			addsprite(t_sprite **sprites, float norm, float angle_diff);;
 void			freesprite(t_sprite *sprites);
 void			create_bmp(char *image, int height, int width);
 
