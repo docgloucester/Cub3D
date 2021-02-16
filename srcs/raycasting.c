@@ -47,6 +47,15 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 	draw_block(mywin, mywin->params.res_x - 1 - i, stripe_height, text, offset);
 }
 
+/* acos returns exclusively into the [0;pi] domain, since cos is only bijective on half of the circle
+** so, in order to artificially "extend" its definition domains to cover our needs seamlessly
+** we have to manually flip the result of acos for the "sprite angle" in the plane referential
+** thus, mathematically speaking, breaking the bijectivity of arcos but who cares...
+**
+** when the player is "under" the sprite center, acos is unflipped
+** when the player is "above, acos has to be flipped
+*/
+
 t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff, t_sprite **sprites)
 {
 	int 	reached_wall;
@@ -55,6 +64,7 @@ t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff, t_
 	t_point sprite_center;
 
 	reached_wall = 0;
+	(void)diff;
 	squareside = get_square_side(mywin);
 	player_pos.x = mywin->player.x_pos;
 	player_pos.y = mywin->player.y_pos;
@@ -70,17 +80,14 @@ t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff, t_
 			sprite_center.y = (int)(end.y / squareside) * squareside + squareside / 2;
 			if (player_pos.y >= sprite_center.y)
 			{
-				printf("center angle %f\n atan sprite %f, atan player %f\n", diff, acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)), mywin->player.angle);
+				//printf("center angle %f\n atan sprite %f, atan player %f\n", diff, acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)), mywin->player.angle);
 				addsprite(sprites, sprite_center, get_norm(player_pos, sprite_center), acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
 			}
 			else
 			{
-				printf("center angle %f\n atan sprite %f, atan player %f\n", diff, - acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)), mywin->player.angle);
+				//printf("center angle %f\n atan sprite %f, atan player %f\n", diff, - acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)), mywin->player.angle);
 				addsprite(sprites, sprite_center, get_norm(player_pos, sprite_center), - acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
 			}
-			// acos returns exclusively into the [0;pi] domain, need to figure out a way to know when the sprite angle should be flipped...
-			// player bottom=> unflipped
-			// player top => flipped
 		}
 		if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '1')
 			reached_wall = 1;
