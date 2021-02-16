@@ -68,8 +68,19 @@ t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff, t_
 		{
 			sprite_center.x = (int)(end.x / squareside) * squareside + squareside / 2;
 			sprite_center.y = (int)(end.y / squareside) * squareside + squareside / 2;
-			printf("center angle %f\n", diff);
-			addsprite(sprites, sprite_center, get_norm(player_pos, sprite_center), atan2f(sprite_center.y - player_pos.y, sprite_center.x - player_pos.x));
+			if (player_pos.y >= sprite_center.y)
+			{
+				printf("center angle %f\n atan sprite %f, atan player %f\n", diff, acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)), mywin->player.angle);
+				addsprite(sprites, sprite_center, get_norm(player_pos, sprite_center), acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
+			}
+			else
+			{
+				printf("center angle %f\n atan sprite %f, atan player %f\n", diff, - acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)), mywin->player.angle);
+				addsprite(sprites, sprite_center, get_norm(player_pos, sprite_center), - acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
+			}
+			// acos returns exclusively into the [0;pi] domain, need to figure out a way to know when the sprite angle should be flipped...
+			// player bottom=> unflipped
+			// player top => flipped
 		}
 		if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '1')
 			reached_wall = 1;

@@ -20,9 +20,9 @@ float			float_modulo(float a, float b)
 }
 void			change_angle(t_player *player, float angle)
 {
-	while (angle <= 0)
+	while (angle < - PI)
 		angle += 2 * PI;
-	while (angle > 2 * PI)
+	while (angle >= PI)
 		angle -= 2 * PI;
 	player->angle = angle;
 	player->dx = cosf(angle);

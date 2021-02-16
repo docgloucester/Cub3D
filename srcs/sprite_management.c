@@ -12,20 +12,20 @@
 
 #include <cub3d.h>
 
-t_sprite	*newsprite(float norm, float angle_diff, t_point coord)
+t_sprite	*newsprite(float norm, float angle_diff, t_point coord, void *next)
 {
 	t_sprite	*sprites;
 
 	if (!(sprites = (t_sprite*)(malloc(sizeof(t_sprite)))))
 		return NULL;
 	sprites->norm = norm;
-	// while (angle_diff > 0.785f)
-	// 	angle_diff -= 3.14f;
-	// while (angle_diff < -0.785f)
-	// 	angle_diff += 3.14f;
+	while (angle_diff < - PI)
+		angle_diff += 2 * PI;
+	while (angle_diff >= PI)
+		angle_diff -= 2 * PI;
 	sprites->angle = angle_diff;
 	sprites->coord = coord;
-	sprites->next = NULL;
+	sprites->next = next;
 	return (sprites);
 }
 
@@ -35,15 +35,20 @@ void		addsprite(t_sprite **entry, t_point coord, float norm, float angle_diff)
 	t_sprite *curr;
 
 	if (!(*entry))
-		*entry = newsprite(norm, angle_diff, coord);
+		*entry = newsprite(norm, angle_diff, coord, NULL);
+	if ((*entry)->norm < norm)
+		*entry = newsprite(norm, angle_diff, coord, *entry);
 	curr = *entry;
-	while (curr->next)
+	while (curr->next && curr->next->norm >= norm)
 	{
 		i++;
 		curr = curr->next;
 	}
-	printf("Jumped %d times to insert sprite\n", i);
-	curr->next = newsprite(norm, angle_diff, coord);
+	if (curr->norm != norm)
+	{
+		printf("Jumped %d times to insert sprite\n", i);
+		curr->next = newsprite(norm, angle_diff, coord, curr->next);
+	}
 }
 
 void		freesprite(t_sprite *sprites)
