@@ -95,19 +95,33 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
-void			draw_stripe(t_vars *mywin, int x_start, int height, t_texture *text, float offset)
+int				shade_color(int orig_col, float norm)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	r = 1 / norm * (orig_col & (0xFF << 16));
+	g = 1 / norm * (orig_col & (0xFF << 8));
+	b = 1 / norm * (orig_col & 0xFF);
+	return (0x00 << 24 | r << 16 | g << 8 | b);
+}
+
+void			draw_stripe(t_vars *mywin, int x_start, float norm, t_texture *text, float offset)
 {
 	int		y;
 	int		y_start;
 	int		col;
+	int 	height;
 
+	height = get_square_side(mywin) * mywin->params.res_y / norm;
 	y_start = (mywin->params.res_y - height) / 2;
 	y = -1;
 	while (++y < height)
 	{
 		if (y_start + y >= 0 && y_start + y < mywin->params.res_y)
 		{
-			col = get_pixel(&text->img, text->img.width - 1 - (int)(offset * (float)text->img.width / (float)get_square_side(mywin)), (int)((float)y / (float)height * (float)text->img.height));
+			col = get_pixel(&text->img, text->img.width - 1 - (int)(offset * (float)text->img.width), (int)((float)y / (float)height * (float)text->img.height));
 			if (col << 8 != 0)
 				my_pixelput(&mywin->fps_img, x_start, y_start + y, col);
 		}
@@ -128,7 +142,7 @@ void			draw_square(t_img *img, int x_start, int y_start, int side_length_px, int
 	}
 }
 
-void		draw_rect(t_img *img, t_point start, int width, int height, int col)
+void			draw_rect(t_img *img, t_point start, int width, int height, int col)
 {
 	int	x;
 	int	y;
@@ -165,7 +179,7 @@ float			get_norm(t_point start, t_point end)
 	return (sqrtf(powf(start.x - end.x, 2) + powf((start.y - end.y), 2)));
 }
 
-int			cmp_norm(t_point start, t_point end0, t_point end1)
+int				cmp_norm(t_point start, t_point end0, t_point end1)
 {
 	float	norm1;
 	float	norm0;

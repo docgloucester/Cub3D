@@ -15,7 +15,6 @@
 void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_end, float diff)
 {
 	t_texture	*text;
-	int			stripe_height;
 	t_point		end;
 	int			comp_norm;
 	float		norm;
@@ -26,25 +25,31 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 	norm = cosf(diff) * get_norm(start, end);
 	if (norm <= 0)
 		norm = 1;
-	stripe_height = get_square_side(mywin) * mywin->params.res_y / norm;
 	if (comp_norm == 0)
 	{
+		offset = float_modulo(end.x, (float)get_square_side(mywin)) / get_square_side(mywin);
 		if ((mywin->player.angle + diff >= - PI && mywin->player.angle + diff < 0)
 			|| (mywin->player.angle + diff >= PI && mywin->player.angle + diff < 2 * PI))
 			text = &mywin->s_text;
 		else
+		{
 			(text = &mywin->n_text);
-		offset = float_modulo(end.x, (float)get_square_side(mywin));
+			offset = 0.999 - offset;
+		}
 	}
 	else
 	{
-		if (mywin->player.angle + diff >= 0.5 * PI && mywin->player.angle + diff <= 1.5 * PI)
+		offset = float_modulo(end.y, (float)get_square_side(mywin)) / get_square_side(mywin);
+		if ((mywin->player.angle + diff >= 0.5 * PI && mywin->player.angle + diff <= 1.5 * PI)
+			||(mywin->player.angle + diff >= -1.5 * PI && mywin->player.angle + diff <= -0.5 * PI))
 			text = &mywin->w_text;
 		else
+		{
 			text = &mywin->e_text;
-		offset = float_modulo(end.y, (float)get_square_side(mywin));
+			offset = 0.999 - offset;
+		}
 	}
-	draw_stripe(mywin, mywin->params.res_x - 1 - i, stripe_height, text, offset);
+	draw_stripe(mywin, mywin->params.res_x - 1 - i, norm, text, offset);
 }
 
 /* acos returns exclusively into the [0;pi] domain, since cos is only bijective on half of the circle
@@ -79,15 +84,9 @@ t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff, t_
 			sprite_center.x = (int)(end.x / squareside) * squareside + squareside / 2;
 			sprite_center.y = (int)(end.y / squareside) * squareside + squareside / 2;
 			if (player_pos.y >= sprite_center.y)
-			{
-				//printf("center angle %f\n atan sprite %f, atan player %f\n", diff, acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)), mywin->player.angle);
 				addsprite(sprites, sprite_center, get_norm(player_pos, sprite_center), acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
-			}
 			else
-			{
-				//printf("center angle %f\n atan sprite %f, atan player %f\n", diff, - acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)), mywin->player.angle);
 				addsprite(sprites, sprite_center, get_norm(player_pos, sprite_center), - acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
-			}
 		}
 		if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '1')
 			reached_wall = 1;
@@ -154,16 +153,6 @@ t_point	getverray(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
 	return (end);
 }
 
-void	debug_sprites(t_vars *mywin, t_sprite *sprites)
-{
-	while (sprites)
-	{
-		//printf("Sprite detected at norm %f and at angle %f, linked to %p\n", sprites->norm, sprites->angle, sprites->next);
-		draw_square(&mywin->player_img, (int)sprites->coord.x - 4, (int)sprites->coord.y - 4, 8, 0x00FF0000);
-		sprites = sprites->next;
-	}
-}
-
 void	draw_rays(t_vars *mywin)
 {
 	float		angle;
@@ -194,11 +183,10 @@ void	draw_rays(t_vars *mywin)
 		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, diff, &sprites);
 		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, diff, &sprites);
 		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
-		mywin->norms_array[mywin->params.res_x - 1 - i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
+		mywin->norms[mywin->params.res_x - 1 - i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
 		put_blocks(mywin, i, start, v_end, h_end, diff);
 		diff += 0.333 * PI / (float)mywin->params.res_x;
 	}
-	debug_sprites(mywin, sprites);
 	display_sprites(mywin, sprites);
 	freesprite(sprites);
 }

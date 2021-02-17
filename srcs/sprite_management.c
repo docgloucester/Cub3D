@@ -17,9 +17,9 @@ t_sprite	*newsprite(float norm, float angle_diff, t_point coord, void *next)
 	t_sprite	*sprites;
 
 	if (!(sprites = (t_sprite*)(malloc(sizeof(t_sprite)))))
-		return NULL;
+		return (NULL);
 	sprites->norm = norm;
-	while (angle_diff < - PI)
+	while (angle_diff < -PI)
 		angle_diff += 2 * PI;
 	while (angle_diff >= PI)
 		angle_diff -= 2 * PI;
@@ -29,19 +29,48 @@ t_sprite	*newsprite(float norm, float angle_diff, t_point coord, void *next)
 	return (sprites);
 }
 
-void		addsprite(t_sprite **entry, t_point coord, float norm, float angle_diff)
+void		addsprite(t_sprite **entry, t_point coord, float norm, float diff)
 {
 	t_sprite *curr;
 
 	if (!(*entry))
-		*entry = newsprite(norm, angle_diff, coord, NULL);
+		*entry = newsprite(norm, diff, coord, NULL);
 	if ((*entry)->norm < norm)
-		*entry = newsprite(norm, angle_diff, coord, *entry);
+		*entry = newsprite(norm, diff, coord, *entry);
 	curr = *entry;
 	while (curr->next && curr->next->norm >= norm)
 		curr = curr->next;
 	if (curr->norm != norm)
-		curr->next = newsprite(norm, angle_diff, coord, curr->next);
+		curr->next = newsprite(norm, diff, coord, curr->next);
+}
+
+void		display_sprites(t_vars *mywin, t_sprite *sprites)
+{
+	int height;
+	int width;
+	int	x;
+	int	center_stripe;
+
+	while (sprites)
+	{
+		x = 0;
+		height = get_square_side(mywin) * mywin->params.res_y / sprites->norm;
+		width = height * mywin->sprite.img.width / mywin->sprite.img.height;
+		center_stripe = mywin->params.res_x - 1
+		- ((sprites->angle + 0.167 * PI) * mywin->params.res_x) / (0.333 * PI);
+		while (x < width)
+		{
+			if ((x + center_stripe - width / 2 >= 0)
+				&& (x + center_stripe - width / 2 < mywin->params.res_x)
+				&& sprites->norm < mywin->norms[x + center_stripe - width / 2])
+			{
+				draw_stripe(mywin, x + center_stripe - width / 2, sprites->norm,
+					&mywin->sprite, 0.999 - (float)x / (float)width);
+			}
+			x++;
+		}
+		sprites = sprites->next;
+	}
 }
 
 void		freesprite(t_sprite *sprites)

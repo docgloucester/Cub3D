@@ -53,14 +53,8 @@ int		check_collisions(t_vars *mywin, float dx, float dy, int squareside)
 
 	i = 0;
 	while (i < 10 &&
-			!(
-			   ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos       + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos       + (float)i * 0.2 * dx) / (float)squareside)])
-			// || ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.1 + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.1 + (float)i * 0.2 * dx) / (float)squareside)])
-			// || ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + 0.1 + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos       + (float)i * 0.2 * dx) / (float)squareside)])
-			// || ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos       + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos + 0.1 + (float)i * 0.2 * dx) / (float)squareside)])
-			 )
-			)
-		i += 1;
+		!(ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos + (float)i * 0.2 * dx) / (float)squareside)])))
+		i++;
 	return (i);
 }
 
@@ -104,8 +98,7 @@ int		infocus_function(t_vars *mywin)
 int		exit_hook(t_vars *mywin)
 {
 	mlx_destroy_window(mywin->mlx, mywin->win);
-	free(mywin->sprites_array);
-	free(mywin->norms_array);
+	free(mywin->norms);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -148,8 +141,7 @@ int		main(int argc, char **argv)
 	{
 		mywin.mlx = mlx_init();
 		mywin.params = parse_file(argv[1]);
-		mywin.sprites_array = (float*)ft_calloc(2 * mywin.params.res_x, sizeof(float));
-		mywin.norms_array = (float*)ft_calloc(mywin.params.res_x, sizeof(float));
+		mywin.norms = (float*)ft_calloc(mywin.params.res_x, sizeof(float));
 		mywin.move.x = 0;
 		mywin.move.y = 0;
 		mywin.move.rot = 0;
