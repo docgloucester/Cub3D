@@ -50,7 +50,7 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 /* acos returns exclusively into the [0;pi] domain, since cos is only bijective on half of the circle
 ** so, in order to artificially "extend" its definition domains to cover our needs seamlessly
 ** we have to manually flip the result of acos for the "sprite angle" in the plane referential
-** thus, mathematically speaking, breaking the bijectivity of arcos but who cares...
+** (thus, mathematically speaking, breaking the bijectivity of arcos but who cares...)
 **
 ** when the player is "under" the sprite center, acos is unflipped
 ** when the player is "above, acos has to be flipped
