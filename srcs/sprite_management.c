@@ -31,7 +31,6 @@ t_sprite	*newsprite(float norm, float angle_diff, t_point coord, void *next)
 
 void		addsprite(t_sprite **entry, t_point coord, float norm, float angle_diff)
 {
-	int i = 0;
 	t_sprite *curr;
 
 	if (!(*entry))
@@ -40,26 +39,19 @@ void		addsprite(t_sprite **entry, t_point coord, float norm, float angle_diff)
 		*entry = newsprite(norm, angle_diff, coord, *entry);
 	curr = *entry;
 	while (curr->next && curr->next->norm >= norm)
-	{
-		i++;
 		curr = curr->next;
-	}
 	if (curr->norm != norm)
-	{
-		printf("Jumped %d times to insert sprite\n", i);
 		curr->next = newsprite(norm, angle_diff, coord, curr->next);
-	}
 }
 
 void		freesprite(t_sprite *sprites)
 {
 	t_sprite *next;
 
-	while (sprites && sprites->next != NULL)
+	while (sprites)
 	{
 		next = sprites->next;
 		free(sprites);
 		sprites = next;
 	}
-	free(sprites);
 }

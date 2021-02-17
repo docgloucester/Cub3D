@@ -44,7 +44,7 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 			text = &mywin->e_text;
 		offset = float_modulo(end.y, (float)get_square_side(mywin));
 	}
-	draw_block(mywin, mywin->params.res_x - 1 - i, stripe_height, text, offset);
+	draw_stripe(mywin, mywin->params.res_x - 1 - i, stripe_height, text, offset);
 }
 
 /* acos returns exclusively into the [0;pi] domain, since cos is only bijective on half of the circle
@@ -158,7 +158,7 @@ void	debug_sprites(t_vars *mywin, t_sprite *sprites)
 {
 	while (sprites)
 	{
-		printf("Sprite detected at norm %f and at angle %f, linked to %p\n", sprites->norm, sprites->angle, sprites->next);
+		//printf("Sprite detected at norm %f and at angle %f, linked to %p\n", sprites->norm, sprites->angle, sprites->next);
 		draw_square(&mywin->player_img, (int)sprites->coord.x - 4, (int)sprites->coord.y - 4, 8, 0x00FF0000);
 		sprites = sprites->next;
 	}
@@ -194,10 +194,11 @@ void	draw_rays(t_vars *mywin)
 		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, diff, &sprites);
 		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, diff, &sprites);
 		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
-		mywin->norms_array[i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
+		mywin->norms_array[mywin->params.res_x - 1 - i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
 		put_blocks(mywin, i, start, v_end, h_end, diff);
 		diff += 0.333 * PI / (float)mywin->params.res_x;
 	}
 	debug_sprites(mywin, sprites);
+	display_sprites(mywin, sprites);
 	freesprite(sprites);
 }

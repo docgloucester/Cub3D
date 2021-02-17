@@ -95,7 +95,7 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
-void			draw_block(t_vars *mywin, int x_start, int height, t_texture *text, float offset)
+void			draw_stripe(t_vars *mywin, int x_start, int height, t_texture *text, float offset)
 {
 	int		y;
 	int		y_start;

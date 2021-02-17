@@ -132,7 +132,7 @@ unsigned int	get_pixel(t_img *img, int x, int y);
 void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
 void			draw_square(t_img *img, int x, int y, int px, int col);
 void			draw_rect(t_img *img, t_point start, int width, int h, int col);
-void			draw_block(t_vars *mywin, int x_start, int height,
+void			draw_stripe(t_vars *mywin, int x_start, int height,
 				t_texture *text, float offset);
 void			draw_sprite(t_vars *mywin, int x, int height, float offset);
 void			fill_window(t_vars *mywin, t_img *img, int col);
@@ -146,7 +146,8 @@ void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
 void			draw_player_dir(t_vars *mywin, int col);
 void			draw_rays(t_vars *mywin);
-void			addsprite(t_sprite **sprites, t_point coord, float norm, float angle_diff);;
+void			addsprite(t_sprite **sprites, t_point coord, float norm, float angle_diff);
+void			display_sprites(t_vars *mywin, t_sprite *sprites);
 void			freesprite(t_sprite *sprites);
 void			create_bmp(char *image, int height, int width);
 
