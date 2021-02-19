@@ -135,12 +135,15 @@ int		key_release(int keycode, t_vars *mywin)
 
 int		main(int argc, char **argv)
 {
-	t_vars		mywin;
+	t_vars	mywin;
+	int		error;
 
 	if (argc == 2 || argc == 3)
 	{
 		mywin.mlx = mlx_init();
 		mywin.params = parse_file(argv[1]);
+		if (error = check_error(&mywin) != 0)
+			return (error);
 		mywin.norms = (float*)ft_calloc(mywin.params.res_x, sizeof(float));
 		mywin.move.x = 0;
 		mywin.move.y = 0;

@@ -18,7 +18,7 @@ LNFLM	= -framework OpenGL -framework AppKit -fsanitize=address
 LNFLL	= -lXext -lX11 -lm -fsanitize=address
 
 SRCSF	= main.c parse_file.c mlx_extras.c deal_map.c build_image.c \
-		raycasting.c create_bmp.c sprite_management.c
+		raycasting.c create_bmp.c sprite_management.c check_error.c
 
 SRCSD	= srcs/
 INCL	= includes/
