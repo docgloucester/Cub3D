@@ -53,7 +53,8 @@ int		check_collisions(t_vars *mywin, float dx, float dy, int squareside)
 
 	i = 0;
 	while (i < 10 &&
-		!(ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + (float)i * 0.2 * dy) / (float)squareside)][(int)((mywin->player.x_pos + (float)i * 0.2 * dx) / (float)squareside)])))
+		!(ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + (float)i * 0.2 * dy) / (float)squareside)]
+			[(int)((mywin->player.x_pos + (float)i * 0.2 * dx) / (float)squareside)])))
 		i++;
 	return (i);
 }
