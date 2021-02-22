@@ -97,7 +97,8 @@ int		infocus_function(t_vars *mywin)
 
 int		exit_hook(t_vars *mywin)
 {
-	mlx_destroy_window(mywin->mlx, mywin->win);
+	if (mywin->win)
+		mlx_destroy_window(mywin->mlx, mywin->win);
 	free(mywin->norms);
 	exit(EXIT_SUCCESS);
 	return (0);
@@ -136,25 +137,22 @@ int		key_release(int keycode, t_vars *mywin)
 int		main(int argc, char **argv)
 {
 	t_vars	mywin;
-	int		error;
 
 	if (argc == 2 || argc == 3)
 	{
 		mywin.mlx = mlx_init();
 		mywin.params = parse_file(argv[1]);
-		if (error = check_error(&mywin) != 0)
-			return (error);
-		mywin.norms = (float*)ft_calloc(mywin.params.res_x, sizeof(float));
-		mywin.move.x = 0;
-		mywin.move.y = 0;
-		mywin.move.rot = 0;
+		check_error(&mywin);
 		if (mywin.params.err)
 		{
 			ft_printf("Error\n%s", mywin.params.err);
 			exit(EXIT_FAILURE);
 		}
+		mywin.move.x = 0;
+		mywin.move.y = 0;
+		mywin.move.rot = 0;
+		mywin.norms = (float*)ft_calloc(mywin.params.res_x, sizeof(float));
 		print_map(&mywin);
-		mywin.win = mlx_new_window(mywin.mlx, mywin.params.res_x, mywin.params.res_y, "Cub3D");
 		mywin.img.img = mlx_new_image(mywin.mlx, mywin.params.res_x, mywin.params.res_y);
 		mywin.img.addr = mlx_get_data_addr(mywin.img.img, &mywin.img.bits_per_pixel, &mywin.img.line_length, &mywin.img.endian);
 		mywin.player_img.img = mlx_new_image(mywin.mlx, mywin.params.res_x, mywin.params.res_y);
@@ -173,12 +171,13 @@ int		main(int argc, char **argv)
 		mywin.sprite.img.addr = mlx_get_data_addr(mywin.sprite.img.img, &mywin.sprite.img.bits_per_pixel, &mywin.sprite.img.line_length, &mywin.sprite.img.endian);
 		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
-		refresh(&mywin);
 		if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
 		{
 			create_bmp(mywin.fps_img.addr, mywin.params.res_y, mywin.params.res_x);
 			return (exit_hook(&mywin));
 		}
+		mywin.win = mlx_new_window(mywin.mlx, mywin.params.res_x, mywin.params.res_y, "Cub3D");
+		refresh(&mywin);
 		ft_printf("%d\n", get_square_side(&mywin));
 		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 1L, &key_press, &mywin);
 		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 1L << 1, &key_release, &mywin);

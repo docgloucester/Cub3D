@@ -149,5 +149,6 @@ void			addsprite(t_sprite **spr, t_point crd, float norm, float diff);
 void			display_sprites(t_vars *mywin, t_sprite *sprites);
 void			freesprite(t_sprite *sprites);
 void			create_bmp(char *image, int height, int width);
+void			check_error(t_vars *mywin);
 
 #endif
