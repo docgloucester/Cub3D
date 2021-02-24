@@ -2,4 +2,5 @@ Cub3D
 *.o
 *.a
 *.bmp
+*.dylib
 mlx-test
