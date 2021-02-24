@@ -113,48 +113,36 @@ t_params	parse_file(char *path)
 	char		*line;
 	char		**splt;
 	t_params	params;
+	int			i;
 
 	line = NULL;
 	params = init_params();
 	fd = open(path, O_RDONLY);
 	if(read(fd, line, 0) != 0)
-		params.err = ft_strdup("File invalid or not found !\n");
+		params.err = ft_strdup("Map file invalid or not found !\n");
 	else
 		while (get_next_line(fd, &line) > 0)
 		{
-			if(line[0] == 'R')
-			{
-				get_res(&params, line + 1);
-			}
-			else if(line[0] == 'F')
-			{
-				params.floor_col = get_fccol(&params,line + 1);
-			}
-			else if(line[0] == 'C')
-			{
-				params.ceilg_col = get_fccol(&params,line + 1);
-			}
-			else if(line[0] == 'N' && line[1] == 'O')
-			{
-				params.no_path = get_path(&params, line + 2);
-			}
-			else if(line[0] == 'S' && line[1] == 'O')
-			{
-				params.so_path = get_path(&params, line + 2);
-			}
-			else if(line[0] == 'W' && line[1] == 'E')
-			{
-				params.we_path = get_path(&params, line + 2);
-			}
-			else if(line[0] == 'E' && line[1] == 'A')
-			{
-				params.ea_path = get_path(&params, line + 2);
-			}
-			else if(line[0] == 'S')
-			{
-				params.sp_path = get_path(&params, line + 1);
-			}
-			else if (ft_strlen(line) == 0)
+			i = 0;
+			while (line[i] == ' ')
+				i++;
+			if(line[i] == 'R')
+				get_res(&params, line + i + 1);
+			else if(line[i] == 'F')
+				params.floor_col = get_fccol(&params,line + i + 1);
+			else if(line[i] == 'C')
+				params.ceilg_col = get_fccol(&params,line + i + 1);
+			else if(line[i] == 'N' && line[i + 1] == 'O')
+				params.no_path = get_path(&params, line + i + 2);
+			else if(line[i] == 'S' && line[i+ 1] == 'O')
+				params.so_path = get_path(&params, line + i + 2);
+			else if(line[i] == 'W' && line[i + 1] == 'E')
+				params.we_path = get_path(&params, line + i + 2);
+			else if(line[i] == 'E' && line[i + 1] == 'A')
+				params.ea_path = get_path(&params, line + i + 2);
+			else if(line[i] == 'S')
+				params.sp_path = get_path(&params, line + i + 1);
+			else if (ft_strlen(line + i) == 0)
 				;
 			else 
 			{
@@ -167,7 +155,6 @@ t_params	parse_file(char *path)
 				{
 					params.err = ft_strdup("Unexpected parameter !\n");
 					free_split(splt);
-					free(line);
 					break ;
 				}
 				free_split(splt);

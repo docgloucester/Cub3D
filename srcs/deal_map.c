@@ -14,10 +14,10 @@
 
 void		trim_map_y(t_params *params)
 {
-int		highest;
-int		lowest;
+	int		highest;
+	int		lowest;
+	int		i;
 
-// int		i;
 	highest = 0;
 	while (params->map[highest] && !ft_strchr(params->map[highest], '1'))
 		highest++;
@@ -27,62 +27,71 @@ int		lowest;
 	lowest--;
 	while (params->map[lowest] && !ft_strchr(params->map[lowest], '1'))
 		lowest--;
-// 	i = highest;
-// 	while (i <= lowest)
-// 	{
-// 		free(params->map[i - highest]);
-// 		params->map[i - highest] = params->map[i];
-// 		i++;
-// 	}
-// 	free(params->map[i - highest]);
-// 	params->map[i - highest] = NULL;
-// 	i++;
-// 	while (params->map[i - highest])
-// 	{
-// 		free(params->map[i - highest]);
-// 		i++;
+	if (highest > 0)
+	{
+		i = 0;
+		while (i < highest)
+			free(params->map[i++]);
+		while (i <= lowest)
+		{
+			params->map[i - highest] = params->map[i];
+			i++;
+		}
+		while (i <= lowest + highest)
+		{
+			params->map[i - highest] = NULL;
+			i++;
+		}
+	}
+	else
+		i = lowest + highest + 1;
+	while (params->map[i - highest])
+	{
+		free(params->map[i - highest]);
+		params->map[i - highest] = NULL;
+		i++;
+	}
 	params->map_y = lowest - highest + 1;
 }
-// }
 
 void		trim_map_x(t_params *params)
 {
 	int		i;
 	int		j;
-	int		leftest_wall_pos;
-	int		rightest_wall_pos;
+	int		leftest;
+	int		rightest;
 	char	*defausse;
 
 	i = 0;
-	leftest_wall_pos = 1000;
+	leftest = 1000;
 	while (params->map[i])
 	{
 		j = 0;
 		while (params->map[i][j] && params->map[i][j] != '1')
 			j++;
-		if (j < leftest_wall_pos)
-			leftest_wall_pos = j;
+		if (j < leftest)
+			leftest = j;
 		i++;
 	}
 	i = 0;
-	rightest_wall_pos = 0;
+	rightest = 0;
 	while (params->map[i])
 	{
 		j = ft_strlen(params->map[i]) - 1;
 		while (j >= 0 && params->map[i][j] != '1')
 			j--;
-		if (j > rightest_wall_pos)
-			rightest_wall_pos = j;
+		if (j > rightest)
+			rightest = j;
 		i++;
 	}
 	i = 0;
 	while (params->map[i])
 	{
 		defausse = params->map[i];
-		params->map[i++] = ft_substr(defausse, leftest_wall_pos, rightest_wall_pos - leftest_wall_pos + 1);
+		params->map[i++] = ft_substr(defausse, leftest, rightest - leftest + 1);
 		free(defausse);
 	}
-	params->map_x = rightest_wall_pos - leftest_wall_pos + 1;
+	params->map_x = rightest - leftest + 1;
 }
 
 void		deal_map(t_params *params, char **line, int fd)

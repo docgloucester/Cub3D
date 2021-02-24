@@ -17,6 +17,8 @@ void	check_error(t_vars *mywin)
 	int	max_x;
 	int	max_y;
 
+	if (mywin->params.err)
+		return ;
 	if (!(mywin->params.res_x && mywin->params.res_y))
 		mywin->params.err = "Resolution unset.\n";
 	if (!(mywin->params.so_path && mywin->params.no_path && mywin->params.ea_path
