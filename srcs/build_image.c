@@ -57,8 +57,8 @@ void	put_map(t_vars *mywin, t_img *img)
 				&& (uwu = ft_strchr(owo, mywin->params.map[y][x])))
 			{
 				change_angle(&mywin->player, PI / 2 * (int)(uwu - owo));
-				mywin->player.x_pos = squares_len * x + 1;
-				mywin->player.y_pos = squares_len * y + 1;
+				mywin->player.x_pos = squares_len * x + squares_len / 2;
+				mywin->player.y_pos = squares_len * y + squares_len / 2;
 			}
 		}
 	}
