@@ -52,6 +52,7 @@ typedef struct	s_coord
 {
 	int	x;
 	int	y;
+	int	count;
 }				t_coord;
 
 typedef struct	s_img

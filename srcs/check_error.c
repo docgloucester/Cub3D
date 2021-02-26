@@ -14,7 +14,13 @@
 
 int		is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev)
 {
-	ft_printf("Checking %d, %d\n", curr.x, curr.y);
+	//ft_printf("Checking %d, %d\n", curr.x, curr.y);
+	curr.count++;
+	if (curr.count > mywin->params.map_y * mywin->params.map_x)
+	{
+		//ft_printf("Force backtracking\n");
+		return (0);
+	}
 	if (prev && curr.x == start.x && curr.y == start.y)
 		return (1);
 	if (curr.x - 1 >= 0
@@ -25,14 +31,6 @@ int		is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev)
 			return (1);
 		(curr.x)++;
 	}
-	if (curr.y + 1 < mywin->params.map_y
-		&& mywin->params.map[curr.y + 1][curr.x] == '1' && prev != -1)
-	{
-		(curr.y)++;
-		if (is_full_border(mywin, curr, start, 1) == 1)
-			return (1);
-		(curr.y)--;
-	}
 	if (curr.x + 1 < mywin->params.map_x
 		&& mywin->params.map[curr.y][curr.x + 1] == '1' && prev != -2)
 	{
@@ -40,6 +38,14 @@ int		is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev)
 		if (is_full_border(mywin, curr, start, 2) == 1)
 			return (1);
 		(curr.x)--;
+	}
+	if (curr.y + 1 < mywin->params.map_y
+		&& mywin->params.map[curr.y + 1][curr.x] == '1' && prev != -1)
+	{
+		(curr.y)++;
+		if (is_full_border(mywin, curr, start, 1) == 1)
+			return (1);
+		(curr.y)--;
 	}
 	if (curr.y - 1 >= 0
 		&& mywin->params.map[curr.y - 1][curr.x] == '1' && prev != 1)
@@ -61,6 +67,7 @@ void	border_closure(t_vars *mywin, int x, int y)
 		{
 			start_wall.x = x;
 			start_wall.y = y;
+			start_wall.count = 0;
 			if (is_full_border(mywin, start_wall, start_wall, 0))
 				return ;
 		}
