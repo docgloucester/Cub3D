@@ -12,6 +12,86 @@
 
 #include <cub3d.h>
 
+int		is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev)
+{
+	if (prev && curr.x == start.x && curr.y == start.y)
+		return (1);
+	if (curr.y + 1 < mywin->params.map_y && mywin->params.map[curr.y + 1][curr.x] == '1' && prev != -1)
+	{
+		(curr.y)++;
+		if (is_full_border(mywin, curr, start, 1) == 1)
+			return (1);
+		(curr.y)--;
+	}
+	if (curr.y - 1 >= 0 && mywin->params.map[curr.y - 1][curr.x] == '1' && prev != 1)
+	{
+		(curr.y)--;
+		if (is_full_border(mywin, curr, start, -1) == 1)
+			return (1);
+		(curr.y)++;
+	}
+	if (curr.x + 1 < mywin->params.map_x && mywin->params.map[curr.y][curr.x + 1] == '1' && prev != -2)
+	{
+		(curr.x)++;
+		if (is_full_border(mywin, curr, start, 2) == 1)
+			return (1);
+		(curr.x)--;
+	}
+	if (curr.x - 1 >= 0 && mywin->params.map[curr.y][curr.x - 1] == '1' && prev != 2)
+	{
+		(curr.x)--;
+		if (is_full_border(mywin, curr, start, -2) == 1)
+			return (1);
+		(curr.x)++;
+	}
+	return (0);
+}
+
+void	border_closure(t_vars *mywin, int x, int y)
+{
+	t_coord	start_wall;
+
+	while (--y >= 0)
+	{
+		if (mywin->params.map[y][x] == '1')
+		{
+			start_wall.x = x;
+			start_wall.y = y;
+			if(is_full_border(mywin, start_wall, start_wall, 0))
+					return;
+		}
+	}
+	mywin->params.err = ft_strdup("Map isn't closed.\n");
+}
+
+void	check_map_content(t_vars *mywin)
+{
+	int	i;
+	int	j;
+	int x;
+	int y;
+
+	i = -1;
+	y = -1;
+	x = -1;
+	while (mywin->params.map[++i] && (j = -1))
+		while (mywin->params.map[i][++j])
+			if (ft_strchr("ENWS", mywin->params.map[i][j]))
+			{
+				if (x == -1)
+				{
+					x = j;
+					y = i;
+				}
+				else
+				{
+					mywin->params.err = ft_strdup("Multiple player positions on map.\n");
+					return ;
+				}
+			}
+	border_closure(mywin, x, y + 1);
+}
+
 void	check_error(t_vars *mywin)
 {
 	int	max_x;
@@ -19,15 +99,15 @@ void	check_error(t_vars *mywin)
 
 	if (mywin->params.err)
 		return ;
-	if (!(mywin->params.res_x && mywin->params.res_y))
-		mywin->params.err = "Resolution unset.\n";
-	if (!(mywin->params.so_path && mywin->params.no_path && mywin->params.ea_path
+	else if (!(mywin->params.res_x && mywin->params.res_y))
+		mywin->params.err = ft_strdup("Resolution unset.\n");
+	else if (!(mywin->params.so_path && mywin->params.no_path && mywin->params.ea_path
 		&& mywin->params.we_path && mywin->params.sp_path))
-		mywin->params.err = "Texture paths unset.\n";
-	if (!(mywin->params.floor_col && mywin->params.ceilg_col))
-		mywin->params.err = "Background colours unset.\n";
-	if (!mywin->params.map)
-		mywin->params.err = "No map\n";
+		mywin->params.err = ft_strdup("Texture paths unset.\n");
+	else if (!(mywin->params.floor_col && mywin->params.ceilg_col))
+		mywin->params.err = ft_strdup("Background colours unset.\n");
+	else if (!mywin->params.map)
+		mywin->params.err = ft_strdup("No map\n");
 	mlx_get_screen_size(mywin->mlx, &max_x, &max_y);
 	if (mywin->params.res_x > max_x || mywin->params.res_y > max_y)
 	{
@@ -36,68 +116,5 @@ void	check_error(t_vars *mywin)
 		mywin->params.res_x = max_x;
 		mywin->params.res_y = max_y;
 	}
-}
-
-void	check_map_closed(t_vars*mywin)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (map[++i])
-	{
-		j = 0;
-	}
-}
-
-void floodFillScanline(Uint32* screenBuffer, int w, int h, int x, int y, int newColor, int oldColor)
-{
-	int x1;
-
-	//draw current scanline from start position to the right
-	x1 = x;
-	while(map[y][x1] != '1' && map[y][x1] != '2')
-		x1++;
-	//draw current scanline from start position to the left
-	x1 = x - 1;
-	while(map[y][x1] != '1' && map[y][x1] != '2')
-		x1--;
-	//test for new scanlines above
-	x1 = x;
-	while(x1 < w && screenBuffer[y * w + x1] == newColor)
-	{
-		if(y > 0 && screenBuffer[(y - 1) * w + x1] == oldColor)
-		{
-			floodFillScanline(screenBuffer, w, h, x1, y - 1, newColor, oldColor);
-		}
-		x1++;
-	}
-	x1 = x - 1;
-	while(x1 >= 0 && screenBuffer[y * w + x1] == newColor)
-	{
-		if(y > 0 && screenBuffer[(y - 1) * w + x1] == oldColor)
-		{
-			floodFillScanline(screenBuffer, w, h, x1, y - 1, newColor, oldColor);
-		}
-		x1--;
-	}
-	//test for new scanlines below
-	x1 = x;
-	while(x1 < w && screenBuffer[y * w + x1] == newColor)
-	{
-		if(y < h - 1 && screenBuffer[(y + 1) * w + x1] == oldColor)
-		{
-			floodFillScanline(screenBuffer, w, h, x1, y + 1, newColor, oldColor);
-		}
-		x1++;
-	}
-	x1 = x - 1;
-	while(x1 >= 0 && screenBuffer[y * w + x1] == newColor)
-	{
-		if(y < h - 1 && screenBuffer[(y + 1) * w + x1] == oldColor)
-		{
-			floodFillScanline(screenBuffer, w, h, x1, y + 1, newColor, oldColor);
-		}
-		x1--;
-	}
+	check_map_content(mywin);
 }

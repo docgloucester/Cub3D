@@ -143,17 +143,19 @@ int		main(int argc, char **argv)
 	{
 		mywin.mlx = mlx_init();
 		mywin.params = parse_file(argv[1]);
-		check_error(&mywin);
+		print_map(&mywin);
+		if (!mywin.params.err)
+			check_error(&mywin);
 		if (mywin.params.err)
 		{
 			ft_printf("Error\n%s", mywin.params.err);
+			free(mywin.params.err);
 			exit(EXIT_FAILURE);
 		}
 		mywin.move.x = 0;
 		mywin.move.y = 0;
 		mywin.move.rot = 0;
 		mywin.norms = (float*)ft_calloc(mywin.params.res_x, sizeof(float));
-		print_map(&mywin);
 		mywin.img.img = mlx_new_image(mywin.mlx, mywin.params.res_x, mywin.params.res_y);
 		mywin.img.addr = mlx_get_data_addr(mywin.img.img, &mywin.img.bits_per_pixel, &mywin.img.line_length, &mywin.img.endian);
 		mywin.player_img.img = mlx_new_image(mywin.mlx, mywin.params.res_x, mywin.params.res_y);

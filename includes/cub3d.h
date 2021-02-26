@@ -48,6 +48,12 @@ typedef struct	s_point
 	float	y;
 }				t_point;
 
+typedef struct	s_coord
+{
+	int	x;
+	int	y;
+}				t_coord;
+
 typedef struct	s_img
 {
 	void	*img;
