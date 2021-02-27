@@ -95,18 +95,6 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
-int				shade_color(int orig_col, float norm)
-{
-	int	r;
-	int	g;
-	int	b;
-
-	r = 1 / norm * (orig_col & (0xFF << 16));
-	g = 1 / norm * (orig_col & (0xFF << 8));
-	b = 1 / norm * (orig_col & 0xFF);
-	return (0x00 << 24 | r << 16 | g << 8 | b);
-}
-
 void			draw_stripe(t_vars *mywin, int x_start, float norm, t_texture *text, float offset)
 {
 	int		y;

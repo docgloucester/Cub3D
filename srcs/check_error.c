@@ -14,13 +14,9 @@
 
 int		is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev)
 {
-	//ft_printf("Checking %d, %d\n", curr.x, curr.y);
 	curr.count++;
 	if (curr.count > mywin->params.map_y * mywin->params.map_x)
-	{
-		//ft_printf("Force backtracking\n");
 		return (0);
-	}
 	if (prev && curr.x == start.x && curr.y == start.y)
 		return (1);
 	if (curr.x - 1 >= 0
@@ -85,14 +81,13 @@ void	check_map_content(t_vars *mywin)
 	y = -1;
 	x = -1;
 	while (mywin->params.map[++i] && (j = -1))
-		while (mywin->params.map[i][++j])
+		while (++j < (int)ft_strlen(mywin->params.map[i]) && mywin->params.map[i][j])
 			if (ft_strchr("ENWS", mywin->params.map[i][j]))
 			{
 				if (x == -1)
 				{
 					x = j;
 					y = i;
-					ft_printf("player detected at %d, %d\n", x, y);
 				}
 				else
 				{

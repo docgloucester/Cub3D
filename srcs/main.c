@@ -30,7 +30,7 @@ void	print_map(t_vars *mywin)
 	int	i;
 
 	i = 0;
-	ft_printf ("%d x %d\n", mywin->params.map_x, mywin->params.map_y);
+	ft_printf ("Found map of size %d x %d\n", mywin->params.map_x, mywin->params.map_y);
 	while (mywin->params.map[i])
 		ft_printf("%s\n", mywin->params.map[i++]);
 }

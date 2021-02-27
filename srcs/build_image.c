@@ -14,15 +14,14 @@
 
 int		get_square_side(t_vars *mywin)
 {
-	int	use_height;
+	int	hor;
+	int	ver;
 
-	use_height = 1;
-	if (mywin->params.map_y < mywin->params.map_x)
-		use_height = 0;
-	return (((1 - use_height) * mywin->params.res_x
-		+ (0 + use_height) * mywin->params.res_y)
-		/ ((1 - use_height) * mywin->params.map_x
-		+ (0 + use_height) * mywin->params.map_y));
+	hor = mywin->params.res_x / mywin->params.map_x;
+	ver = mywin->params.res_y / mywin->params.map_y;
+	if (ver < hor)
+		return (ver);
+	return (hor);
 }
 
 void	put_map(t_vars *mywin, t_img *img)
