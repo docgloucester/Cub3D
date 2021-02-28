@@ -104,6 +104,7 @@ t_point	gethorray(t_vars *mywin, t_point start, float angle, t_point *delta_ray)
 	t_point end;
 	int		squareside = get_square_side(mywin);
 
+
 	if (angle == 0 || angle == PI)
 	{
 		end.y = start.y;

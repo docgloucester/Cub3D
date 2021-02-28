@@ -19,6 +19,9 @@ int		get_square_side(t_vars *mywin)
 
 	hor = mywin->params.res_x / mywin->params.map_x;
 	ver = mywin->params.res_y / mywin->params.map_y;
+	// ft_printf("resy is %d and mapy is %d\n\n", mywin->params.res_y, mywin->params.map_y);
+	// ft_printf("resx is %d and mapx is %d\n\n", mywin->params.res_x, mywin->params.map_x);
+	// ft_printf("ver gss is %d\nhor gss is %d\n\n", ver, hor);
 	if (ver < hor)
 		return (ver);
 	return (hor);

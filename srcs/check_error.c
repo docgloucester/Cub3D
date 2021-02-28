@@ -95,7 +95,10 @@ void	check_map_content(t_vars *mywin)
 					return ;
 				}
 			}
-	border_closure(mywin, x, y + 1);
+	if (x == -1)
+		mywin->params.err = ft_strdup("No player on map.\n");
+	else
+		border_closure(mywin, x, y + 1);
 }
 
 void	check_error(t_vars *mywin)
@@ -103,9 +106,7 @@ void	check_error(t_vars *mywin)
 	int	max_x;
 	int	max_y;
 
-	if (mywin->params.err)
-		return ;
-	else if (!(mywin->params.res_x && mywin->params.res_y))
+	if (!(mywin->params.res_x && mywin->params.res_y))
 		mywin->params.err = ft_strdup("Resolution unset.\n");
 	else if (!(mywin->params.so_path && mywin->params.no_path
 		&& mywin->params.ea_path && mywin->params.we_path
@@ -113,7 +114,7 @@ void	check_error(t_vars *mywin)
 		mywin->params.err = ft_strdup("Texture paths unset.\n");
 	else if (!(mywin->params.floor_col && mywin->params.ceilg_col))
 		mywin->params.err = ft_strdup("Background colours unset.\n");
-	else if (!mywin->params.map)
+	else if (!(mywin->params.map))
 		mywin->params.err = ft_strdup("No map\n");
 	mlx_get_screen_size(mywin->mlx, &max_x, &max_y);
 	if (mywin->params.res_x > max_x || mywin->params.res_y > max_y)
@@ -123,5 +124,6 @@ void	check_error(t_vars *mywin)
 		mywin->params.res_x = max_x;
 		mywin->params.res_y = max_y;
 	}
-	check_map_content(mywin);
+	if (!mywin->params.err)
+		check_map_content(mywin);
 }

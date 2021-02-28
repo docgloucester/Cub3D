@@ -131,7 +131,7 @@ typedef	struct	s_vars {
 }				t_vars;
 
 t_params		parse_file(char *path);
-void			free_split(char **split);
+int				free_split(char **split);
 float			float_modulo(float a, float b);
 void			my_pixelput(t_img *img, int x, int y, int col);
 unsigned int	get_pixel(t_img *img, int x, int y);

@@ -94,25 +94,37 @@ void		trim_map_x(t_params *params)
 	params->map_x = rightest - leftest + 1;
 }
 
+void		check_line(t_params *params, char **line)
+{
+	int	len;
+
+	len = ft_strlen(*line);
+	while (--len >= 0)
+		if (!(params->err) &&!(ft_strchr(" 012NSEW", (*line)[len])))
+			params->err = ft_strdup("Map invalid !\n");
+}
+
 void		deal_map(t_params *params, char **line, int fd)
 {
 	int		i;
 	char	**splt;
 
-	i = 1;
-	params->map = (char**)malloc(i * sizeof(char*));
+	check_line(params, line);
+	params->map = (char**)malloc(sizeof(char*));
 	params->map[0] = ft_strdup(*line);
 	free(*line);
 	get_next_line(fd, line);
+	check_line(params, line);
 	splt = ft_split(*line, ' ');
-	while (splt[0] != NULL && ft_isdigit(splt[0][0]))
+	i = 1;
+	while (splt[0] != NULL && ft_isdigit(splt[0][0]) && (i++))
 	{
-		i++;
 		params->map = ft_realloc(params->map, (i - 1) * sizeof(char*), i * sizeof(char*));
 		params->map[i - 1] = ft_strdup(*line);
 		free_split(splt);
 		free(*line);
 		get_next_line(fd, line);
+		check_line(params, line);
 		splt = ft_split(*line, ' ');
 	}
 	free_split(splt);

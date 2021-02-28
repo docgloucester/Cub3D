@@ -33,6 +33,7 @@ void	print_map(t_vars *mywin)
 	ft_printf ("Found map of size %d x %d\n", mywin->params.map_x, mywin->params.map_y);
 	while (mywin->params.map[i])
 		ft_printf("%s\n", mywin->params.map[i++]);
+	ft_printf ("%d\n", get_square_side(mywin));	
 }
 
 void	draw_player_dir(t_vars *mywin, int col)
@@ -143,7 +144,6 @@ int		main(int argc, char **argv)
 	{
 		mywin.mlx = mlx_init();
 		mywin.params = parse_file(argv[1]);
-		print_map(&mywin);
 		if (!mywin.params.err)
 			check_error(&mywin);
 		if (mywin.params.err)
@@ -152,6 +152,7 @@ int		main(int argc, char **argv)
 			free(mywin.params.err);
 			exit(EXIT_FAILURE);
 		}
+		print_map(&mywin);
 		mywin.move.x = 0;
 		mywin.move.y = 0;
 		mywin.move.rot = 0;

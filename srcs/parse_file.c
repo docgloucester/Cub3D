@@ -12,7 +12,7 @@
 
 #include <cub3d.h>
 
-void		free_split(char **split)
+int		free_split(char **split)
 {
 	int	i;
 
@@ -20,6 +20,7 @@ void		free_split(char **split)
 	while(split[i])
 		free(split[i++]);
 	free(split);
+	return (1);
 }
 
 void		get_res(t_params *params, char *line)
@@ -31,9 +32,12 @@ void		get_res(t_params *params, char *line)
 	{
 		params->res_x = ft_atoi(line_content[0]);
 		params->res_y = ft_atoi(line_content[1]);
+		if (params->res_x < 4 || params->res_y < 4)
+			params->err = ft_strdup("Invalid resolution !\n");
+
 	}
 	else
-		params->err = "Number of variables on screen resolution line must be 2 !\n";
+		params->err = ft_strdup("Number of variables on screen resolution line must be 2 !\n");
 	if (line_content)
 		free_split(line_content);
 }
@@ -54,15 +58,19 @@ int			get_fccol(t_params *params, char *line)
 		free(trimmed_line);
 		if (lico && lico[0] && lico[1] && lico[2] && !lico[3])
 		{
+			if ((ft_atoi(lico[0]) < 0 || ft_atoi(lico[1]) < 0 || ft_atoi(lico[2]) < 0
+				|| ft_atoi(lico[0]) > 255 || ft_atoi(lico[1]) > 255 || ft_atoi(lico[2]) > 255
+				) && (params->err = ft_strdup("Invalid colour!\n")) && (free_split(lico)))
+				return (0);
 			toret = 0x00 << 24 | ft_atoi(lico[0]) << 16;
 			toret = toret | ft_atoi(lico[1]) << 8;
 			toret = toret | ft_atoi(lico[2]) << 0;
 		}
 		else
-			params->err = "Colour selection line must be 1 comma-separated array of 3 values!\n";
+			params->err = ft_strdup("Colour selection line must be 1 comma-separated array of 3 values!\n");
 	}
 	else
-		params->err = "Colour selection line must be 1 comma-separated array of 3 values!\n";
+		params->err = ft_strdup("Colour selection line must be 1 comma-separated array of 3 values!\n");
 	if (lico)
 		free_split(lico);
 	return (toret);
@@ -72,19 +80,23 @@ char		*get_path(t_params *params, char *line)
 {
 	char	**line_content;
 	char	*path;
+	int		fd;
 
 	line_content = ft_split(line , ' ');
 	if (line_content && line_content[0] && !line_content[1])
 	{
 		path = ft_strdup(line_content[0]);
 		free_split(line_content);
+		fd = open(path, O_RDONLY);
+		if(read(fd, line, 0) != 0)
+			params->err = ft_strdup("Texture file invalid or not found !\n");
 		return (path);
 	}
 	else
 	{
 		if (line_content)
 			free_split(line_content);
-		params->err = "Number of variables on path definition line must be 2 !\n";
+		params->err = ft_strdup("Number of variables on path definition line must be 2 !\n");
 		return (NULL);
 	}
 }
