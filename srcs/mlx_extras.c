@@ -95,7 +95,7 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 	}
 }
 
-void			draw_stripe(t_vars *mywin, int x_start, float norm, t_texture *text, float offset)
+void			draw_stripe(t_vars *mywin, int x_start, float norm, t_img *text, float offset)
 {
 	int		y;
 	int		y_start;
@@ -109,7 +109,7 @@ void			draw_stripe(t_vars *mywin, int x_start, float norm, t_texture *text, floa
 	{
 		if (y_start + y >= 0 && y_start + y < mywin->params.res_y)
 		{
-			col = get_pixel(&text->img, text->img.width - 1 - (int)(offset * (float)text->img.width), (int)((float)y / (float)height * (float)text->img.height));
+			col = get_pixel(text, text->width - 1 - (int)(offset * (float)text->width), (int)((float)y / (float)height * (float)text->height));
 			if (col << 8 != 0)
 				my_pixelput(&mywin->fps_img, x_start, y_start + y, col);
 		}

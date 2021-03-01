@@ -14,7 +14,7 @@
 
 void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_end, float diff)
 {
-	t_texture	*text;
+	t_img	*text;
 	t_point		end;
 	int			comp_norm;
 	float		norm;
@@ -61,7 +61,7 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 ** when the player is "above, acos has to be flipped
 */
 
-t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff, t_sprite **sprites)
+t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff)
 {
 	int 	reached_wall;
 	int		squareside;
@@ -84,9 +84,9 @@ t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff, t_
 			sprite_center.x = (int)(end.x / squareside) * squareside + squareside / 2;
 			sprite_center.y = (int)(end.y / squareside) * squareside + squareside / 2;
 			if (player_pos.y >= sprite_center.y)
-				addsprite(sprites, sprite_center, get_norm(player_pos, sprite_center), acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
+				addsprite(mywin, sprite_center, get_norm(player_pos, sprite_center), acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
 			else
-				addsprite(sprites, sprite_center, get_norm(player_pos, sprite_center), - acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
+				addsprite(mywin, sprite_center, get_norm(player_pos, sprite_center), - acosf((sprite_center.x - player_pos.x) / get_norm(player_pos, sprite_center)) - mywin->player.angle);
 		}
 		if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '1')
 			reached_wall = 1;
@@ -163,7 +163,6 @@ void	draw_rays(t_vars *mywin)
 	t_point		half;
 	float		diff;
 	int			i;
-	t_sprite	*sprites;
 
 	fill_window(mywin, &mywin->fps_img, mywin->params.ceilg_col);
 	half.x = 0;
@@ -171,7 +170,7 @@ void	draw_rays(t_vars *mywin)
 	draw_rect(&mywin->fps_img, half, mywin->params.res_x, mywin->params.res_y / 2, mywin->params.floor_col);
 	diff = -0.167 * PI;
 	i = -1;
-	sprites = NULL;
+	mywin->sprites = NULL;
 	while (++i < mywin->params.res_x)
 	{
 		angle = mywin->player.angle + diff;
@@ -181,13 +180,13 @@ void	draw_rays(t_vars *mywin)
 			angle -= 2 * PI;
 		start.x = mywin->player.x_pos;
 		start.y = mywin->player.y_pos;
-		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, diff, &sprites);
-		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, diff, &sprites);
+		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, diff);
+		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, diff);
 		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
 		mywin->norms[mywin->params.res_x - 1 - i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
 		put_blocks(mywin, i, start, v_end, h_end, diff);
 		diff += 0.333 * PI / (float)mywin->params.res_x;
 	}
-	display_sprites(mywin, sprites);
-	freesprite(sprites);
+	display_sprites(mywin);
+	freesprite(mywin->sprites);
 }

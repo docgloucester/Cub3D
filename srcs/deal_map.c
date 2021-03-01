@@ -25,9 +25,9 @@ void		trim_map_y(t_params *params)
 	while (params->map[lowest])
 		lowest++;
 	lowest--;
-	while (params->map[lowest] && !ft_strchr(params->map[lowest], '1'))
+	while (lowest >= 0 && params->map[lowest] && !ft_strchr(params->map[lowest], '1'))
 		lowest--;
-	if (highest > 0)
+	if (highest > 0 && lowest > highest)
 	{
 		i = 0;
 		while (i < highest)
@@ -100,7 +100,7 @@ void		check_line(t_params *params, char **line)
 
 	len = ft_strlen(*line);
 	while (--len >= 0)
-		if (!(params->err) &&!(ft_strchr(" 012NSEW", (*line)[len])))
+		if (!(params->err) && (!(ft_strchr(" 012NSEW", (*line)[len]))))
 			params->err = ft_strdup("Map invalid !\n");
 }
 
@@ -117,7 +117,7 @@ void		deal_map(t_params *params, char **line, int fd)
 	check_line(params, line);
 	splt = ft_split(*line, ' ');
 	i = 1;
-	while (splt[0] != NULL && ft_isdigit(splt[0][0]) && (i++))
+	while (splt[0] != NULL && (ft_isdigit(splt[0][0]) || splt[0][0] == ' ') && (i++))
 	{
 		params->map = ft_realloc(params->map, (i - 1) * sizeof(char*), i * sizeof(char*));
 		params->map[i - 1] = ft_strdup(*line);
@@ -130,6 +130,9 @@ void		deal_map(t_params *params, char **line, int fd)
 	free_split(splt);
 	params->map = ft_realloc(params->map, i * sizeof(char*), (i + 1) * sizeof(char*));
 	params->map[i] = NULL;
+	free(*line);
+	while (get_next_line(fd, line))
+		free (*line);
 	trim_map_y(params);
 	trim_map_x(params);
 }

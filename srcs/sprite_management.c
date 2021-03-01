@@ -29,47 +29,53 @@ t_sprite	*newsprite(float norm, float angle_diff, t_point coord, void *next)
 	return (sprites);
 }
 
-void		addsprite(t_sprite **entry, t_point coord, float norm, float diff)
+void		addsprite(t_vars *mywin, t_point coord, float norm, float diff)
 {
 	t_sprite *curr;
 
-	if (!(*entry))
-		*entry = newsprite(norm, diff, coord, NULL);
-	if ((*entry)->norm < norm)
-		*entry = newsprite(norm, diff, coord, *entry);
-	curr = *entry;
+	while (diff < -PI)
+		diff += 2 * PI;
+	while (diff > PI)
+		diff -= 2 * PI;
+	if (!(mywin->sprites))
+		mywin->sprites = newsprite(norm, diff, coord, NULL);
+	if (mywin->sprites->norm < norm)
+		mywin->sprites = newsprite(norm, diff, coord, mywin->sprites);
+	curr = mywin->sprites;
 	while (curr->next && curr->next->norm >= norm)
 		curr = curr->next;
-	if (curr->norm != norm)
+	if (!(curr->norm == norm && curr->angle == diff))
 		curr->next = newsprite(norm, diff, coord, curr->next);
 }
 
-void		display_sprites(t_vars *mywin, t_sprite *sprites)
+void		display_sprites(t_vars *mywin)
 {
-	int height;
-	int width;
-	int	x;
-	int	center_stripe;
+	int			height;
+	int			width;
+	int			x;
+	int			center_stripe;
+	t_sprite	*curr;
 
-	while (sprites)
+	curr = mywin->sprites;
+	while (curr)
 	{
 		x = 0;
-		height = get_square_side(mywin) * mywin->params.res_y / sprites->norm;
-		width = height * mywin->sprite.img.width / mywin->sprite.img.height;
+		height = get_square_side(mywin) * mywin->params.res_y / curr->norm;
+		width = height * mywin->sprite.width / mywin->sprite.height;
 		center_stripe = mywin->params.res_x - 1
-		- ((sprites->angle + 0.167 * PI) * mywin->params.res_x) / (0.333 * PI);
+		- ((curr->angle + 0.167 * PI) * mywin->params.res_x) / (0.333 * PI);
 		while (x < width)
 		{
 			if ((x + center_stripe - width / 2 >= 0)
 				&& (x + center_stripe - width / 2 < mywin->params.res_x)
-				&& sprites->norm < mywin->norms[x + center_stripe - width / 2])
+				&& curr->norm < mywin->norms[x + center_stripe - width / 2])
 			{
-				draw_stripe(mywin, x + center_stripe - width / 2, sprites->norm,
+				draw_stripe(mywin, x + center_stripe - width / 2, curr->norm,
 					&mywin->sprite, 0.999 - (float)x / (float)width);
 			}
 			x++;
 		}
-		sprites = sprites->next;
+		curr = curr->next;
 	}
 }
 

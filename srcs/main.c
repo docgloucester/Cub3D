@@ -33,7 +33,6 @@ void	print_map(t_vars *mywin)
 	ft_printf ("Found map of size %d x %d\n", mywin->params.map_x, mywin->params.map_y);
 	while (mywin->params.map[i])
 		ft_printf("%s\n", mywin->params.map[i++]);
-	ft_printf ("%d\n", get_square_side(mywin));	
 }
 
 void	draw_player_dir(t_vars *mywin, int col)
@@ -91,17 +90,27 @@ int		do_stuff(t_vars *mywin)
 	return (0);
 }
 
-int		infocus_function(t_vars *mywin)
-{
-	refresh(mywin);
-	return (0);
-}
-
 int		exit_hook(t_vars *mywin)
 {
+	mlx_destroy_image(mywin->mlx, mywin->img.img);
+	mlx_destroy_image(mywin->mlx, mywin->player_img.img);
+	mlx_destroy_image(mywin->mlx, mywin->fps_img.img);
+	mlx_destroy_image(mywin->mlx, mywin->n_text.img);
+	mlx_destroy_image(mywin->mlx, mywin->s_text.img);
+	mlx_destroy_image(mywin->mlx, mywin->e_text.img);
+	mlx_destroy_image(mywin->mlx, mywin->w_text.img);
+	mlx_destroy_image(mywin->mlx, mywin->sprite.img);
 	if (mywin->win)
 		mlx_destroy_window(mywin->mlx, mywin->win);
+	mlx_destroy_display(mywin->mlx);
+	free(mywin->mlx);
 	free(mywin->norms);
+	free(mywin->params.no_path);
+	free(mywin->params.so_path);
+	free(mywin->params.ea_path);
+	free(mywin->params.we_path);
+	free(mywin->params.sp_path);
+	free_split(mywin->params.map);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -163,30 +172,28 @@ int		main(int argc, char **argv)
 		mywin.player_img.addr = mlx_get_data_addr(mywin.player_img.img, &mywin.player_img.bits_per_pixel, &mywin.player_img.line_length, &mywin.player_img.endian);
 		mywin.fps_img.img = mlx_new_image(mywin.mlx, mywin.params.res_x, mywin.params.res_y);
 		mywin.fps_img.addr = mlx_get_data_addr(mywin.fps_img.img, &mywin.fps_img.bits_per_pixel, &mywin.fps_img.line_length, &mywin.fps_img.endian);
-		mywin.n_text.img.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.no_path, &mywin.n_text.img.width, &mywin.n_text.img.height);
-		mywin.n_text.img.addr = mlx_get_data_addr(mywin.n_text.img.img, &mywin.n_text.img.bits_per_pixel, &mywin.n_text.img.line_length, &mywin.n_text.img.endian);
-		mywin.s_text.img.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.so_path, &mywin.s_text.img.width, &mywin.s_text.img.height);
-		mywin.s_text.img.addr = mlx_get_data_addr(mywin.s_text.img.img, &mywin.s_text.img.bits_per_pixel, &mywin.s_text.img.line_length, &mywin.s_text.img.endian);
-		mywin.e_text.img.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.ea_path, &mywin.e_text.img.width, &mywin.e_text.img.height);
-		mywin.e_text.img.addr = mlx_get_data_addr(mywin.e_text.img.img, &mywin.e_text.img.bits_per_pixel, &mywin.e_text.img.line_length, &mywin.e_text.img.endian);
-		mywin.w_text.img.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.we_path, &mywin.w_text.img.width, &mywin.w_text.img.height);
-		mywin.w_text.img.addr = mlx_get_data_addr(mywin.w_text.img.img, &mywin.w_text.img.bits_per_pixel, &mywin.w_text.img.line_length, &mywin.w_text.img.endian);
-		mywin.sprite.img.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.sp_path, &mywin.sprite.img.width, &mywin.sprite.img.height);
-		mywin.sprite.img.addr = mlx_get_data_addr(mywin.sprite.img.img, &mywin.sprite.img.bits_per_pixel, &mywin.sprite.img.line_length, &mywin.sprite.img.endian);
+		mywin.n_text.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.no_path, &mywin.n_text.width, &mywin.n_text.height);
+		mywin.n_text.addr = mlx_get_data_addr(mywin.n_text.img, &mywin.n_text.bits_per_pixel, &mywin.n_text.line_length, &mywin.n_text.endian);
+		mywin.s_text.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.so_path, &mywin.s_text.width, &mywin.s_text.height);
+		mywin.s_text.addr = mlx_get_data_addr(mywin.s_text.img, &mywin.s_text.bits_per_pixel, &mywin.s_text.line_length, &mywin.s_text.endian);
+		mywin.e_text.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.ea_path, &mywin.e_text.width, &mywin.e_text.height);
+		mywin.e_text.addr = mlx_get_data_addr(mywin.e_text.img, &mywin.e_text.bits_per_pixel, &mywin.e_text.line_length, &mywin.e_text.endian);
+		mywin.w_text.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.we_path, &mywin.w_text.width, &mywin.w_text.height);
+		mywin.w_text.addr = mlx_get_data_addr(mywin.w_text.img, &mywin.w_text.bits_per_pixel, &mywin.w_text.line_length, &mywin.w_text.endian);
+		mywin.sprite.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.sp_path, &mywin.sprite.width, &mywin.sprite.height);
+		mywin.sprite.addr = mlx_get_data_addr(mywin.sprite.img, &mywin.sprite.bits_per_pixel, &mywin.sprite.line_length, &mywin.sprite.endian);
 		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
+		mywin.win = (void*)NULL;
 		if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
 		{
 			create_bmp(mywin.fps_img.addr, mywin.params.res_y, mywin.params.res_x);
 			return (exit_hook(&mywin));
 		}
 		mywin.win = mlx_new_window(mywin.mlx, mywin.params.res_x, mywin.params.res_y, "Cub3D");
-		refresh(&mywin);
-		ft_printf("%d\n", get_square_side(&mywin));
 		mlx_hook(mywin.win, X_EVENT_KEY_PRESS, 1L, &key_press, &mywin);
 		mlx_hook(mywin.win, X_EVENT_KEY_RELEASE, 1L << 1, &key_release, &mywin);
-		mlx_hook(mywin.win, X_EVENT_EXIT, 0, &exit_hook, &mywin);
-		mlx_hook(mywin.win, 9, 1L << 21, infocus_function, &mywin);
+		mlx_hook(mywin.win, X_EVENT_EXIT, 1L << 17, &exit_hook, &mywin);
 		mlx_loop_hook(mywin.mlx, do_stuff, &mywin);
 		mlx_loop(mywin.mlx);
 	}

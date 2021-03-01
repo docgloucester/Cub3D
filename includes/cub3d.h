@@ -18,7 +18,7 @@
 # define X_EVENT_MOUSE_PRESS	4
 # define X_EVENT_MOUSE_RELEASE	5
 # define X_EVENT_MOUSE_MOVE		6
-# define X_EVENT_EXIT			17
+# define X_EVENT_EXIT			33
 # include <libft.h>
 # include <mlx.h>
 # include <math.h>
@@ -65,11 +65,6 @@ typedef struct	s_img
 	int		width;
 	int		height;
 }				t_img;
-
-typedef struct	s_texture
-{
-	t_img	img;
-}				t_texture;
 
 typedef struct	s_sprite
 {
@@ -123,11 +118,12 @@ typedef	struct	s_vars {
 	t_img		img;
 	t_img		player_img;
 	t_img		fps_img;
-	t_texture	n_text;
-	t_texture	s_text;
-	t_texture	e_text;
-	t_texture	w_text;
-	t_texture	sprite;
+	t_img		n_text;
+	t_img		s_text;
+	t_img		e_text;
+	t_img		w_text;
+	t_img		sprite;
+	t_sprite	*sprites;
 }				t_vars;
 
 t_params		parse_file(char *path);
@@ -139,7 +135,7 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
 void			draw_square(t_img *img, int x, int y, int px, int col);
 void			draw_rect(t_img *img, t_point start, int width, int h, int col);
 void			draw_stripe(t_vars *mywin, int x_start, float norm,
-				t_texture *text, float offset);
+				t_img *text, float offset);
 void			draw_sprite(t_vars *mywin, int x, int height, float offset);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			mlx_merge_img(t_vars *mw, t_img *tmp, t_img *bck, t_img *front);
@@ -152,8 +148,8 @@ void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
 void			draw_player_dir(t_vars *mywin, int col);
 void			draw_rays(t_vars *mywin);
-void			addsprite(t_sprite **spr, t_point crd, float norm, float diff);
-void			display_sprites(t_vars *mywin, t_sprite *sprites);
+void			addsprite(t_vars *mywin, t_point crd, float norm, float diff);
+void			display_sprites(t_vars *mywin);
 void			freesprite(t_sprite *sprites);
 void			create_bmp(char *image, int height, int width);
 void			check_error(t_vars *mywin);
