@@ -52,9 +52,9 @@ int		check_collisions(t_vars *mywin, float dx, float dy, int squareside)
 	int i;
 
 	i = 0;
-	while (i < 10 &&
-		!(ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + (float)i * 0.2 * dy) / (float)squareside)]
-			[(int)((mywin->player.x_pos + (float)i * 0.2 * dx) / (float)squareside)])))
+	while (i <= 10 &&
+		!(ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + (float)i * 0.2f * dy) / (float)squareside)]
+			[(int)((mywin->player.x_pos + (float)i * 0.2f * dx) / (float)squareside)])))
 		i++;
 	return (i);
 }
@@ -69,12 +69,12 @@ int		do_stuff(t_vars *mywin)
 	squareside = get_square_side(mywin);
 	if (mywin->move.x || mywin->move.y)
 	{
-		dx = get_square_side(mywin) / 4 * (mywin->player.dx * mywin->move.y
+		dx = squareside / 4 * (mywin->player.dx * mywin->move.y
 			+ mywin->player.dy * mywin->move.x);
-		dy = get_square_side(mywin) / 4 * (mywin->player.dy * mywin->move.y
+		dy = squareside / 4 * (mywin->player.dy * mywin->move.y
 			- mywin->player.dx * mywin->move.x);
 		i = check_collisions(mywin, dx, dy, squareside);
-		if (i == 10)
+		if (i == 11)
 		{
 			mywin->player.x_pos += dx;
 			mywin->player.y_pos += dy;
