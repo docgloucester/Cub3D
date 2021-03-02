@@ -12,7 +12,7 @@
 
 #include <cub3d.h>
 
-void	file_header(int nblines, int lineweight, int fd)
+int	file_header(int nblines, int lineweight, int fd)
 {
 	unsigned char	header[14];
 	int				size;
@@ -26,10 +26,10 @@ void	file_header(int nblines, int lineweight, int fd)
 	header[4] = (unsigned char)(size >> 16);
 	header[5] = (unsigned char)(size >> 24);
 	header[10] = (unsigned char)(14 + 40);
-	write(fd, header, 14);
+	return (write(fd, header, 14));
 }
 
-void	info_header(int height, int width, int fd)
+int	info_header(int height, int width, int fd)
 {
 	unsigned char	header[40];
 
@@ -45,19 +45,31 @@ void	info_header(int height, int width, int fd)
 	header[11] = (unsigned char)(height >> 24);
 	header[12] = (unsigned char)(1);
 	header[14] = (unsigned char)(4 * 8);
-	write(fd, header, 40);
+	return(write(fd, header, 40));
 }
 
-void	create_bmp(char *image, int height, int width)
+int	create_bmp(char *image, int height, int width)
 {
 	int	fd;
 	int	i;
+	int ret;
 
 	fd = open("image.bmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	file_header(height, width * 4, fd);
-	info_header(height, width, fd);
+	if (fd == -1)
+		return (-1);
+	ret = file_header(height, width * 4, fd);
+	if (ret == -1)
+		return (-1);
+	ret = info_header(height, width, fd);
+	if (ret == -1)
+		return (-1);
 	i = height;
 	while (i-- >= 0)
-		write(fd, image + (i * width * 4), width * 4);
+	{
+		ret = write(fd, image + (i * width * 4), width * 4);
+		if (ret == -1)
+			return (ret);
+	}
 	close(fd);
+	return (0);
 }

@@ -61,7 +61,7 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 ** when the player is "above, acos has to be flipped
 */
 
-t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff)
+t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray)
 {
 	int 	reached_wall;
 	int		squareside;
@@ -69,7 +69,6 @@ t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray, float diff)
 	t_point sprite_center;
 
 	reached_wall = 0;
-	(void)diff;
 	squareside = get_square_side(mywin);
 	player_pos.x = mywin->player.x_pos;
 	player_pos.y = mywin->player.y_pos;
@@ -180,8 +179,8 @@ void	draw_rays(t_vars *mywin)
 			angle -= 2 * PI;
 		start.x = mywin->player.x_pos;
 		start.y = mywin->player.y_pos;
-		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half, diff);
-		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half, diff);
+		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half);
+		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half);
 		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end: h_end, 0x0000FF00);
 		mywin->norms[mywin->params.res_x - 1 - i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end: h_end);
 		put_blocks(mywin, i, start, v_end, h_end, diff);

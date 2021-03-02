@@ -158,13 +158,13 @@ int		main(int argc, char **argv)
 		mywin.params = parse_file(argv[1]);
 		if (!mywin.params.err)
 			check_error(&mywin);
+				print_map(&mywin);
 		if (mywin.params.err)
 		{
 			ft_printf("Error\n%s", mywin.params.err);
 			free(mywin.params.err);
 			return (exit_hook(&mywin));
 		}
-		print_map(&mywin);
 		mywin.move.x = 0;
 		mywin.move.y = 0;
 		mywin.move.rot = 0;

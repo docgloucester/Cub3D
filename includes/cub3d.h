@@ -151,7 +151,7 @@ void			draw_rays(t_vars *mywin);
 void			addsprite(t_vars *mywin, t_point crd, float norm, float diff);
 void			display_sprites(t_vars *mywin);
 void			freesprite(t_sprite *sprites);
-void			create_bmp(char *image, int height, int width);
+int				create_bmp(char *image, int height, int width);
 void			check_error(t_vars *mywin);
 
 #endif

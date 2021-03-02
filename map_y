@@ -1,0 +1,37 @@
+	while (params->map[highest] && !ft_strchr(params->map[highest], '1'))
+	while (params->map[lowest])
+	while (lowest >= 0 && params->map[lowest] && !ft_strchr(params->map[lowest], '1'))
+			free(params->map[i++]);
+			params->map[i - highest] = params->map[i];
+			params->map[i - highest] = NULL;
+	while (params->map[i - highest])
+		free(params->map[i - highest]);
+		params->map[i - highest] = NULL;
+	params->map_y = lowest - highest + 1;
+	while (params->map[i])
+		while (params->map[i][j] && params->map[i][j] != '1')
+	while (params->map[i])
+		j = ft_strlen(params->map[i]) - 1;
+		while (j >= 0 && params->map[i][j] != '1')
+	while (params->map[i])
+		defausse = params->map[i];
+		params->map[i++] = ft_substr(defausse, leftest, rightest - leftest + 1);
+	params->map_x = rightest - leftest + 1;
+		if (!(params->err) && (!(ft_strchr(" 012NSEW", (*line)[len]))))
+			params->err = ft_strdup("Map invalid !\n");
+	params->map = (char**)malloc(sizeof(char*));
+	params->map[0] = ft_strdup(*line);
+		params->map = ft_realloc(params->map, (i - 1) * sizeof(char*), i * sizeof(char*));
+		params->map[i - 1] = ft_strdup(*line);
+	params->map = ft_realloc(params->map, i * sizeof(char*), (i + 1) * sizeof(char*));
+	params->map[i] = NULL;
+		params->res_x = ft_atoi(line_content[0]);
+		params->res_y = ft_atoi(line_content[1]);
+		if (params->res_x < 4 || params->res_y < 4)
+			params->err = ft_strdup("Invalid resolution !\n");
+		params->err = ft_strdup("Number of variables on screen resolution line must be 2 !\n");
+				) && (params->err = ft_strdup("Invalid colour!\n")) && (free_split(lico)))
+			params->err = ft_strdup("Colour selection line must be 1 comma-separated array of 3 values!\n");
+		params->err = ft_strdup("Colour selection line must be 1 comma-separated array of 3 values!\n");
+			params->err = ft_strdup("Texture file invalid or not found !\n");
+		params->err = ft_strdup("Number of variables on path definition line must be 2 !\n");
