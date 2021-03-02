@@ -16,10 +16,10 @@ int		refresh(t_vars *mywin)
 {
 	t_img	temp_img;
 
-	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->fps_img.img, 0, 0);
 	temp_img.img = mlx_new_image(mywin->mlx, mywin->params.res_x / 4, mywin->params.res_y / 4);
 	temp_img.addr = mlx_get_data_addr(temp_img.img, &temp_img.bits_per_pixel, &temp_img.line_length, &temp_img.endian);
 	mlx_merge_img(mywin, &temp_img, &mywin->img, &mywin->player_img);
+	mlx_put_image_to_window(mywin->mlx, mywin->win, mywin->fps_img.img, 0, 0);
 	mlx_put_image_to_window(mywin->mlx, mywin->win, temp_img.img, 0, 0);
 	mlx_destroy_image(mywin->mlx, temp_img.img);
 	return (0);
@@ -92,25 +92,28 @@ int		do_stuff(t_vars *mywin)
 
 int		exit_hook(t_vars *mywin)
 {
-	mlx_destroy_image(mywin->mlx, mywin->img.img);
-	mlx_destroy_image(mywin->mlx, mywin->player_img.img);
-	mlx_destroy_image(mywin->mlx, mywin->fps_img.img);
-	mlx_destroy_image(mywin->mlx, mywin->n_text.img);
-	mlx_destroy_image(mywin->mlx, mywin->s_text.img);
-	mlx_destroy_image(mywin->mlx, mywin->e_text.img);
-	mlx_destroy_image(mywin->mlx, mywin->w_text.img);
-	mlx_destroy_image(mywin->mlx, mywin->sprite.img);
-	if (mywin->win)
-		mlx_destroy_window(mywin->mlx, mywin->win);
-	mlx_destroy_display(mywin->mlx);
-	free(mywin->mlx);
-	free(mywin->norms);
+	if (mywin->img.addr)
+	{
+		mlx_destroy_image(mywin->mlx, mywin->img.img);
+		mlx_destroy_image(mywin->mlx, mywin->player_img.img);
+		mlx_destroy_image(mywin->mlx, mywin->fps_img.img);
+		mlx_destroy_image(mywin->mlx, mywin->n_text.img);
+		mlx_destroy_image(mywin->mlx, mywin->s_text.img);
+		mlx_destroy_image(mywin->mlx, mywin->e_text.img);
+		mlx_destroy_image(mywin->mlx, mywin->w_text.img);
+		mlx_destroy_image(mywin->mlx, mywin->sprite.img);
+		if (mywin->win)
+			mlx_destroy_window(mywin->mlx, mywin->win);
+		free(mywin->norms);
+	}
 	free(mywin->params.no_path);
 	free(mywin->params.so_path);
 	free(mywin->params.ea_path);
 	free(mywin->params.we_path);
 	free(mywin->params.sp_path);
 	free_split(mywin->params.map);
+	mlx_destroy_display(mywin->mlx);
+	free(mywin->mlx);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -159,7 +162,7 @@ int		main(int argc, char **argv)
 		{
 			ft_printf("Error\n%s", mywin.params.err);
 			free(mywin.params.err);
-			exit(EXIT_FAILURE);
+			return (exit_hook(&mywin));
 		}
 		print_map(&mywin);
 		mywin.move.x = 0;
