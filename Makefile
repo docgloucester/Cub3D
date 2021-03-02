@@ -12,8 +12,8 @@
 
 NAME	= Cub3D
 
-CC		= clang
-CFLAGS	= -Wall -Wextra -Werror -g3 #-fsanitize=address
+CC		= cc
+CFLAGS	= -Wall -Wextra -Werror -g3
 
 UNAME	= ${shell uname}
 ifeq (${UNAME}, Darwin)
@@ -22,7 +22,7 @@ ifeq (${UNAME}, Darwin)
 	MLX_NAME = libmlx.dylib
 else
 	MLX		= minilibx-linux/
-	LINKFL	= -lXext -lX11 -lm #-fsanitize=address
+	LINKFL	= -lXext -lX11 -lm
 	MLX_NAME = libmlx.a
 endif
 
@@ -46,7 +46,7 @@ ${NAME} :	${OBJS}
 			cp ${LIBFT}libft.a ./
 			make -C ${MLX}
 			cp ${MLX}${MLX_NAME} ./
-			${CC} ${LINKFL} -o ${NAME} ${OBJS} libft.a ${MLX_NAME}
+			${CC} -o ${NAME} ${OBJS} libft.a ${MLX_NAME} ${LINKFL}
 
 
 all :		${NAME}

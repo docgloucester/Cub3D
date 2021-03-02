@@ -173,6 +173,6 @@ t_params	parse_file(char *path)
 			}
 			free(line);
 		}
-		free(line);
+	free(line);
 	return params;
 }

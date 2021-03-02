@@ -31,12 +31,10 @@ void	put_map(t_vars *mywin, t_img *img)
 {
 	int		x;
 	int		y;
-	int		col;
 	int		squares_len;
 	char	*uwu;
 	char	*owo;
 
-	col = 0;
 	squares_len = get_square_side(mywin);
 	y = -1;
 	while (++y < mywin->params.map_y)
