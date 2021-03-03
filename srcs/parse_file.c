@@ -128,6 +128,7 @@ t_params	parse_file(char *path)
 	int			i;
 
 	line = NULL;
+//	while ()
 	params = init_params();
 	fd = open(path, O_RDONLY);
 	if(read(fd, line, 0) != 0)
@@ -138,21 +139,21 @@ t_params	parse_file(char *path)
 			i = 0;
 			while (line[i] == ' ')
 				i++;
-			if(line[i] == 'R')
+			if(line[i] == 'R' && params.res_y == -1)
 				get_res(&params, line + i + 1);
-			else if(line[i] == 'F')
+			else if(line[i] == 'F' && params.floor_col == 0)
 				params.floor_col = get_fccol(&params,line + i + 1);
-			else if(line[i] == 'C')
+			else if(line[i] == 'C' && params.ceilg_col == 0)
 				params.ceilg_col = get_fccol(&params,line + i + 1);
-			else if(line[i] == 'N' && line[i + 1] == 'O')
+			else if(line[i] == 'N' && line[i + 1] == 'O' && params.no_path == 0)
 				params.no_path = get_path(&params, line + i + 2);
-			else if(line[i] == 'S' && line[i+ 1] == 'O')
+			else if(line[i] == 'S' && line[i+ 1] == 'O' && params.so_path == 0)
 				params.so_path = get_path(&params, line + i + 2);
-			else if(line[i] == 'W' && line[i + 1] == 'E')
+			else if(line[i] == 'W' && line[i + 1] == 'E' && params.we_path == 0)
 				params.we_path = get_path(&params, line + i + 2);
-			else if(line[i] == 'E' && line[i + 1] == 'A')
+			else if(line[i] == 'E' && line[i + 1] == 'A' && params.ea_path == 0)
 				params.ea_path = get_path(&params, line + i + 2);
-			else if(line[i] == 'S')
+			else if(line[i] == 'S' && params.sp_path == 0)
 				params.sp_path = get_path(&params, line + i + 1);
 			else if (ft_strlen(line + i) == 0)
 				;

@@ -67,6 +67,15 @@ void	border_closure(t_vars *mywin, int x, int y)
 			if (is_full_border(mywin, start_wall, start_wall, 0))
 				return ;
 		}
+	while (--y >= 0)
+		if (mywin->params.map[y][x] == '1')
+		{
+			start_wall.x = x;
+			start_wall.y = y;
+			start_wall.count = 0;
+			if (is_full_border(mywin, start_wall, start_wall, 0))
+				return ;
+		}
 	mywin->params.err = ft_strdup("Map isn't closed.\n");
 }
 
@@ -108,9 +117,6 @@ void	check_error(t_vars *mywin)
 
 	if (!(mywin->params.res_x && mywin->params.res_y))
 		mywin->params.err = ft_strdup("Resolution unset.\n");
-	else if (mywin->params.res_x < 2 * mywin->params.map_x
-		|| mywin->params.res_y < 2 * mywin->params.map_y)
-		mywin->params.err = ft_strdup("Map too big for set resolution.\n");
 	else if (!(mywin->params.so_path && mywin->params.no_path
 		&& mywin->params.ea_path && mywin->params.we_path
 		&& mywin->params.sp_path))
@@ -119,6 +125,9 @@ void	check_error(t_vars *mywin)
 		mywin->params.err = ft_strdup("Background colours unset.\n");
 	else if (!(mywin->params.map))
 		mywin->params.err = ft_strdup("No map\n");
+	else if (mywin->params.res_x < 2 * mywin->params.map_x
+		|| mywin->params.res_y < 2 * mywin->params.map_y)
+		mywin->params.err = ft_strdup("Map too big for set resolution.\n");
 	mlx_get_screen_size(mywin->mlx, &max_x, &max_y);
 	if (mywin->params.res_x > max_x || mywin->params.res_y > max_y)
 	{

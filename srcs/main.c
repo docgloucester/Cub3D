@@ -25,71 +25,6 @@ int		refresh(t_vars *mywin)
 	return (0);
 }
 
-void	print_map(t_vars *mywin)
-{
-	int	i;
-
-	i = 0;
-	ft_printf ("Found map of size %d x %d\n", mywin->params.map_x, mywin->params.map_y);
-	while (mywin->params.map[i])
-		ft_printf("%s\n", mywin->params.map[i++]);
-}
-
-void	draw_player_dir(t_vars *mywin, int col)
-{
-	t_point	start;
-	t_point	end;
-
-	start.x = mywin->player.x_pos;
-	start.y = mywin->player.y_pos;
-	end.x = mywin->player.x_pos + get_square_side(mywin) * mywin->player.dx;
-	end.y = mywin->player.y_pos + get_square_side(mywin) * mywin->player.dy;
-	draw_line(mywin, start, end, col);
-}
-
-int		check_collisions(t_vars *mywin, float dx, float dy, int squareside)
-{
-	int i;
-
-	i = 0;
-	while (i <= 10 &&
-		!(ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + (float)i * 0.2f * dy) / (float)squareside)]
-			[(int)((mywin->player.x_pos + (float)i * 0.2f * dx) / (float)squareside)])))
-		i++;
-	return (i);
-}
-
-int		do_stuff(t_vars *mywin)
-{
-	int		squareside;
-	float	dx;
-	float	dy;
-	int		i;
-
-	squareside = get_square_side(mywin);
-	if (mywin->move.x || mywin->move.y)
-	{
-		dx = squareside / 4 * (mywin->player.dx * mywin->move.y
-			+ mywin->player.dy * mywin->move.x);
-		dy = squareside / 4 * (mywin->player.dy * mywin->move.y
-			- mywin->player.dx * mywin->move.x);
-		i = check_collisions(mywin, dx, dy, squareside);
-		if (i == 11)
-		{
-			mywin->player.x_pos += dx;
-			mywin->player.y_pos += dy;
-		}
-	}
-	if (mywin->move.rot)
-		change_angle(&mywin->player, mywin->player.angle - 0.15 * mywin->move.rot);
-	fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
-	place_player(mywin, 0x00FF0000);
-	draw_rays(mywin);
-	draw_player_dir(mywin, 0x00FF0000);
-	refresh(mywin);
-	return (0);
-}
-
 int		exit_hook(t_vars *mywin)
 {
 	if (mywin->img.addr)
@@ -111,7 +46,8 @@ int		exit_hook(t_vars *mywin)
 	free(mywin->params.ea_path);
 	free(mywin->params.we_path);
 	free(mywin->params.sp_path);
-	free_split(mywin->params.map);
+	if (mywin->params.map)
+		free_split(mywin->params.map);
 	mlx_destroy_display(mywin->mlx);
 	free(mywin->mlx);
 	exit(EXIT_SUCCESS);
@@ -148,6 +84,48 @@ int		key_release(int keycode, t_vars *mywin)
 	return (0);
 }
 
+int		check_collisions(t_vars *mywin, float dx, float dy, int squareside)
+{
+	int i;
+
+	i = 0;
+	while (i <= 10 &&
+		!(ft_strchr("12", mywin->params.map[(int)((mywin->player.y_pos + (float)i * 0.2f * dy) / (float)squareside)]
+			[(int)((mywin->player.x_pos + (float)i * 0.2f * dx) / (float)squareside)])))
+		i++;
+	return (i);
+}
+
+int		do_stuff(t_vars *mywin)
+{
+	int		squareside;
+	float	dx;
+	float	dy;
+	int		i;
+
+	squareside = get_square_side(mywin);
+	if (mywin->move.x || mywin->move.y)
+	{
+		dx = (float)squareside / 4.0f * (mywin->player.dx * mywin->move.y
+			+ mywin->player.dy * mywin->move.x);
+		dy = (float)squareside / 4.0f * (mywin->player.dy * mywin->move.y
+			- mywin->player.dx * mywin->move.x);
+		i = check_collisions(mywin, dx, dy, squareside);
+		if (i == 11)
+		{
+			mywin->player.x_pos += dx;
+			mywin->player.y_pos += dy;
+		}
+	}
+	if (mywin->move.rot)
+		change_angle(&mywin->player, mywin->player.angle - 0.15 * mywin->move.rot);
+	fill_window(mywin, &mywin->player_img, 0xFFFFFFFF);
+	place_player(mywin, 0x00FF0000);
+	draw_rays(mywin);
+	refresh(mywin);
+	return (0);
+}
+
 int		main(int argc, char **argv)
 {
 	t_vars	mywin;
@@ -158,7 +136,7 @@ int		main(int argc, char **argv)
 		mywin.params = parse_file(argv[1]);
 		if (!mywin.params.err)
 			check_error(&mywin);
-				print_map(&mywin);
+		mywin.img.addr = 0;
 		if (mywin.params.err)
 		{
 			ft_printf("Error\n%s", mywin.params.err);
@@ -185,7 +163,6 @@ int		main(int argc, char **argv)
 		mywin.w_text.addr = mlx_get_data_addr(mywin.w_text.img, &mywin.w_text.bits_per_pixel, &mywin.w_text.line_length, &mywin.w_text.endian);
 		mywin.sprite.img = mlx_xpm_file_to_image(mywin.mlx, mywin.params.sp_path, &mywin.sprite.width, &mywin.sprite.height);
 		mywin.sprite.addr = mlx_get_data_addr(mywin.sprite.img, &mywin.sprite.bits_per_pixel, &mywin.sprite.line_length, &mywin.sprite.endian);
-		fill_window(&mywin, &mywin.player_img, 0xFFFFFFFF);
 		build_image(&mywin, &mywin.img);
 		mywin.win = (void*)NULL;
 		if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))

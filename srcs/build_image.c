@@ -74,9 +74,9 @@ void	place_player(t_vars *mywin, int col)
 
 void	build_image(t_vars *mywin, t_img *img)
 {
+	fill_window(mywin, &(mywin->player_img), 0xFFFFFFFF);
 	fill_window(mywin, img, 0x00808080);
 	put_map(mywin, img);
 	place_player(mywin, 0x00FF0000);
 	draw_rays(mywin);
-	draw_player_dir(mywin, 0x00FF0000);
 }

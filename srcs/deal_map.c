@@ -94,14 +94,18 @@ void		trim_map_x(t_params *params)
 	params->map_x = rightest - leftest + 1;
 }
 
-void		check_line(t_params *params, char **line)
+int			check_line(t_params *params, char **line)
 {
 	int	len;
 
 	len = ft_strlen(*line);
 	while (--len >= 0)
 		if (!(params->err) && (!(ft_strchr(" 012NSEW", (*line)[len]))))
+		{
 			params->err = ft_strdup("Map invalid !\n");
+			return (1);
+		}
+	return (0);
 }
 
 void		deal_map(t_params *params, char **line, int fd)
@@ -109,7 +113,8 @@ void		deal_map(t_params *params, char **line, int fd)
 	int		i;
 	char	**splt;
 
-	check_line(params, line);
+	if (check_line(params, line))
+		return ;
 	params->map = (char**)malloc(sizeof(char*));
 	params->map[0] = ft_strdup(*line);
 	free(*line);
@@ -132,7 +137,11 @@ void		deal_map(t_params *params, char **line, int fd)
 	params->map[i] = NULL;
 	free(*line);
 	while (get_next_line(fd, line))
+	{
+		if (!(params->err) && *line[0] != '\0')
+			params->err = ft_strdup("File doesn't end with detected map !\n");
 		free (*line);
+	}
 	trim_map_y(params);
 	trim_map_x(params);
 }

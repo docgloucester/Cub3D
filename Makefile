@@ -13,7 +13,7 @@
 NAME	= Cub3D
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g3
+CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
 
 UNAME	= ${shell uname}
 ifeq (${UNAME}, Darwin)
@@ -22,7 +22,7 @@ ifeq (${UNAME}, Darwin)
 	MLX_NAME = libmlx.dylib
 else
 	MLX		= minilibx-linux/
-	LINKFL	= -lXext -lX11 -lm
+	LINKFL	= -lXext -lX11 -lm -fsanitize=address
 	MLX_NAME = libmlx.a
 endif
 
