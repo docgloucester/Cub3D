@@ -128,11 +128,12 @@ t_params	parse_file(char *path)
 	int			i;
 
 	line = NULL;
-//	while ()
 	params = init_params();
 	fd = open(path, O_RDONLY);
-	if(read(fd, line, 0) != 0)
-		params.err = ft_strdup("Map file invalid or not found !\n");
+	if (read(fd, line, 0) != 0)
+		params.err = ft_strdup("Specified file invalid or not found !\n");
+	else if (ft_strnstr(path, ".cub", ft_strlen(path)) != path + ft_strlen(path) - 4)
+		params.err = ft_strdup("Argument isn't a .cub file !\n");
 	else
 		while (get_next_line(fd, &line) > 0)
 		{
