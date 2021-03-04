@@ -164,7 +164,8 @@ void			fill_window(t_vars *mywin, t_img *img, int col);
 void			draw_square(t_img *img, t_point start, int px, int col);
 void			draw_rect(t_vars *mywin, t_point start, int width, int h);
 
-int				is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev);
+int				is_full_border(t_vars *mywin, t_coord curr, t_coord start,
+					int prev);
 
 void			put_map(t_vars *mywin, t_img *img);
 
@@ -172,7 +173,7 @@ int				free_split(char **split);
 
 void			draw_line(t_vars *mywin, t_point start, t_point end);
 void			draw_stripe(t_vars *mywin, int x_start, t_point normoffset,
-				t_img *text);
+					t_img *text);
 void			draw_sprite(t_vars *mywin, int x, int height, float offset);
 void			mlx_merge_img(t_vars *mw, t_img *tmp, t_img *bck, t_img *front);
 

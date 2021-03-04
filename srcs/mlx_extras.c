@@ -14,8 +14,8 @@
 
 void			my_pixelput(t_img *img, int x, int y, int col)
 {
-		*(int*)(img->addr + y * img->line_length + x
-			* (img->bits_per_pixel / 8)) = col;
+	*(int*)(img->addr + y * img->line_length + x
+		* (img->bits_per_pixel / 8)) = col;
 }
 
 unsigned int	get_pixel(t_img *img, int x, int y)
