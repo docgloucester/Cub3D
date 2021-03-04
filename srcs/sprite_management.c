@@ -59,13 +59,12 @@ void		display_sprites(t_vars *mywin)
 	curr = mywin->sprites;
 	while (curr)
 	{
-		x = 0;
+		x = -1;
 		height = get_square_side(mywin) * mywin->params.res_y / curr->norm;
 		width = height * mywin->sprite.width / mywin->sprite.height;
 		center_stripe = mywin->params.res_x - 1
 		- ((curr->angle + 0.167 * PI) * mywin->params.res_x) / (0.333 * PI);
-		while (x < width)
-		{
+		while (++x < width)
 			if ((x + center_stripe - width / 2 >= 0)
 				&& (x + center_stripe - width / 2 < mywin->params.res_x)
 				&& curr->norm < mywin->norms[x + center_stripe - width / 2])
@@ -73,8 +72,6 @@ void		display_sprites(t_vars *mywin)
 				draw_stripe(mywin, x + center_stripe - width / 2, curr->norm,
 					&mywin->sprite, 0.999 - (float)x / (float)width);
 			}
-			x++;
-		}
 		curr = curr->next;
 	}
 }

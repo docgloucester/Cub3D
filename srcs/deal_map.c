@@ -140,7 +140,7 @@ void		deal_map(t_params *params, char **line, int fd)
 	{
 		if (!(params->err) && *line[0] != '\0')
 			params->err = ft_strdup("File doesn't end with detected map !\n");
-		free (*line);
+		free(*line);
 	}
 	trim_map_y(params);
 	trim_map_x(params);

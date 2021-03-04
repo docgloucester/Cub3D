@@ -16,17 +16,18 @@ float			float_modulo(float a, float b)
 {
 	while (a >= b)
 		a -= b;
-	return a;
+	return (a);
 }
-void			change_angle(t_player *player, float angle)
+
+void			chg_angle(t_player *player, float angle)
 {
-	while (angle < - PI)
+	while (angle < -PI)
 		angle += 2 * PI;
 	while (angle >= PI)
 		angle -= 2 * PI;
 	player->angle = angle;
 	player->dx = cosf(angle);
-	player->dy = - sinf(angle);
+	player->dy = -sinf(angle);
 }
 
 void			my_pixelput(t_img *img, int x, int y, int col)
@@ -37,14 +38,14 @@ void			my_pixelput(t_img *img, int x, int y, int col)
 
 unsigned int	get_pixel(t_img *img, int x, int y)
 {
-	return(*(int*)(img->addr + y * img->line_length + x * (img->bits_per_pixel / 8)));
+	return (*(int*)(img->addr + y * img->line_length + x * (img->bits_per_pixel / 8)));
 }
 
 void			fill_window(t_vars *mywin, t_img *img, int col)
 {
-	int 	x;
-	int 	y;
-	
+	int	x;
+	int	y;
+
 	y = -1;
 	while (++y < mywin->params.res_y)
 	{
@@ -64,7 +65,7 @@ void			draw_line(t_vars *mywin, t_point start, t_point end, int col)
 
 	dx = (int)fabs(end.x - start.x);
 	sx = start.x < end.x ? 1 : -1;
-	dy = - (int)fabs(end.y - start.y);
+	dy = -(int)fabs(end.y - start.y);
 	sy = start.y < end.y ? 1 : -1;
 	err = dx + dy;
 	while (1)
@@ -100,7 +101,7 @@ void			draw_stripe(t_vars *mywin, int x_start, float norm, t_img *text, float of
 	int		y;
 	int		y_start;
 	int		col;
-	int 	height;
+	int		height;
 
 	height = get_square_side(mywin) * mywin->params.res_y / norm;
 	y_start = (mywin->params.res_y - height) / 2;
@@ -146,10 +147,10 @@ void			draw_rect(t_img *img, t_point start, int width, int height, int col)
 
 void			mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
 {
-	int 	x;
-	int 	y;
-	int 	col;
-	
+	int	x;
+	int	y;
+	int	col;
+
 	y = -1;
 	while (++y < mywin->params.res_y / 4)
 	{

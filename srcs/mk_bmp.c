@@ -45,10 +45,10 @@ int	info_header(int height, int width, int fd)
 	header[11] = (unsigned char)(height >> 24);
 	header[12] = (unsigned char)(1);
 	header[14] = (unsigned char)(4 * 8);
-	return(write(fd, header, 40));
+	return (write(fd, header, 40));
 }
 
-int	create_bmp(char *image, int height, int width)
+int	mk_bmp(char *image, int height, int width)
 {
 	int	fd;
 	int	i;

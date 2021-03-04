@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= Cub3D
+NAME	= cub3D
 
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
@@ -26,8 +26,8 @@ else
 	MLX_NAME = libmlx.a
 endif
 
-SRCSF	= main.c parse_file.c mlx_extras.c deal_map.c build_image.c \
-		raycasting.c create_bmp.c sprite_management.c check_error.c
+SRCSF	= main.c events.c parse_file.c mlx_extras.c deal_map.c put_map.c \
+		raycasting.c mk_bmp.c sprite_management.c check_error.c
 
 SRCSD	= srcs/
 INCL	= includes/

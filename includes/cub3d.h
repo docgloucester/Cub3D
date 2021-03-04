@@ -126,6 +126,19 @@ typedef	struct	s_vars {
 	t_sprite	*sprites;
 }				t_vars;
 
+
+/*
+** Events
+*/
+int				do_stuff(t_vars *mywin);
+int				key_press(int keycode, t_vars *mywin);
+int				key_release(int keycode, t_vars *mywin);
+int				exit_hook(t_vars *mywin);
+
+void			put_map(t_vars *mywin, t_img *img);
+
+int				is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev);
+
 t_params		parse_file(char *path);
 int				free_split(char **split);
 float			float_modulo(float a, float b);
@@ -139,7 +152,7 @@ void			draw_stripe(t_vars *mywin, int x_start, float norm,
 void			draw_sprite(t_vars *mywin, int x, int height, float offset);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			mlx_merge_img(t_vars *mw, t_img *tmp, t_img *bck, t_img *front);
-void			change_angle(t_player *player, float angle);
+void			chg_angle(t_player *player, float angle);
 void			deal_map(t_params *params, char	**line, int fd);
 int				get_square_side(t_vars *mywin);
 float			get_norm(t_point start, t_point end);
@@ -151,7 +164,7 @@ void			draw_rays(t_vars *mywin);
 void			addsprite(t_vars *mywin, t_point crd, float norm, float diff);
 void			display_sprites(t_vars *mywin);
 void			freesprite(t_sprite *sprites);
-int				create_bmp(char *image, int height, int width);
+int				mk_bmp(char *image, int height, int width);
 void			check_error(t_vars *mywin);
 
 #endif

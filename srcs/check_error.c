@@ -12,6 +12,27 @@
 
 #include <cub3d.h>
 
+int		is_full_border2(t_vars *mywin, t_coord curr, t_coord start, int prev)
+{
+	if (curr.y + 1 < mywin->params.map_y
+		&& mywin->params.map[curr.y + 1][curr.x] == '1' && prev != -1)
+	{
+		(curr.y)++;
+		if (is_full_border(mywin, curr, start, 1) == 1)
+			return (1);
+		(curr.y)--;
+	}
+	if (curr.y - 1 >= 0
+		&& mywin->params.map[curr.y - 1][curr.x] == '1' && prev != 1)
+	{
+		(curr.y)--;
+		if (is_full_border(mywin, curr, start, -1) == 1)
+			return (1);
+		(curr.y)++;
+	}
+	return (0);
+}
+
 int		is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev)
 {
 	curr.count++;
@@ -35,23 +56,7 @@ int		is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev)
 			return (1);
 		(curr.x)--;
 	}
-	if (curr.y + 1 < mywin->params.map_y
-		&& mywin->params.map[curr.y + 1][curr.x] == '1' && prev != -1)
-	{
-		(curr.y)++;
-		if (is_full_border(mywin, curr, start, 1) == 1)
-			return (1);
-		(curr.y)--;
-	}
-	if (curr.y - 1 >= 0
-		&& mywin->params.map[curr.y - 1][curr.x] == '1' && prev != 1)
-	{
-		(curr.y)--;
-		if (is_full_border(mywin, curr, start, -1) == 1)
-			return (1);
-		(curr.y)++;
-	}
-	return (0);
+	return (is_full_border2(mywin, curr, start, prev));
 }
 
 void	border_closure(t_vars *mywin, int x, int y)
@@ -90,7 +95,8 @@ void	check_map_content(t_vars *mywin)
 	y = -1;
 	x = -1;
 	while (mywin->params.map[++i] && (j = -1))
-		while (++j < (int)ft_strlen(mywin->params.map[i]) && mywin->params.map[i][j])
+		while (++j < (int)ft_strlen(mywin->params.map[i])
+			&& mywin->params.map[i][j])
 			if (ft_strchr("ENWS", mywin->params.map[i][j]))
 			{
 				if (x == -1)
@@ -99,14 +105,11 @@ void	check_map_content(t_vars *mywin)
 					y = i;
 				}
 				else
-				{
 					mywin->params.err = ft_strdup("Multiple players on map.\n");
-					return ;
-				}
 			}
 	if (x == -1)
 		mywin->params.err = ft_strdup("No player on map.\n");
-	else
+	else if (!mywin->params.err)
 		border_closure(mywin, x, y + 1);
 }
 
@@ -131,8 +134,7 @@ void	check_error(t_vars *mywin)
 	mlx_get_screen_size(mywin->mlx, &max_x, &max_y);
 	if (mywin->params.res_x > max_x || mywin->params.res_y > max_y)
 	{
-		ft_printf("Warning : current screen resolution inferior to specified.");
-		ft_printf("Falling back to current resolution\n");
+		ft_printf("Warning : falling back to current resolution\n");
 		mywin->params.res_x = max_x;
 		mywin->params.res_y = max_y;
 	}
