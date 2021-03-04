@@ -19,6 +19,7 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 	int		comp_norm;
 	float	norm;
 	float	offset;
+	t_point	normoffset;
 
 	end = cmp_norm(start, h_end, v_end) ? v_end : h_end;
 	comp_norm = cmp_norm(start, h_end, v_end);
@@ -49,7 +50,9 @@ void	put_blocks(t_vars *mywin, int i, t_point start, t_point v_end, t_point h_en
 			offset = 0.999 - offset;
 		}
 	}
-	draw_stripe(mywin, mywin->params.res_x - 1 - i, norm, text, offset);
+	normoffset.x = norm;
+	normoffset.y = offset;
+	draw_stripe(mywin, mywin->params.res_x - 1 - i, normoffset, text);
 }
 
 /*
@@ -168,7 +171,7 @@ void	draw_rays(t_vars *mywin)
 	fill_window(mywin, &mywin->fps_img, mywin->params.ceilg_col);
 	half.x = 0;
 	half.y = (int)(mywin->params.res_y / 2.0);
-	draw_rect(&mywin->fps_img, half, mywin->params.res_x, mywin->params.res_y / 2, mywin->params.floor_col);
+	draw_rect(mywin, half, mywin->params.res_x, mywin->params.res_y / 2);
 	diff = -0.167 * PI;
 	i = -1;
 	mywin->sprites = NULL;
@@ -183,7 +186,7 @@ void	draw_rays(t_vars *mywin)
 		start.y = mywin->player.y_pos;
 		h_end = expand_ray(mywin, gethorray(mywin, start, angle, &half), half);
 		v_end = expand_ray(mywin, getverray(mywin, start, angle, &half), half);
-		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end : h_end, 0x0000FF00);
+		draw_line(mywin, start, cmp_norm(start, h_end, v_end) ? v_end : h_end);
 		mywin->norms[mywin->params.res_x - 1 - i] = get_norm(start, cmp_norm(start, h_end, v_end) ? v_end : h_end);
 		put_blocks(mywin, i, start, v_end, h_end, diff);
 		diff += 0.333 * PI / (float)mywin->params.res_x;

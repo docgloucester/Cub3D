@@ -155,21 +155,25 @@ int				cmp_norm(t_point start, t_point end0, t_point end1);
 void			chg_angle(t_player *player, float angle);
 float			float_modulo(float a, float b);
 
+/*
+** Mlx extras
+*/
+void			my_pixelput(t_img *img, int x, int y, int col);
+unsigned int	get_pixel(t_img *img, int x, int y);
+void			fill_window(t_vars *mywin, t_img *img, int col);
+void			draw_square(t_img *img, t_point start, int px, int col);
+void			draw_rect(t_vars *mywin, t_point start, int width, int h);
 
 int				is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev);
 
 void			put_map(t_vars *mywin, t_img *img);
 
 int				free_split(char **split);
-void			my_pixelput(t_img *img, int x, int y, int col);
-unsigned int	get_pixel(t_img *img, int x, int y);
-void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
-void			draw_square(t_img *img, int x, int y, int px, int col);
-void			draw_rect(t_img *img, t_point start, int width, int h, int col);
-void			draw_stripe(t_vars *mywin, int x_start, float norm,
-				t_img *text, float offset);
+
+void			draw_line(t_vars *mywin, t_point start, t_point end);
+void			draw_stripe(t_vars *mywin, int x_start, t_point normoffset,
+				t_img *text);
 void			draw_sprite(t_vars *mywin, int x, int height, float offset);
-void			fill_window(t_vars *mywin, t_img *img, int col);
 void			mlx_merge_img(t_vars *mw, t_img *tmp, t_img *bck, t_img *front);
 
 int				get_square_side(t_vars *mywin);

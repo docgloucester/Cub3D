@@ -14,8 +14,8 @@
 
 void			my_pixelput(t_img *img, int x, int y, int col)
 {
-	*(int*)(img->addr + y * img->line_length + x
-		* (img->bits_per_pixel / 8)) = col;
+		*(int*)(img->addr + y * img->line_length + x
+			* (img->bits_per_pixel / 8)) = col;
 }
 
 unsigned int	get_pixel(t_img *img, int x, int y)
@@ -38,7 +38,7 @@ void			fill_window(t_vars *mywin, t_img *img, int col)
 	}
 }
 
-void			draw_square(t_img *img, int x_start, int y_start, int size, int col)
+void			draw_square(t_img *img, t_point start, int size, int col)
 {
 	int	x;
 	int	y;
@@ -48,11 +48,11 @@ void			draw_square(t_img *img, int x_start, int y_start, int size, int col)
 	{
 		x = -1;
 		while (++x < size)
-			my_pixelput(img, x_start + x, y_start + y, col);
+			my_pixelput(img, start.x + x, start.y + y, col);
 	}
 }
 
-void			draw_rect(t_img *img, t_point start, int width, int height, int col)
+void			draw_rect(t_vars *mywin, t_point start, int width, int height)
 {
 	int	x;
 	int	y;
@@ -62,6 +62,7 @@ void			draw_rect(t_img *img, t_point start, int width, int height, int col)
 	{
 		x = -1;
 		while (++x < width)
-			my_pixelput(img, start.x + x, start.y + y, col);
+			my_pixelput(&mywin->fps_img, start.x + x, start.y + y,
+				mywin->params.floor_col);
 	}
 }

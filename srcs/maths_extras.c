@@ -12,14 +12,14 @@
 
 #include <cub3d.h>
 
-float			float_modulo(float a, float b)
+float	float_modulo(float a, float b)
 {
 	while (a >= b)
 		a -= b;
 	return (a);
 }
 
-void			chg_angle(t_player *player, float angle)
+void	chg_angle(t_player *player, float angle)
 {
 	while (angle < -PI)
 		angle += 2 * PI;
@@ -30,12 +30,12 @@ void			chg_angle(t_player *player, float angle)
 	player->dy = -sinf(angle);
 }
 
-float			get_norm(t_point start, t_point end)
+float	get_norm(t_point start, t_point end)
 {
 	return (sqrtf(powf(start.x - end.x, 2) + powf((start.y - end.y), 2)));
 }
 
-int				cmp_norm(t_point start, t_point end0, t_point end1)
+int		cmp_norm(t_point start, t_point end0, t_point end1)
 {
 	float	norm1;
 	float	norm0;
@@ -49,4 +49,27 @@ int				cmp_norm(t_point start, t_point end0, t_point end1)
 	if (norm1 < norm0)
 		return (1);
 	return (0);
+}
+
+void	draw_stripe(t_vars *mywin, int x_start, t_point normoffset, t_img *text)
+{
+	int		y;
+	int		y_start;
+	int		col;
+	int		height;
+
+	height = get_square_side(mywin) * mywin->params.res_y / normoffset.x;
+	y_start = (mywin->params.res_y - height) / 2;
+	y = -1;
+	while (++y < height)
+	{
+		if (y_start + y >= 0 && y_start + y < mywin->params.res_y)
+		{
+			col = get_pixel(text, text->width - 1 -
+				(int)(normoffset.y * (float)text->width),
+				(int)((float)y / (float)height * (float)text->height));
+			if (col << 8 != 0)
+				my_pixelput(&mywin->fps_img, x_start, y_start + y, col);
+		}
+	}
 }
