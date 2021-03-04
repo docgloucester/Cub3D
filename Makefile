@@ -26,7 +26,7 @@ else
 	MLX_NAME = libmlx.a
 endif
 
-SRCSF	= main.c events.c parse_file.c mlx_extras.c deal_map.c put_map.c \
+SRCSF	= main.c events.c parse_file.c parsing_utils.c mlx_extras.c 2d_ops.c maths_extras.c dup_map.c trim_map.c put_map.c \
 		raycasting.c mk_bmp.c sprite_management.c check_error.c
 
 SRCSD	= srcs/

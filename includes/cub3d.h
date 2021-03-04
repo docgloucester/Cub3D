@@ -135,13 +135,32 @@ int				key_press(int keycode, t_vars *mywin);
 int				key_release(int keycode, t_vars *mywin);
 int				exit_hook(t_vars *mywin);
 
-void			put_map(t_vars *mywin, t_img *img);
+t_params		parse_file(char *path);
+
+void			get_res(t_params *params, char *line);
+int				get_col(t_params *params, char *line);
+char			*get_path(t_params *params, char *line);
+
+
+
+void			dup_map(t_params *params, char	**line, int fd);
+void			trim_map_y(t_params *params);
+void			trim_map_x(t_params *params);
+
+/*
+** Maths extras
+*/
+float			get_norm(t_point start, t_point end);
+int				cmp_norm(t_point start, t_point end0, t_point end1);
+void			chg_angle(t_player *player, float angle);
+float			float_modulo(float a, float b);
+
 
 int				is_full_border(t_vars *mywin, t_coord curr, t_coord start, int prev);
 
-t_params		parse_file(char *path);
+void			put_map(t_vars *mywin, t_img *img);
+
 int				free_split(char **split);
-float			float_modulo(float a, float b);
 void			my_pixelput(t_img *img, int x, int y, int col);
 unsigned int	get_pixel(t_img *img, int x, int y);
 void			draw_line(t_vars *mywin, t_point start, t_point end, int col);
@@ -152,11 +171,8 @@ void			draw_stripe(t_vars *mywin, int x_start, float norm,
 void			draw_sprite(t_vars *mywin, int x, int height, float offset);
 void			fill_window(t_vars *mywin, t_img *img, int col);
 void			mlx_merge_img(t_vars *mw, t_img *tmp, t_img *bck, t_img *front);
-void			chg_angle(t_player *player, float angle);
-void			deal_map(t_params *params, char	**line, int fd);
+
 int				get_square_side(t_vars *mywin);
-float			get_norm(t_point start, t_point end);
-int				cmp_norm(t_point start, t_point end0, t_point end1);
 void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
 void			draw_player_dir(t_vars *mywin, int col);
