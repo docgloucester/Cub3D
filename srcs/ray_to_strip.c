@@ -66,12 +66,25 @@ void	put_blocks(t_vars *mywin, int i, t_point v_end, t_point h_end, float diff)
 ** when the player is "above, acos has to be flipped
 */
 
+void	call_sprite(t_vars *mywin, t_point end, int squareside)
+{
+	t_point	sprite_center;
+
+	sprite_center.x = (int)(end.x / squareside) * squareside + squareside / 2;
+	sprite_center.y = (int)(end.y / squareside) * squareside + squareside / 2;
+	if (player_pos.y >= sprite_center.y)
+		addsprite(mywin, sprite_center, get_norm(mywin, sprite_center),
+			acosf((sprite_center.x - player_pos.x) / get_norm(mywin, sprite_center)) - mywin->player.angle);
+	else
+		addsprite(mywin, sprite_center, get_norm(mywin, sprite_center),
+			-acosf((sprite_center.x - player_pos.x) / get_norm(mywin, sprite_center)) - mywin->player.angle);
+}
+
 t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray)
 {
 	int		reached_wall;
 	int		squareside;
 	t_point	player_pos;
-	t_point	sprite_center;
 
 	reached_wall = 0;
 	squareside = get_square_side(mywin);
@@ -85,14 +98,7 @@ t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray)
 			break ;
 		if (mywin->params.map[(int)(end.y / squareside)][(int)(end.x / squareside)] == '2')
 		{
-			sprite_center.x = (int)(end.x / squareside) * squareside + squareside / 2;
-			sprite_center.y = (int)(end.y / squareside) * squareside + squareside / 2;
-			if (player_pos.y >= sprite_center.y)
-				addsprite(mywin, sprite_center, get_norm(mywin, sprite_center),
-					acosf((sprite_center.x - player_pos.x) / get_norm(mywin, sprite_center)) - mywin->player.angle);
-			else
-				addsprite(mywin, sprite_center, get_norm(mywin, sprite_center),
-					-acosf((sprite_center.x - player_pos.x) / get_norm(mywin, sprite_center)) - mywin->player.angle);
+			call_sprite(mywin, end, squareside);
 		}
 		if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '1')
 			reached_wall = 1;
