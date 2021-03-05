@@ -109,7 +109,7 @@ int		err_capt(t_vars *mywin, int argc, char **argv)
 		init_cub(mywin);
 		if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
 		{
-			draw_rays(mywin);
+			draw_rays(mywin, -1);
 			mk_bmp(mywin->fps_img.addr, mywin->params.res_y,
 				mywin->params.res_x);
 			return (exit_hook(mywin));

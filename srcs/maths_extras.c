@@ -30,12 +30,16 @@ void	chg_angle(t_player *player, float angle)
 	player->dy = -sinf(angle);
 }
 
-float	get_norm(t_point start, t_point end)
+float	get_norm(t_vars *mywin, t_point end)
 {
+	t_point	start;
+
+	start.x = mywin->player.x_pos;
+	start.y = mywin->player.y_pos;
 	return (sqrtf(powf(start.x - end.x, 2) + powf((start.y - end.y), 2)));
 }
 
-int		cmp_norm(t_point start, t_point end0, t_point end1)
+int		cmp_norm(t_vars *mywin, t_point end0, t_point end1)
 {
 	float	norm1;
 	float	norm0;
@@ -44,8 +48,8 @@ int		cmp_norm(t_point start, t_point end0, t_point end1)
 		return (1);
 	if (end1.x == -1)
 		return (0);
-	norm1 = get_norm(start, end1);
-	norm0 = get_norm(start, end0);
+	norm1 = get_norm(mywin, end1);
+	norm0 = get_norm(mywin, end0);
 	if (norm1 < norm0)
 		return (1);
 	return (0);

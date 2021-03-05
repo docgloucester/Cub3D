@@ -27,7 +27,7 @@ else
 endif
 
 SRCSF	= main.c events.c parse_file.c parsing_utils.c mlx_extras.c minimap.c maths_extras.c dup_map.c trim_map.c put_map.c \
-		raycasting.c mk_bmp.c sprite_management.c check_error.c
+		raycasting.c mk_bmp.c sprite_management.c check_error.c ray_to_strip.c
 
 SRCSD	= srcs/
 INCL	= includes/

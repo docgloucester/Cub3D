@@ -150,8 +150,8 @@ void			trim_map_x(t_params *params);
 /*
 ** Maths extras
 */
-float			get_norm(t_point start, t_point end);
-int				cmp_norm(t_point start, t_point end0, t_point end1);
+float			get_norm(t_vars *mywin, t_point end);
+int				cmp_norm(t_vars *mywin, t_point end0, t_point end1);
 void			chg_angle(t_player *player, float angle);
 float			float_modulo(float a, float b);
 
@@ -164,6 +164,11 @@ void			fill_window(t_vars *mywin, t_img *img, int col);
 void			draw_square(t_img *img, t_point start, int px, int col);
 void			draw_rect(t_vars *mywin, t_point start, int width, int h);
 
+
+
+t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray);
+void	put_blocks(t_vars *mywin, int i, t_point v_end, t_point h_end, float diff);
+
 int				is_full_border(t_vars *mywin, t_coord curr, t_coord start,
 					int prev);
 
@@ -171,7 +176,7 @@ void			put_map(t_vars *mywin, t_img *img);
 
 int				free_split(char **split);
 
-void			draw_line(t_vars *mywin, t_point start, t_point end);
+void			draw_line(t_vars *mywin, t_point end);
 void			draw_stripe(t_vars *mywin, int x_start, t_point normoffset,
 					t_img *text);
 void			draw_sprite(t_vars *mywin, int x, int height, float offset);
@@ -181,7 +186,7 @@ int				get_square_side(t_vars *mywin);
 void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
 void			draw_player_dir(t_vars *mywin, int col);
-void			draw_rays(t_vars *mywin);
+void			draw_rays(t_vars *mywin, int i);
 void			addsprite(t_vars *mywin, t_point crd, float norm, float diff);
 void			display_sprites(t_vars *mywin);
 void			freesprite(t_sprite *sprites);
