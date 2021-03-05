@@ -12,42 +12,41 @@
 
 #include <cub3d.h>
 
-void	put_blocks(t_vars *mywin, int i, t_point v_end, t_point h_end, float diff)
+void	put_blocks(t_vars *mywin, t_point v_end, t_point h_end, float diff)
 {
 	t_img	*text;
 	t_point	end;
 	float	norm;
 	float	offset;
 
+	end = cmp_norm(mywin, h_end, v_end) ? v_end : h_end;
 	norm = cosf(diff) * get_norm(mywin, end);
 	diff += mywin->player.angle;
 	if (norm <= 0)
 		norm = 1;
 	if (cmp_norm(mywin, h_end, v_end) == 0)
 	{
-		offset = float_modulo(end.x, (float)get_square_side(mywin)) / get_square_side(mywin);
-		if ((diff >= -PI && diff < 0) || (diff >= PI && diff < 2 * PI))
+		offset = 0.999 - float_modulo(end.x, (float)get_square_side(mywin))
+			/ get_square_side(mywin);
+		if (((diff >= -PI && diff < 0) || (diff >= PI && diff < 2 * PI)) 
+			&& (offset = 0.999 - offset))
 			text = &mywin->s_text;
 		else
-		{
-			(text = &mywin->n_text);
-			offset = 0.999 - offset;
-		}
+			text = &mywin->n_text;
 	}
 	else
 	{
-		offset = float_modulo(end.y, (float)get_square_side(mywin)) / get_square_side(mywin);
-		if ((diff >= 0.5 * PI && diff <= 1.5 * PI) || (diff >= -1.5 * PI && diff <= -0.5 * PI))
+		offset = 0.999 - float_modulo(end.y, (float)get_square_side(mywin))
+			/ get_square_side(mywin);
+		if (((diff >= 0.5 * PI && diff <= 1.5 * PI) || (diff >= -1.5 * PI
+			&& diff <= -0.5 * PI)) && (offset = 0.999 - offset))
 			text = &mywin->w_text;
 		else
-		{
 			text = &mywin->e_text;
-			offset = 0.999 - offset;
-		}
 	}
 	end.x = norm;
 	end.y = offset;
-	draw_stripe(mywin, mywin->params.res_x - 1 - i, end, text);
+	draw_stripe(mywin, mywin->params.res_x - 1 - mywin->i, end, text);
 }
 
 /*

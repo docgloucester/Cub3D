@@ -77,7 +77,7 @@ float	range_angle(float angle)
 	return (angle);
 }
 
-void	draw_rays(t_vars *mywin, int i)
+void	draw_rays(t_vars *mywin)
 {
 	float		angle;
 	t_point		h_end;
@@ -91,15 +91,15 @@ void	draw_rays(t_vars *mywin, int i)
 	draw_rect(mywin, half, mywin->params.res_x, mywin->params.res_y / 2);
 	diff = -0.167 * PI;
 	mywin->sprites = NULL;
-	while (++i < mywin->params.res_x)
+	while (++(mywin->i) < mywin->params.res_x)
 	{
 		angle = range_angle(mywin->player.angle + diff);
 		h_end = expand_ray(mywin, gethorray(mywin, angle, &half), half);
 		v_end = expand_ray(mywin, getverray(mywin, angle, &half), half);
 		draw_line(mywin, cmp_norm(mywin, h_end, v_end) ? v_end : h_end);
-		mywin->norms[mywin->params.res_x - 1 - i] = get_norm(mywin,
+		mywin->norms[mywin->params.res_x - 1 - mywin->i] = get_norm(mywin,
 			cmp_norm(mywin, h_end, v_end) ? v_end : h_end);
-		put_blocks(mywin, i, v_end, h_end, diff);
+		put_blocks(mywin, v_end, h_end, diff);
 		diff += 0.333 * PI / (float)mywin->params.res_x;
 	}
 	display_sprites(mywin);

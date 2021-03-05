@@ -64,6 +64,7 @@ void	init_cub2(t_vars *mywin)
 		&mywin->sprite.bits_per_pixel, &mywin->sprite.line_length,
 		&mywin->sprite.endian);
 	mywin->norms = (float*)ft_calloc(mywin->params.res_x, sizeof(float));
+	mywin->i = -1;
 	fill_window(mywin, &mywin->img, 0x00808080);
 	put_map(mywin, &mywin->img);
 }
@@ -109,7 +110,7 @@ int		err_capt(t_vars *mywin, int argc, char **argv)
 		init_cub(mywin);
 		if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
 		{
-			draw_rays(mywin, -1);
+			draw_rays(mywin);
 			mk_bmp(mywin->fps_img.addr, mywin->params.res_y,
 				mywin->params.res_x);
 			return (exit_hook(mywin));

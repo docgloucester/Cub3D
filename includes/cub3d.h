@@ -124,6 +124,7 @@ typedef	struct	s_vars {
 	t_img		w_text;
 	t_img		sprite;
 	t_sprite	*sprites;
+	int			i;
 }				t_vars;
 
 
@@ -167,7 +168,7 @@ void			draw_rect(t_vars *mywin, t_point start, int width, int h);
 
 
 t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray);
-void	put_blocks(t_vars *mywin, int i, t_point v_end, t_point h_end, float diff);
+void	put_blocks(t_vars *mywin, t_point v_end, t_point h_end, float diff);
 
 int				is_full_border(t_vars *mywin, t_coord curr, t_coord start,
 					int prev);
@@ -186,7 +187,7 @@ int				get_square_side(t_vars *mywin);
 void			build_image(t_vars *mywin, t_img *img);
 void			place_player(t_vars *mywin, int col);
 void			draw_player_dir(t_vars *mywin, int col);
-void			draw_rays(t_vars *mywin, int i);
+void			draw_rays(t_vars *mywin);
 void			addsprite(t_vars *mywin, t_point crd, float norm, float diff);
 void			display_sprites(t_vars *mywin);
 void			freesprite(t_sprite *sprites);
