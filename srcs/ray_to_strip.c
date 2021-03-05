@@ -12,6 +12,19 @@
 
 #include <cub3d.h>
 
+t_img	*select_text(t_vars *mywin, t_point end, float *offset, float diff)
+{
+	*offset = float_modulo(end.x, (float)get_square_side(mywin))
+		/ get_square_side(mywin);
+	if ((diff >= -PI && diff < 0) || (diff >= PI && diff < 2 * PI))
+		return (&mywin->s_text);
+	else
+	{
+		*offset = 0.999 - *offset;
+		return (&mywin->n_text);
+	}
+}
+
 void	put_blocks(t_vars *mywin, t_point v_end, t_point h_end, float diff)
 {
 	t_img	*text;
@@ -25,15 +38,7 @@ void	put_blocks(t_vars *mywin, t_point v_end, t_point h_end, float diff)
 	if (norm <= 0)
 		norm = 1;
 	if (cmp_norm(mywin, h_end, v_end) == 0)
-	{
-		offset = 0.999 - float_modulo(end.x, (float)get_square_side(mywin))
-			/ get_square_side(mywin);
-		if (((diff >= -PI && diff < 0) || (diff >= PI && diff < 2 * PI)) 
-			&& (offset = 0.999 - offset))
-			text = &mywin->s_text;
-		else
-			text = &mywin->n_text;
-	}
+		text = select_text(mywin, end, &offset, diff);
 	else
 	{
 		offset = 0.999 - float_modulo(end.y, (float)get_square_side(mywin))
