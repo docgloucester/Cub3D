@@ -72,24 +72,21 @@ void	call_sprite(t_vars *mywin, t_point end, int squareside)
 
 	sprite_center.x = (int)(end.x / squareside) * squareside + squareside / 2;
 	sprite_center.y = (int)(end.y / squareside) * squareside + squareside / 2;
-	if (player_pos.y >= sprite_center.y)
+	if (mywin->player.y_pos >= sprite_center.y)
 		addsprite(mywin, sprite_center, get_norm(mywin, sprite_center),
-			acosf((sprite_center.x - player_pos.x) / get_norm(mywin, sprite_center)) - mywin->player.angle);
+			acosf((sprite_center.x - mywin->player.x_pos) / get_norm(mywin, sprite_center)) - mywin->player.angle);
 	else
 		addsprite(mywin, sprite_center, get_norm(mywin, sprite_center),
-			-acosf((sprite_center.x - player_pos.x) / get_norm(mywin, sprite_center)) - mywin->player.angle);
+			-acosf((sprite_center.x - mywin->player.x_pos) / get_norm(mywin, sprite_center)) - mywin->player.angle);
 }
 
 t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray)
 {
 	int		reached_wall;
 	int		squareside;
-	t_point	player_pos;
 
 	reached_wall = 0;
 	squareside = get_square_side(mywin);
-	player_pos.x = mywin->player.x_pos;
-	player_pos.y = mywin->player.y_pos;
 	while (!reached_wall && end.x < mywin->params.res_x && end.y < mywin->params.res_y && end.x >= 0 && end.y >= 0)
 	{
 		if ((int)(end.y / squareside) < 0 || (int)(end.x / squareside) < 0
