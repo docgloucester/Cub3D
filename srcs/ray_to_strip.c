@@ -16,21 +16,17 @@ void	put_blocks(t_vars *mywin, int i, t_point v_end, t_point h_end, float diff)
 {
 	t_img	*text;
 	t_point	end;
-	int		comp_norm;
 	float	norm;
 	float	offset;
-	t_point	normoffset;
 
-	end = cmp_norm(mywin, h_end, v_end) ? v_end : h_end;
-	comp_norm = cmp_norm(mywin, h_end, v_end);
 	norm = cosf(diff) * get_norm(mywin, end);
+	diff += mywin->player.angle;
 	if (norm <= 0)
 		norm = 1;
-	if (comp_norm == 0)
+	if (cmp_norm(mywin, h_end, v_end) == 0)
 	{
 		offset = float_modulo(end.x, (float)get_square_side(mywin)) / get_square_side(mywin);
-		if ((mywin->player.angle + diff >= -PI && mywin->player.angle + diff < 0)
-			|| (mywin->player.angle + diff >= PI && mywin->player.angle + diff < 2 * PI))
+		if ((diff >= -PI && diff < 0) || (diff >= PI && diff < 2 * PI))
 			text = &mywin->s_text;
 		else
 		{
@@ -41,8 +37,7 @@ void	put_blocks(t_vars *mywin, int i, t_point v_end, t_point h_end, float diff)
 	else
 	{
 		offset = float_modulo(end.y, (float)get_square_side(mywin)) / get_square_side(mywin);
-		if ((mywin->player.angle + diff >= 0.5 * PI && mywin->player.angle + diff <= 1.5 * PI)
-			|| (mywin->player.angle + diff >= -1.5 * PI && mywin->player.angle + diff <= -0.5 * PI))
+		if ((diff >= 0.5 * PI && diff <= 1.5 * PI) || (diff >= -1.5 * PI && diff <= -0.5 * PI))
 			text = &mywin->w_text;
 		else
 		{
@@ -50,9 +45,9 @@ void	put_blocks(t_vars *mywin, int i, t_point v_end, t_point h_end, float diff)
 			offset = 0.999 - offset;
 		}
 	}
-	normoffset.x = norm;
-	normoffset.y = offset;
-	draw_stripe(mywin, mywin->params.res_x - 1 - i, normoffset, text);
+	end.x = norm;
+	end.y = offset;
+	draw_stripe(mywin, mywin->params.res_x - 1 - i, end, text);
 }
 
 /*
