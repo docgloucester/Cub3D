@@ -74,10 +74,12 @@ void	call_sprite(t_vars *mywin, t_point end, int squareside)
 	sprite_center.y = (int)(end.y / squareside) * squareside + squareside / 2;
 	if (mywin->player.y_pos >= sprite_center.y)
 		addsprite(mywin, sprite_center, get_norm(mywin, sprite_center),
-			acosf((sprite_center.x - mywin->player.x_pos) / get_norm(mywin, sprite_center)) - mywin->player.angle);
+			acosf((sprite_center.x - mywin->player.x_pos)
+			/ get_norm(mywin, sprite_center)) - mywin->player.angle);
 	else
 		addsprite(mywin, sprite_center, get_norm(mywin, sprite_center),
-			-acosf((sprite_center.x - mywin->player.x_pos) / get_norm(mywin, sprite_center)) - mywin->player.angle);
+			-acosf((sprite_center.x - mywin->player.x_pos)
+			/ get_norm(mywin, sprite_center)) - mywin->player.angle);
 }
 
 t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray)
@@ -87,17 +89,18 @@ t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray)
 
 	reached_wall = 0;
 	squareside = get_square_side(mywin);
-	while (!reached_wall && end.x < mywin->params.res_x && end.y < mywin->params.res_y && end.x >= 0 && end.y >= 0)
+	while (!reached_wall && end.x < mywin->params.res_x
+		&& end.y < mywin->params.res_y && end.x >= 0 && end.y >= 0)
 	{
 		if ((int)(end.y / squareside) < 0 || (int)(end.x / squareside) < 0
 			|| (int)((end.x) / squareside) >= mywin->params.map_x
 			|| (int)((end.y) / squareside) >= mywin->params.map_y)
 			break ;
-		if (mywin->params.map[(int)(end.y / squareside)][(int)(end.x / squareside)] == '2')
+		if (mywin->params.map[end.y / squareside][end.x / squareside] == '2')
 		{
 			call_sprite(mywin, end, squareside);
 		}
-		if (mywin->params.map[(int)((end.y) / squareside)][(int)((end.x) / squareside)] == '1')
+		if (mywin->params.map[end.y / squareside][end.x / squareside] == '1')
 			reached_wall = 1;
 		else
 		{
