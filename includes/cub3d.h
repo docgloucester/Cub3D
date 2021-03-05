@@ -127,7 +127,6 @@ typedef	struct	s_vars {
 	int			i;
 }				t_vars;
 
-
 /*
 ** Events
 */
@@ -141,8 +140,6 @@ t_params		parse_file(char *path);
 void			get_res(t_params *params, char *line);
 int				get_col(t_params *params, char *line);
 char			*get_path(t_params *params, char *line);
-
-
 
 void			dup_map(t_params *params, char	**line, int fd);
 void			trim_map_y(t_params *params);
@@ -165,10 +162,9 @@ void			fill_window(t_vars *mywin, t_img *img, int col);
 void			draw_square(t_img *img, t_point start, int px, int col);
 void			draw_rect(t_vars *mywin, t_point start, int width, int h);
 
-
-
-t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray);
-void	put_blocks(t_vars *mywin, t_point v_end, t_point h_end, float diff);
+t_point			expand_ray(t_vars *mywin, t_point end, t_point delta_ray);
+void			put_blocks(t_vars *mywin, t_point v_end, t_point h_end,
+				float diff);
 
 int				is_full_border(t_vars *mywin, t_coord curr, t_coord start,
 					int prev);
