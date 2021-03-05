@@ -18,7 +18,7 @@ CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
 UNAME	= ${shell uname}
 ifeq (${UNAME}, Darwin)
 	MLX 	= minilibx-metal/
-	LINKFL 	= -framework OpenGL -framework AppKit
+	LINKFL 	= -framework OpenGL -framework AppKit -fsanitize=address
 	MLX_NAME = libmlx.dylib
 else
 	MLX		= minilibx-linux/
