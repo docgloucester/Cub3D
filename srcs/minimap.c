@@ -77,22 +77,3 @@ void	draw_line(t_vars *mywin, t_point end)
 			break ;
 	}
 }
-
-void	mlx_merge_img(t_vars *mywin, t_img *temp_img, t_img *back, t_img *front)
-{
-	int	x;
-	int	y;
-	int	col;
-
-	y = -1;
-	while (++y < mywin->params.res_y / 4)
-	{
-		x = -1;
-		while (++x < mywin->params.res_x / 4)
-		{
-			col = get_pixel(front, 4 * x, 4 * y) == 0xFFFFFFFF ?
-			get_pixel(back, 4 * x, 4 * y) : get_pixel(front, 4 * x, 4 * y);
-			my_pixelput(temp_img, x, y, col);
-		}
-	}
-}
