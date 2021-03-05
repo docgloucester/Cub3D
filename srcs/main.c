@@ -35,7 +35,7 @@ int		exit_hook(t_vars *mywin)
 	free(mywin->params.sp_path);
 	if (mywin->params.map)
 		free_split(mywin->params.map);
-	mlx_destroy_display(mywin->mlx);
+	//mlx_destroy_display(mywin->mlx);
 	free(mywin->mlx);
 	exit(EXIT_SUCCESS);
 	return (0);

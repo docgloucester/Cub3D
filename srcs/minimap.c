@@ -41,6 +41,14 @@ int		isinrange(t_vars *mywin, t_point st)
 	return (0);
 }
 
+void	init_coord(t_coord *coord1, t_coord *coord2, t_point st, t_point end)
+{
+	coord1->x = (int)fabs(end.x - st.x);
+	coord2->x = st.x < end.x ? 1 : -1;
+	coord2->y = -(int)fabs(end.y - st.y);
+	coord1->y = st.y < end.y ? 1 : -1;
+}
+
 void	draw_line(t_vars *mywin, t_point end)
 {
 	t_coord	coord1;
@@ -50,10 +58,7 @@ void	draw_line(t_vars *mywin, t_point end)
 
 	st.x = mywin->player.x_pos;
 	st.y = mywin->player.y_pos;
-	coord1.x = (int)fabs(end.x - st.x);
-	coord2.x = st.x < end.x ? 1 : -1;
-	coord2.y = -(int)fabs(end.y - st.y);
-	coord1.y = st.y < end.y ? 1 : -1;
+	init_coord(&coord1, &coord2, st, end);
 	err = coord1.x + coord2.y;
 	while (1)
 	{
