@@ -85,22 +85,22 @@ void	call_sprite(t_vars *mywin, t_point end, int squareside)
 t_point	expand_ray(t_vars *mywin, t_point end, t_point delta_ray)
 {
 	int		reached_wall;
-	int		squareside;
+	int		sqsd;
 
 	reached_wall = 0;
-	squareside = get_square_side(mywin);
+	sqsd = get_square_side(mywin);
 	while (!reached_wall && end.x < mywin->params.res_x
 		&& end.y < mywin->params.res_y && end.x >= 0 && end.y >= 0)
 	{
-		if ((int)(end.y / squareside) < 0 || (int)(end.x / squareside) < 0
-			|| (int)((end.x) / squareside) >= mywin->params.map_x
-			|| (int)((end.y) / squareside) >= mywin->params.map_y)
+		if ((int)(end.y / sqsd) < 0 || (int)(end.x / sqsd) < 0
+			|| (int)((end.x) / sqsd) >= mywin->params.map_x
+			|| (int)((end.y) / sqsd) >= mywin->params.map_y)
 			break ;
-		if (mywin->params.map[end.y / squareside][end.x / squareside] == '2')
+		if (mywin->params.map[(int)end.y / sqsd][(int)end.x / sqsd] == '2')
 		{
-			call_sprite(mywin, end, squareside);
+			call_sprite(mywin, end, sqsd);
 		}
-		if (mywin->params.map[end.y / squareside][end.x / squareside] == '1')
+		if (mywin->params.map[(int)end.y / sqsd][(int)end.x / sqsd] == '1')
 			reached_wall = 1;
 		else
 		{
