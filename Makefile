@@ -13,16 +13,16 @@
 NAME	= cub3D
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -g3
 
 UNAME	= ${shell uname}
 ifeq (${UNAME}, Darwin)
 	MLX 	= minilibx-metal/
-	LINKFL 	= -framework OpenGL -framework AppKit -fsanitize=address
+	LINKFL 	= -framework OpenGL -framework AppKit
 	MLX_NAME = libmlx.dylib
 else
 	MLX		= minilibx-linux/
-	LINKFL	= -lXext -lX11 -lm -fsanitize=address
+	LINKFL	= -lXext -lX11 -lm
 	MLX_NAME = libmlx.a
 endif
 
