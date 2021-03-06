@@ -1,12 +1,12 @@
 R   1366 768
-NO               ./img/NO.xpm 
+NO               ./img/NO.xpm
 SO           ./img/SO.xpm
 WE          ./img/WE.xpm
 
 
 EA    ./img/EA.xpm
 
-S     ./pics/shrek.xpm
+S     ./img/table.xpm
 
 F 238,130,238
 

@@ -81,7 +81,8 @@ void	border_closure(t_vars *mywin, int x, int y)
 			if (is_full_border(mywin, start_wall, start_wall, 0))
 				return ;
 		}
-	mywin->params.err = ft_strdup("Map isn't closed.\n");
+	if (!mywin->params.err)
+		mywin->params.err = ft_strdup("Map isn't closed.\n");
 }
 
 void	check_map_content(t_vars *mywin)
@@ -104,7 +105,7 @@ void	check_map_content(t_vars *mywin)
 					x = j;
 					y = i;
 				}
-				else
+				else if (!mywin->params.err)
 					mywin->params.err = ft_strdup("Multiple players on map.\n");
 			}
 	if (x == -1)

@@ -22,7 +22,6 @@
 # include <libft.h>
 # include <mlx.h>
 # include <math.h>
-# include <stdio.h>
 
 # ifdef __APPLE__
 #  define ESC_KEY 53
@@ -140,14 +139,26 @@ t_params		parse_file(char *path);
 void			get_res(t_params *params, char *line);
 int				get_col(t_params *params, char *line);
 char			*get_path(t_params *params, char *line);
+int				free_split(char **split);
 
 void			dup_map(t_params *params, char	**line, int fd);
 void			trim_map_y(t_params *params);
 void			trim_map_x(t_params *params);
 
+int				mk_bmp(char *image, int height, int width);
+void			check_error(t_vars *mywin);
+void			build_image(t_vars *mywin, t_img *img);
+void			place_player(t_vars *mywin, int col);
+void			draw_player_dir(t_vars *mywin, int col);
+void			put_map(t_vars *mywin, t_img *img);
+
+int				is_full_border(t_vars *mywin, t_coord curr, t_coord start,
+					int prev);
+
 /*
 ** Maths extras
 */
+int				get_square_side(t_vars *mywin);
 float			get_norm(t_vars *mywin, t_point end);
 int				cmp_norm(t_vars *mywin, t_point end0, t_point end1);
 void			chg_angle(t_player *player, float angle);
@@ -159,35 +170,21 @@ float			float_modulo(float a, float b);
 void			my_pixelput(t_img *img, int x, int y, int col);
 unsigned int	get_pixel(t_img *img, int x, int y);
 void			fill_window(t_vars *mywin, t_img *img, int col);
+void			mlx_merge_img(t_vars *mw, t_img *tmp, t_img *bck, t_img *front);
 void			draw_square(t_img *img, t_point start, int px, int col);
 void			draw_rect(t_vars *mywin, t_point start, int width, int h);
-
-t_point			expand_ray(t_vars *mywin, t_point end, t_point delta_ray);
-void			put_blocks(t_vars *mywin, t_point v_end, t_point h_end,
-				float diff);
-
-int				is_full_border(t_vars *mywin, t_coord curr, t_coord start,
-					int prev);
-
-void			put_map(t_vars *mywin, t_img *img);
-
-int				free_split(char **split);
-
 void			draw_line(t_vars *mywin, t_point end);
-void			draw_stripe(t_vars *mywin, int x_start, t_point normoffset,
-					t_img *text);
-void			draw_sprite(t_vars *mywin, int x, int height, float offset);
-void			mlx_merge_img(t_vars *mw, t_img *tmp, t_img *bck, t_img *front);
 
-int				get_square_side(t_vars *mywin);
-void			build_image(t_vars *mywin, t_img *img);
-void			place_player(t_vars *mywin, int col);
-void			draw_player_dir(t_vars *mywin, int col);
 void			draw_rays(t_vars *mywin);
+t_point			expand_ray(t_vars *mywin, t_point end, t_point delta_ray);
+
 void			addsprite(t_vars *mywin, t_point crd, float norm, float diff);
 void			display_sprites(t_vars *mywin);
 void			freesprite(t_sprite *sprites);
-int				mk_bmp(char *image, int height, int width);
-void			check_error(t_vars *mywin);
 
+void			put_blocks(t_vars *mywin, t_point v_end, t_point h_end,
+				float diff);
+void			draw_sprite(t_vars *mywin, int x, int height, float offset);
+void			draw_stripe(t_vars *mywin, int x_start, t_point normoffset,
+					t_img *text);
 #endif

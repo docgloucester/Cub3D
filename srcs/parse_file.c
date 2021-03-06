@@ -48,7 +48,7 @@ void		is_map(t_params *params, char **line, int fd)
 	splt = ft_split(*line, ' ');
 	if (splt[0] != NULL && ft_isdigit(splt[0][0]))
 		dup_map(params, line, fd);
-	else
+	else if (!params->err)
 		params->err = ft_strdup("Unexpected parameter !\n");
 	free_split(splt);
 }
